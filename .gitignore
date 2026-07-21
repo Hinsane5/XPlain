@@ -1,0 +1,47 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+
+# Xcode
+build/
+DerivedData/
+*.xcworkspace/xcuserdata/
+*.xcodeproj/xcuserdata/
+*.xcodeproj/project.xcworkspace/xcuserdata/
+xcuserdata/
+*.xcuserstate
+*.xcscmblueprint
+*.moved-aside
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Swift Package Manager
+.build/
+.swiftpm/
+Packages/
+Package.resolved
+
+# CocoaPods / Carthage (not used, but ignore if ever added)
+Pods/
+Carthage/Build/
+
+# Fastlane / release artifacts
+fastlane/report.xml
+fastlane/screenshots/**/*.png
+*.dmg
+*.pkg
+
+# Signing & secrets — never commit
+*.p12
+*.mobileprovision
+*.cer
+.env
+.env.local
+
+# Editor / OS noise
+*.swp
+*~
