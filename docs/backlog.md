@@ -27,7 +27,7 @@ acceptance → [`success-criteria.md`](success-criteria.md).
 
 Goal: an empty-but-real menu-bar app whose validation gates actually run.
 
-- [ ] **M0.1 — Create the Xcode project**
+- [x] **M0.1 — Create the Xcode project**
   - **Do:** New macOS App target named `XPlain`, interface **AppKit** (or SwiftUI
     lifecycle + AppKit menu-bar), language Swift, **Deployment Target macOS 14.0**.
   - **Files:** `XPlain.xcodeproj`, `Sources/…`, `XPlain/Info.plist`.
