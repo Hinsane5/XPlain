@@ -1,3 +1,6 @@
+# Regenerate via `scripts/generate-project.sh`, not `xcodegen generate`
+# directly — the script also patches objectVersion down to a value CI's
+# pinned Xcode 15.4 can read (see the script's comment for why).
 name: XPlain
 options:
   bundleIdPrefix: com.howardgoh

@@ -26,6 +26,13 @@ open XPlain.xcodeproj          # then Product ▸ Run
 xcodebuild -resolvePackageDependencies -scheme XPlain
 ```
 
+`XPlain.xcodeproj` is generated from `project.yml` via
+[XcodeGen](https://github.com/yonaskolb/XcodeGen) — there's no other CLI path to
+create/edit an Xcode project outside the Xcode GUI. **After changing
+`project.yml`, run `./scripts/generate-project.sh`** (not `xcodegen generate`
+directly) — it also patches the emitted `objectVersion` down to one CI's pinned
+Xcode 15.4 can read; see the script's comment for why.
+
 First run requires granting **Screen Recording** permission in
 System Settings ▸ Privacy & Security, then relaunching the app. See `docs/security.md`.
 
