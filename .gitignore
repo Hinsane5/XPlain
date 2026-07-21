@@ -23,7 +23,7 @@ xcuserdata/
 .build/
 .swiftpm/
 Packages/
-Package.resolved
+/Package.resolved
 
 # CocoaPods / Carthage (not used, but ignore if ever added)
 Pods/

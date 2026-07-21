@@ -9,6 +9,11 @@ settings:
     SWIFT_VERSION: "5.9"
     MACOSX_DEPLOYMENT_TARGET: "14.0"
 
+packages:
+  KeyboardShortcuts:
+    url: https://github.com/sindresorhus/KeyboardShortcuts
+    exactVersion: 1.9.4
+
 targets:
   XPlain:
     type: application
@@ -22,6 +27,8 @@ targets:
         PRODUCT_BUNDLE_IDENTIFIER: com.howardgoh.XPlain
         CODE_SIGN_STYLE: Automatic
         ENABLE_TESTABILITY: YES
+    dependencies:
+      - package: KeyboardShortcuts
 
   XPlainTests:
     type: bundle.unit-test

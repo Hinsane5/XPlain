@@ -58,7 +58,7 @@ Goal: an empty-but-real menu-bar app whose validation gates actually run.
   - **Done when:** `xcodebuild -scheme XPlain test` runs the test and it passes.
   - **Depends on:** M0.1
 
-- [ ] **M0.6 — Add the KeyboardShortcuts dependency**
+- [x] **M0.6 — Add the KeyboardShortcuts dependency**
   - **Do:** Add SwiftPM package `https://github.com/sindresorhus/KeyboardShortcuts`
     and `import KeyboardShortcuts` somewhere that compiles.
   - **Done when:** the package resolves and the app still builds.
