@@ -47,7 +47,7 @@ Goal: an empty-but-real menu-bar app whose validation gates actually run.
   - **Done when:** `swiftlint --strict` runs and passes on the current source.
   - **Depends on:** M0.1
 
-- [ ] **M0.4 — Wire swift-format**
+- [x] **M0.4 — Wire swift-format**
   - **Do:** Add a `.swift-format` config; make `swift-format lint --recursive Sources`
     runnable.
   - **Done when:** `swift-format lint --recursive Sources` passes.
