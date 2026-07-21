@@ -53,7 +53,7 @@ Goal: an empty-but-real menu-bar app whose validation gates actually run.
   - **Done when:** `swift-format lint --recursive Sources` passes.
   - **Depends on:** M0.1
 
-- [ ] **M0.5 — Add the XCTest target + a smoke test**
+- [x] **M0.5 — Add the XCTest target + a smoke test**
   - **Do:** Create a unit-test target `XPlainTests` with one trivial passing test.
   - **Done when:** `xcodebuild -scheme XPlain test` runs the test and it passes.
   - **Depends on:** M0.1

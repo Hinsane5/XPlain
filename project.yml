@@ -23,10 +23,26 @@ targets:
         CODE_SIGN_STYLE: Automatic
         ENABLE_TESTABILITY: YES
 
+  XPlainTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - path: Tests/XPlainTests
+    settings:
+      base:
+        GENERATE_INFOPLIST_FILE: YES
+    dependencies:
+      - target: XPlain
+
 schemes:
   XPlain:
     build:
       targets:
         XPlain: all
+        XPlainTests: [test]
+    test:
+      config: Debug
+      targets:
+        - XPlainTests
     run:
       config: Debug

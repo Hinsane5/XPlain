@@ -8,12 +8,25 @@
 
 /* Begin PBXBuildFile section */
 		B6F718B883F26DCC1CF0C03B /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8F7C74C29B70B72DDB8DE90 /* main.swift */; };
+		E3622238D7375D2E918F01F7 /* XPlainTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D09F167839FABAE5225D701 /* XPlainTests.swift */; };
 		FD4CF7DE9759E3C12A08091A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA5FDD7E196925C46DDDFCA /* AppDelegate.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		9DAB0B5D9CC9D5E5D70063D0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 740BD2CE2469E22158BD7C75 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FF7ACA99C1B546FA617D5CC0;
+			remoteInfo = XPlain;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		3AA5FDD7E196925C46DDDFCA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3DED5F3AE20552CB547C8681 /* XPlain.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XPlain.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4D09F167839FABAE5225D701 /* XPlainTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XPlainTests.swift; sourceTree = "<group>"; };
+		6044724AAE9FC763652A82C2 /* XPlainTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = XPlainTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8F7C74C29B70B72DDB8DE90 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -22,6 +35,7 @@
 			isa = PBXGroup;
 			children = (
 				3DED5F3AE20552CB547C8681 /* XPlain.app */,
+				6044724AAE9FC763652A82C2 /* XPlainTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -30,6 +44,7 @@
 			isa = PBXGroup;
 			children = (
 				9431C924A4B5C449FDD30885 /* XPlain */,
+				A6396D2C609505E67AE2282D /* XPlainTests */,
 				63EE6E344FAB56CCC7C314CC /* Products */,
 			);
 			sourceTree = "<group>";
@@ -44,9 +59,36 @@
 			path = Sources/XPlain;
 			sourceTree = "<group>";
 		};
+		A6396D2C609505E67AE2282D /* XPlainTests */ = {
+			isa = PBXGroup;
+			children = (
+				4D09F167839FABAE5225D701 /* XPlainTests.swift */,
+			);
+			name = XPlainTests;
+			path = Tests/XPlainTests;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		D233338AB5F6C3E8A4D96A07 /* XPlainTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B4560263C985688938594659 /* Build configuration list for PBXNativeTarget "XPlainTests" */;
+			buildPhases = (
+				53A8282839E433BB38E50850 /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				D51AC6DC716D251A56E327A4 /* PBXTargetDependency */,
+			);
+			name = XPlainTests;
+			packageProductDependencies = (
+			);
+			productName = XPlainTests;
+			productReference = 6044724AAE9FC763652A82C2 /* XPlainTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		FF7ACA99C1B546FA617D5CC0 /* XPlain */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = CF4B1F528380AB144BDB8863 /* Build configuration list for PBXNativeTarget "XPlain" */;
@@ -93,11 +135,20 @@
 			projectRoot = "";
 			targets = (
 				FF7ACA99C1B546FA617D5CC0 /* XPlain */,
+				D233338AB5F6C3E8A4D96A07 /* XPlainTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
+		53A8282839E433BB38E50850 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E3622238D7375D2E918F01F7 /* XPlainTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		ED09987CCD9B37384613DB4D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -108,6 +159,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		D51AC6DC716D251A56E327A4 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FF7ACA99C1B546FA617D5CC0 /* XPlain */;
+			targetProxy = 9DAB0B5D9CC9D5E5D70063D0 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		0FE54E8EA7CF87CBF12FAE15 /* Release */ = {
@@ -265,6 +324,40 @@
 			};
 			name = Debug;
 		};
+		A1786DACB8CD4EE2B478648E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.howardgoh.XPlainTests;
+				SDKROOT = macosx;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/XPlain.app/Contents/MacOS/XPlain";
+			};
+			name = Release;
+		};
+		A95ECF9482EAD77FC17F2388 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.howardgoh.XPlainTests;
+				SDKROOT = macosx;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/XPlain.app/Contents/MacOS/XPlain";
+			};
+			name = Debug;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -273,6 +366,15 @@
 			buildConfigurations = (
 				56ED061C844067C6DB9EB000 /* Debug */,
 				5EDBDD46F1832CFCFD8694A0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		B4560263C985688938594659 /* Build configuration list for PBXNativeTarget "XPlainTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A95ECF9482EAD77FC17F2388 /* Debug */,
+				A1786DACB8CD4EE2B478648E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
