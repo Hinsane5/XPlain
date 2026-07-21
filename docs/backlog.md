@@ -41,7 +41,7 @@ Goal: an empty-but-real menu-bar app whose validation gates actually run.
   - **Done when:** launching shows a menu-bar icon, **no** Dock icon, and Quit exits.
   - **Depends on:** M0.1
 
-- [ ] **M0.3 — Wire SwiftLint**
+- [x] **M0.3 — Wire SwiftLint**
   - **Do:** Add a `.swiftlint.yml` and make `swiftlint --strict` runnable locally
     (Homebrew install documented in README).
   - **Done when:** `swiftlint --strict` runs and passes on the current source.

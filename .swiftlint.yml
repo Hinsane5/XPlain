@@ -1,0 +1,5 @@
+excluded:
+  - .build
+  - build
+  - DerivedData
+  - Packages
