@@ -7,9 +7,14 @@ verifiable on its own. Do not start a phase until the previous one's gates pass.
 The validation gates live in `AGENTS.md`. Milestones below reference `docs/spec.md`
 for behavior and `docs/testing.md` for how to verify.
 
+**Each phase = one milestone (`M0`…`M6`).** This doc is the *strategy* (what/why/order);
+the *granular, agent-ready tasks* live in [`backlog.md`](backlog.md) as `M0.1`, `M0.2`, …
+When vibe-coding, don't ask an agent to "do Phase 0" — hand it a single task like
+"do **M0.3**". Each phase header below links to its task list.
+
 ---
 
-## Phase 0 — Project init & toolchain
+## Phase 0 — Project init & toolchain  ·  **M0** ([tasks](backlog.md#m0))
 
 - **Scope:** create the Xcode project for a macOS 14+ menu-bar agent app named
   `XPlain` (`LSUIElement = YES`). Add the Swift Package dependency
@@ -19,7 +24,7 @@ for behavior and `docs/testing.md` for how to verify.
   `xcodebuild ... build test` all run locally (even with zero real tests), and CI
   runs them on push. The app launches, shows a menu-bar icon, and quits cleanly.
 
-## Phase 1 — Hotkeys + overlay skeleton
+## Phase 1 — Hotkeys + overlay skeleton  ·  **M1** ([tasks](backlog.md#m1))
 
 - **Scope:** register the five global shortcuts via `HotkeyService`. Stand up
   `ModeController` and an `OverlayWindow` that covers the display under the cursor
@@ -29,7 +34,7 @@ for behavior and `docs/testing.md` for how to verify.
   including over full-screen apps and on secondary monitors; only one overlay exists
   at a time.
 
-## Phase 2 — Screen Recording permission + still capture
+## Phase 2 — Screen Recording permission + still capture  ·  **M2** ([tasks](backlog.md#m2))
 
 - **Scope:** implement `CaptureService.snapshot(of:)` via `SCScreenshotManager`.
   Preflight Screen Recording permission; on denial, show the **PermissionPrompt**
@@ -38,7 +43,7 @@ for behavior and `docs/testing.md` for how to verify.
   snapshot of the target display; with permission denied, the user sees a clear
   prompt instead of a blank screen.
 
-## Phase 3 — Zoom mode (the core slice)
+## Phase 3 — Zoom mode (the core slice)  ·  **M3** ([tasks](backlog.md#m3))
 
 - **Scope:** `ZoomRenderer` — present the snapshot at the initial scale centered on
   the cursor; pan on mouse move; zoom on scroll/↑↓ within the configured range;
@@ -46,7 +51,7 @@ for behavior and `docs/testing.md` for how to verify.
 - **Done when:** `⌘⌃Z` magnifies within ~150 ms, panning tracks the cursor 1:1,
   zoom in/out is smooth, and exit restores the desktop untouched.
 
-## Phase 4 — Draw / Annotate mode
+## Phase 4 — Draw / Annotate mode  ·  **M4** ([tasks](backlog.md#m4))
 
 - **Scope:** `AnnotationCanvas` + the `Drawable` model + undo/redo. Freehand,
   shapes (Shift/⌘/⌥/Shift+⌘), color keys, highlighter, pen width, text tool,
@@ -55,7 +60,7 @@ for behavior and `docs/testing.md` for how to verify.
 - **Done when:** every documented key/modifier produces its result; strokes render
   without perceptible lag; undo/redo is exact; save/copy produce correct PNGs.
 
-## Phase 5 — LiveZoom + Record
+## Phase 5 — LiveZoom + Record  ·  **M5** ([tasks](backlog.md#m5))
 
 - **Scope:** `CaptureService.stream(of:)` async `SCStream` feed. `MTKView`-backed
   live magnification with a click-through overlay (LiveZoom, §5). `Recorder` writing
@@ -65,7 +70,7 @@ for behavior and `docs/testing.md` for how to verify.
   magnification; Record produces a playable `.mp4` at native resolution saved to the
   configured folder.
 
-## Phase 6 — Settings, polish & distribution
+## Phase 6 — Settings, polish & distribution  ·  **M6** ([tasks](backlog.md#m6))
 
 - **Scope:** SwiftUI Settings window (hotkey recorders with conflict warnings, zoom,
   pen, recording, general, live permission status — §7). Launch-at-login. App icon +

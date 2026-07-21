@@ -47,8 +47,8 @@ System Settings ▸ Privacy & Security, then relaunch.
 - [AGENTS.md](AGENTS.md) — instructions for AI coding agents working in this repo.
 - [docs/spec.md](docs/spec.md) — full functional spec: every mode, hotkey, behavior.
 - [docs/core.md](docs/core.md) — architecture, components, and the state machine.
-- [docs/plan.md](docs/plan.md) — phased build roadmap.
-- [docs/backlog.md](docs/backlog.md) — features beyond the MVP.
+- [docs/plan.md](docs/plan.md) — phased build roadmap (strategy).
+- [docs/backlog.md](docs/backlog.md) — granular numbered task tracker (`M0.1`, `M1.1`, …).
 - [docs/testing.md](docs/testing.md) — test strategy and definition of done.
 - [docs/success-criteria.md](docs/success-criteria.md) — acceptance criteria.
 - [docs/security.md](docs/security.md) — permissions, privacy, notarization.

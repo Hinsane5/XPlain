@@ -58,8 +58,9 @@ Read the relevant doc before working in that area:
 
 - `docs/spec.md` — **functional spec**: every mode, hotkey, and on-screen behavior.
 - `docs/core.md` — **architecture**: components, state machine, data flow, key decisions.
-- `docs/plan.md` — **phased build plan**: what to build, in what order, done-when.
-- `docs/backlog.md` — features and tasks beyond the MVP (Break Timer, Demo Type, etc.).
+- `docs/plan.md` — **phased build plan** (strategy): what to build, in what order, done-when.
+- `docs/backlog.md` — **granular task tracker**: numbered tasks `M0.1`, `M1.1`, … Hand an
+  agent one task ID at a time; each has a concrete "Done when". Start here to build.
 - `docs/testing.md` — test strategy and the definition of "done".
 - `docs/success-criteria.md` — acceptance criteria and what "great" looks like.
 - `docs/security.md` — TCC permissions, privacy posture, signing & notarization.
