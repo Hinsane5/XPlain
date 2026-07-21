@@ -1,0 +1,32 @@
+# CI — runs the validation gates from AGENTS.md on every push / PR.
+#
+# NOTE: this stays RED until the Xcode project + toolchain exist (build-plan
+# Phase 0). That is expected. Do not treat a red badge as a bug before Phase 0
+# lands; the workflow is committed alongside the first real code.
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  gates:
+    runs-on: macos-14
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: sudo xcode-select -s /Applications/Xcode_15.4.app
+
+      - name: Install SwiftLint & swift-format
+        run: brew install swiftlint swift-format
+
+      - name: Lint
+        run: swiftlint --strict
+
+      - name: Format check
+        run: swift-format lint --recursive Sources
+
+      - name: Build & test
+        run: xcodebuild -scheme XPlain -destination 'platform=macOS' build test

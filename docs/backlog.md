@@ -64,7 +64,7 @@ Goal: an empty-but-real menu-bar app whose validation gates actually run.
   - **Done when:** the package resolves and the app still builds.
   - **Depends on:** M0.1
 
-- [ ] **M0.7 — Commit the CI workflow**
+- [x] **M0.7 — Commit the CI workflow**
   - **Do:** Move `.github/workflows/ci.yml` into the commit (it already runs the three
     gates on `macos-14`); confirm the `Xcode_15.x` path and scheme name match.
   - **Done when:** CI runs on push and all three gates pass green.
