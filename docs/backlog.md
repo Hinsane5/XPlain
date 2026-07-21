@@ -35,7 +35,7 @@ Goal: an empty-but-real menu-bar app whose validation gates actually run.
     succeeds.
   - **Depends on:** —
 
-- [ ] **M0.2 — Make it a menu-bar agent (no Dock icon)**
+- [x] **M0.2 — Make it a menu-bar agent (no Dock icon)**
   - **Do:** Set `LSUIElement = YES` in `Info.plist`; add an `NSStatusItem` with a
     placeholder menu (`Quit`).
   - **Done when:** launching shows a menu-bar icon, **no** Dock icon, and Quit exits.
