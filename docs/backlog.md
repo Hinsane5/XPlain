@@ -96,7 +96,7 @@ No capture yet.
     invariant.
   - **Depends on:** M1.1
 
-- [ ] **M1.3 — `OverlayWindow` on the display under the cursor**
+- [~] **M1.3 — `OverlayWindow` on the display under the cursor**  *(code + unit tests done; visual check pending — see `specs/m1-manual-checklist.md`)*
   - **Do:** Borderless `NSWindow` sized to the `NSScreen` containing
     `NSEvent.mouseLocation`; opaque test color.
   - **Done when:** a hotkey shows a full-screen colored overlay on the correct display.

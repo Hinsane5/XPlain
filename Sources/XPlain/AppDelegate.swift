@@ -4,6 +4,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
   private var statusItem: NSStatusItem?
   private var hotkeys: HotkeyService?
   private let modeController = ModeController()
+  private let overlay = OverlayController()
 
   func applicationDidFinishLaunching(_ notification: Notification) {
     let item = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
@@ -21,10 +22,15 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     statusItem = item
 
-    // M1.2: hotkeys drive the mode controller; transitions are logged for now.
-    // M1.3 will hook overlay windows onto `onChange`.
-    modeController.onChange = { from, next in
+    // M1.3: hotkeys drive the mode controller, which shows/hides the overlay on
+    // the display under the cursor. Entering idle tears the overlay down.
+    modeController.onChange = { [overlay] from, next in
       NSLog("XPlain: \(from) → \(next)")
+      if next == .idle {
+        overlay.hide()
+      } else {
+        overlay.show(onDisplayFrame: NSScreen.frameUnderCursor())
+      }
     }
     let service = HotkeyService { [modeController] mode in
       modeController.request(mode)

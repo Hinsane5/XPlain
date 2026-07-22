@@ -10,6 +10,8 @@
 		0E25469336758B42C431A7F9 /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = 84CF7173C5A869E6325AE0BF /* KeyboardShortcuts */; };
 		0F7EEB4EA53DF2F43ADFBEF6 /* KeyboardShortcuts+Names.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC2ABBEE510E67FE2BE3B81 /* KeyboardShortcuts+Names.swift */; };
 		1B039DF84F33E01994A6B778 /* Mode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A52A940C0E0BD00703CB03D /* Mode.swift */; };
+		208C4A0293D43EF4ADF48951 /* OverlayController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145FEFBC3C7A6A6BD746201B /* OverlayController.swift */; };
+		244993B4B30F002EC555EE17 /* OverlayWindowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72B0F388BBC7FD2AC3D6FFA2 /* OverlayWindowTests.swift */; };
 		6F31F42976F6C05F368E76A3 /* HotkeyServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ACB92481DB5B32344B15C0C /* HotkeyServiceTests.swift */; };
 		A5D7FBD17863C5B3303D6936 /* ModeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4A20C5A9AA497E1717BE97 /* ModeController.swift */; };
 		B4A231B13F95C8BE9179E88D /* ModeControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1F3371A77584726FDC954F4 /* ModeControllerTests.swift */; };
@@ -17,6 +19,7 @@
 		E1D1708520AE3BDAEE40A8DE /* HotkeyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53AE3F82BF1E64962D56F17D /* HotkeyService.swift */; };
 		E3622238D7375D2E918F01F7 /* XPlainTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D09F167839FABAE5225D701 /* XPlainTests.swift */; };
 		E4F79FED67B3F7A9F5399784 /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = D9FCAC2F4D9F6F80CED14158 /* KeyboardShortcuts */; };
+		E54EA3CDBDC204A990EA9B60 /* OverlayWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A99EAC64E53FCAE0750E23B /* OverlayWindow.swift */; };
 		FD4CF7DE9759E3C12A08091A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA5FDD7E196925C46DDDFCA /* AppDelegate.swift */; };
 /* End PBXBuildFile section */
 
@@ -32,6 +35,8 @@
 
 /* Begin PBXFileReference section */
 		0BC2ABBEE510E67FE2BE3B81 /* KeyboardShortcuts+Names.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KeyboardShortcuts+Names.swift"; sourceTree = "<group>"; };
+		145FEFBC3C7A6A6BD746201B /* OverlayController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayController.swift; sourceTree = "<group>"; };
+		2A99EAC64E53FCAE0750E23B /* OverlayWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayWindow.swift; sourceTree = "<group>"; };
 		3AA5FDD7E196925C46DDDFCA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3DED5F3AE20552CB547C8681 /* XPlain.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XPlain.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D09F167839FABAE5225D701 /* XPlainTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XPlainTests.swift; sourceTree = "<group>"; };
@@ -39,6 +44,7 @@
 		5A52A940C0E0BD00703CB03D /* Mode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mode.swift; sourceTree = "<group>"; };
 		5ACB92481DB5B32344B15C0C /* HotkeyServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotkeyServiceTests.swift; sourceTree = "<group>"; };
 		6044724AAE9FC763652A82C2 /* XPlainTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = XPlainTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		72B0F388BBC7FD2AC3D6FFA2 /* OverlayWindowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayWindowTests.swift; sourceTree = "<group>"; };
 		8B4A20C5A9AA497E1717BE97 /* ModeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeController.swift; sourceTree = "<group>"; };
 		C1F3371A77584726FDC954F4 /* ModeControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeControllerTests.swift; sourceTree = "<group>"; };
 		D8F7C74C29B70B72DDB8DE90 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
@@ -91,6 +97,8 @@
 				D8F7C74C29B70B72DDB8DE90 /* main.swift */,
 				5A52A940C0E0BD00703CB03D /* Mode.swift */,
 				8B4A20C5A9AA497E1717BE97 /* ModeController.swift */,
+				145FEFBC3C7A6A6BD746201B /* OverlayController.swift */,
+				2A99EAC64E53FCAE0750E23B /* OverlayWindow.swift */,
 			);
 			name = XPlain;
 			path = Sources/XPlain;
@@ -101,6 +109,7 @@
 			children = (
 				5ACB92481DB5B32344B15C0C /* HotkeyServiceTests.swift */,
 				C1F3371A77584726FDC954F4 /* ModeControllerTests.swift */,
+				72B0F388BBC7FD2AC3D6FFA2 /* OverlayWindowTests.swift */,
 				4D09F167839FABAE5225D701 /* XPlainTests.swift */,
 			);
 			name = XPlainTests;
@@ -193,6 +202,7 @@
 			files = (
 				6F31F42976F6C05F368E76A3 /* HotkeyServiceTests.swift in Sources */,
 				B4A231B13F95C8BE9179E88D /* ModeControllerTests.swift in Sources */,
+				244993B4B30F002EC555EE17 /* OverlayWindowTests.swift in Sources */,
 				E3622238D7375D2E918F01F7 /* XPlainTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -206,6 +216,8 @@
 				0F7EEB4EA53DF2F43ADFBEF6 /* KeyboardShortcuts+Names.swift in Sources */,
 				1B039DF84F33E01994A6B778 /* Mode.swift in Sources */,
 				A5D7FBD17863C5B3303D6936 /* ModeController.swift in Sources */,
+				208C4A0293D43EF4ADF48951 /* OverlayController.swift in Sources */,
+				E54EA3CDBDC204A990EA9B60 /* OverlayWindow.swift in Sources */,
 				B6F718B883F26DCC1CF0C03B /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
