@@ -9,9 +9,11 @@ gets one bounded job with a clear finish line, instead of a vague "do Phase 0".
 - **IDs:** `M<milestone>.<task>` — e.g. `M0.3`. Milestones (`M0`, `M1`, …) map 1:1 to
   the phases in [`plan.md`](plan.md). Tasks run **in order within a milestone**; check
   `Depends on` before starting.
-- **Workflow per task:** read the linked spec/architecture section → write a one-screen
-  spec in `specs/` (name it after the task, e.g. `m0.3-swiftlint.md`) → code → run the
-  validation gates in [`AGENTS.md`](../AGENTS.md) → tick the box.
+- **Workflow per task (TDD):** read the linked spec/architecture section → write a
+  one-screen spec in `specs/` (e.g. `m0.3-swiftlint.md`) → **write the failing test
+  first** (its test is in [`testing.md`](testing.md)'s coverage matrix) → make it pass
+  → refactor → the gates run automatically ([`AGENTS.md`](../AGENTS.md)) → tick the box.
+  Every task maps to a test or a manual-checklist item; don't tick a box without it.
 - **Status:** `[ ]` todo · `[~]` in progress · `[x]` done. Update the box in the same
   commit that finishes the task.
 - **A task is done only when its `Done when` is objectively true** — a passing test, a

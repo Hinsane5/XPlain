@@ -42,7 +42,7 @@ System Settings ▸ Privacy & Security, then relaunching the app. See `docs/secu
 build      xcodebuild -scheme XPlain -destination 'platform=macOS' build
 test       xcodebuild -scheme XPlain -destination 'platform=macOS' test
 lint       swiftlint --strict
-format     swift-format lint --recursive Sources
+format     swift-format lint --recursive Sources Tests
 ```
 
 ## Validation gates (run before declaring a task done)
@@ -52,7 +52,7 @@ fails, fix it and re-run — do not report completion with failing gates.
 
 ```
 swiftlint --strict
-swift-format lint --recursive Sources
+swift-format lint --recursive Sources Tests
 xcodebuild -scheme XPlain -destination 'platform=macOS' build test
 ```
 
@@ -72,11 +72,24 @@ Read the relevant doc before working in that area:
 - `docs/success-criteria.md` — acceptance criteria and what "great" looks like.
 - `docs/security.md` — TCC permissions, privacy posture, signing & notarization.
 
-## Workflow
+## Workflow — test-first (TDD)
 
-Follow **Explore → Plan → Code → Verify**. For any non-trivial change, write a
-short spec into `specs/` first, build against `docs/plan.md`, then run the
-validation gates above before declaring done.
+Follow **Explore → Plan → Test (red) → Code (green) → Refactor → Verify**. For any
+non-trivial change, write a short spec into `specs/` first, then:
+
+1. **Write the failing test first** from the task's "Done when" (see `docs/testing.md`),
+   and watch it fail. A test that never failed proves nothing.
+2. Write the least code to make it pass, then refactor with the test green.
+3. Build against `docs/plan.md` / `docs/backlog.md`, one task (`M0.1`, `M1.1`, …) at a time.
+
+Every backlog task is mapped to a test (or a manual-checklist item) in
+`docs/testing.md` — do not mark a task done without it.
+
+**Gates run automatically.** A Stop hook (`.claude/settings.json` →
+`scripts/verify-gates.sh`) runs `swiftlint --strict`, `swift-format lint`, and
+`xcodebuild build test` after every turn that changes code; a failure means keep
+working and fix it. Run them yourself any time with `scripts/verify-gates.sh --all`.
+Never report a task complete with red gates.
 
 ## Gotchas
 
