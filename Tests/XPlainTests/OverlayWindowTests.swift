@@ -37,4 +37,63 @@ final class OverlayWindowTests: XCTestCase {
     XCTAssertTrue(behavior.contains(.fullScreenAuxiliary))
     XCTAssertTrue(behavior.contains(.stationary))
   }
+
+  func testEscKeyRequestsDismissal() {
+    let window = OverlayWindow(displayFrame: NSRect(x: 0, y: 0, width: 800, height: 600))
+    var dismissed = false
+    window.onDismissRequested = { dismissed = true }
+
+    window.keyDown(with: Self.keyEvent(keyCode: 53))  // Esc
+
+    XCTAssertTrue(dismissed)
+  }
+
+  func testNonEscKeyDoesNotRequestDismissal() {
+    let window = OverlayWindow(displayFrame: NSRect(x: 0, y: 0, width: 800, height: 600))
+    var dismissed = false
+    window.onDismissRequested = { dismissed = true }
+
+    window.keyDown(with: Self.keyEvent(keyCode: 6))  // 'z', arbitrary non-Esc key
+
+    XCTAssertFalse(dismissed)
+  }
+
+  func testRightClickRequestsDismissal() {
+    let window = OverlayWindow(displayFrame: NSRect(x: 0, y: 0, width: 800, height: 600))
+    var dismissed = false
+    window.onDismissRequested = { dismissed = true }
+
+    window.rightMouseDown(with: Self.mouseEvent())
+
+    XCTAssertTrue(dismissed)
+  }
+
+  private static func keyEvent(keyCode: UInt16) -> NSEvent {
+    NSEvent.keyEvent(
+      with: .keyDown,
+      location: .zero,
+      modifierFlags: [],
+      timestamp: 0,
+      windowNumber: 0,
+      context: nil,
+      characters: "",
+      charactersIgnoringModifiers: "",
+      isARepeat: false,
+      keyCode: keyCode
+    )!
+  }
+
+  private static func mouseEvent() -> NSEvent {
+    NSEvent.mouseEvent(
+      with: .rightMouseDown,
+      location: .zero,
+      modifierFlags: [],
+      timestamp: 0,
+      windowNumber: 0,
+      context: nil,
+      eventNumber: 0,
+      clickCount: 1,
+      pressure: 1
+    )!
+  }
 }

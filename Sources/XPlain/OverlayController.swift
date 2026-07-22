@@ -6,6 +6,10 @@ import Cocoa
 final class OverlayController {
   private var window: OverlayWindow?
 
+  /// Called when the on-screen overlay reports an Esc / right-click dismissal
+  /// request (M1.5). Set this before calling `show`.
+  var onDismissRequested: (() -> Void)?
+
   /// Whether an overlay is currently on screen.
   var isShowing: Bool { window != nil }
 
@@ -16,6 +20,7 @@ final class OverlayController {
       window.setFrame(frame, display: true)
     } else {
       let overlay = OverlayWindow(displayFrame: frame)
+      overlay.onDismissRequested = { [weak self] in self?.onDismissRequested?() }
       overlay.makeKeyAndOrderFront(nil)
       window = overlay
     }

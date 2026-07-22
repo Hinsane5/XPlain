@@ -22,11 +22,6 @@ Watch the Xcode/Console output for `XPlain: <from> → <to>` transition logs.
       on **that** display. *(Single-display Mac: just confirm full-screen cover.)*
 - [ ] The console logs `idle → zoom` on entry.
 
-> ⚠️ There is **no exit yet** (Esc/right-click lands in **M1.5**), and the window
-> level isn't raised yet (**M1.4**), so the overlay sits at normal level — the
-> menu bar is still reachable. To dismiss for now: click the XPlain menu-bar icon
-> ▸ **Quit**. This rough edge disappears once M1.4/M1.5 land.
-
 ## M1.4 — Level + Spaces  *(code + unit tests: ✅ done)*
 - [ ] Overlay appears **above** full-screen apps and on **every** Space.
 - [ ] With another app in full-screen mode, press ⌘⌃Z: the overlay still shows on
@@ -34,6 +29,7 @@ Watch the Xcode/Console output for `XPlain: <from> → <to>` transition logs.
 - [ ] Switch Spaces (Control+←/→) while the overlay is up: it follows you to the
       new Space instead of staying behind on the old one.
 
-## M1.5 — Esc / right-click exit  *(pending — not yet built)*
+## M1.5 — Esc / right-click exit  *(code + unit tests: ✅ done)*
 - [ ] **Esc** and **right-click** both dismiss the overlay (`… → idle` logged).
-- [ ] Enter/exit rapidly 10× — no leftover/stuck windows.
+- [ ] Enter/exit rapidly 10× — no leftover/stuck windows (check with
+      `⌘⌃Z` then Esc, repeated; Activity Monitor / no visible residue).

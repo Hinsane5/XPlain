@@ -108,7 +108,7 @@ No capture yet.
   - **Done when:** the overlay appears over full-screen apps and on every Space.
   - **Depends on:** M1.3
 
-- [ ] **M1.5 — Esc / right-click exits to Idle**
+- [~] **M1.5 — Esc / right-click exits to Idle**  *(code + unit tests done; visual check pending — see `specs/m1-manual-checklist.md`)*
   - **Do:** Overlay becomes key window; Esc and right-click both route to
     `ModeController` → Idle and tear the window down.
   - **Done when:** both inputs reliably dismiss the overlay; no window leak.

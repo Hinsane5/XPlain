@@ -32,6 +32,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         overlay.show(onDisplayFrame: NSScreen.frameUnderCursor())
       }
     }
+    // M1.5: Esc / right-click on the overlay routes back to Idle.
+    overlay.onDismissRequested = { [modeController] in
+      modeController.exit()
+    }
     let service = HotkeyService { [modeController] mode in
       modeController.request(mode)
     }

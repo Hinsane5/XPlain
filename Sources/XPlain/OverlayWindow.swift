@@ -4,6 +4,13 @@ import Cocoa
 /// zoom/draw/live content; for M1.3 it shows an opaque test fill so we can
 /// confirm it lands on the right display.
 final class OverlayWindow: NSWindow {
+  private static let escKeyCode: UInt16 = 53
+
+  /// Called when Esc or a right-click asks to leave the active mode (M1.5). The
+  /// window itself doesn't tear down — it just reports the request; the caller
+  /// (see `AppDelegate`) routes it through `ModeController.exit()`.
+  var onDismissRequested: (() -> Void)?
+
   /// - Parameter displayFrame: the target display's frame in global screen
   ///   coordinates (bottom-left origin). See `NSScreen.frameUnderCursor()`.
   init(displayFrame: NSRect) {
@@ -24,12 +31,24 @@ final class OverlayWindow: NSWindow {
   }
 
   // Borderless windows can't become key by default, but the overlay needs key
-  // status to receive Esc / mouse / scroll input from M1.5 onward.
+  // status to receive Esc / mouse / scroll input.
   override var canBecomeKey: Bool { true }
 
   // Never let AppKit reposition a full-display overlay to keep a title bar
   // on-screen — there's no title bar, and the frame must match the display.
   override func constrainFrameRect(_ frameRect: NSRect, to screen: NSScreen?) -> NSRect {
     frameRect
+  }
+
+  override func keyDown(with event: NSEvent) {
+    if event.keyCode == Self.escKeyCode {
+      onDismissRequested?()
+    } else {
+      super.keyDown(with: event)
+    }
+  }
+
+  override func rightMouseDown(with event: NSEvent) {
+    onDismissRequested?()
   }
 }
