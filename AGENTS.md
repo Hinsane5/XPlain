@@ -71,6 +71,9 @@ Read the relevant doc before working in that area:
 - `docs/testing.md` — test strategy and the definition of "done".
 - `docs/success-criteria.md` — acceptance criteria and what "great" looks like.
 - `docs/security.md` — TCC permissions, privacy posture, signing & notarization.
+- `docs/loop-guide.md` — **how to build the backlog autonomously** (the per-task
+  TDD loop, exact commands, project gotchas, stop conditions). Read this first if
+  you're running a `/loop` build session.
 
 ## Workflow — test-first (TDD)
 
