@@ -96,19 +96,19 @@ No capture yet.
     invariant.
   - **Depends on:** M1.1
 
-- [~] **M1.3 — `OverlayWindow` on the display under the cursor**  *(code + unit tests done; visual check pending — see `specs/m1-manual-checklist.md`)*
+- [x] **M1.3 — `OverlayWindow` on the display under the cursor**
   - **Do:** Borderless `NSWindow` sized to the `NSScreen` containing
     `NSEvent.mouseLocation`; opaque test color.
   - **Done when:** a hotkey shows a full-screen colored overlay on the correct display.
   - **Depends on:** M1.2
 
-- [~] **M1.4 — Correct window level + Spaces behavior**  *(code + unit tests done; visual check pending — see `specs/m1-manual-checklist.md`)*
+- [x] **M1.4 — Correct window level + Spaces behavior**
   - **Do:** `level` above `.mainMenu`; `collectionBehavior = [.canJoinAllSpaces,
     .fullScreenAuxiliary, .stationary]`.
   - **Done when:** the overlay appears over full-screen apps and on every Space.
   - **Depends on:** M1.3
 
-- [~] **M1.5 — Esc / right-click exits to Idle**  *(code + unit tests done; visual check pending — see `specs/m1-manual-checklist.md`)*
+- [x] **M1.5 — Esc / right-click exits to Idle**
   - **Do:** Overlay becomes key window; Esc and right-click both route to
     `ModeController` → Idle and tear the window down.
   - **Done when:** both inputs reliably dismiss the overlay; no window leak.
