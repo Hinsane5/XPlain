@@ -102,7 +102,7 @@ No capture yet.
   - **Done when:** a hotkey shows a full-screen colored overlay on the correct display.
   - **Depends on:** M1.2
 
-- [ ] **M1.4 — Correct window level + Spaces behavior**
+- [~] **M1.4 — Correct window level + Spaces behavior**  *(code + unit tests done; visual check pending — see `specs/m1-manual-checklist.md`)*
   - **Do:** `level` above `.mainMenu`; `collectionBehavior = [.canJoinAllSpaces,
     .fullScreenAuxiliary, .stationary]`.
   - **Done when:** the overlay appears over full-screen apps and on every Space.

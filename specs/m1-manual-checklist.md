@@ -27,8 +27,12 @@ Watch the Xcode/Console output for `XPlain: <from> → <to>` transition logs.
 > menu bar is still reachable. To dismiss for now: click the XPlain menu-bar icon
 > ▸ **Quit**. This rough edge disappears once M1.4/M1.5 land.
 
-## M1.4 — Level + Spaces  *(pending — not yet built)*
+## M1.4 — Level + Spaces  *(code + unit tests: ✅ done)*
 - [ ] Overlay appears **above** full-screen apps and on **every** Space.
+- [ ] With another app in full-screen mode, press ⌘⌃Z: the overlay still shows on
+      top of it (not hidden behind).
+- [ ] Switch Spaces (Control+←/→) while the overlay is up: it follows you to the
+      new Space instead of staying behind on the old one.
 
 ## M1.5 — Esc / right-click exit  *(pending — not yet built)*
 - [ ] **Esc** and **right-click** both dismiss the overlay (`… → idle` logged).
