@@ -89,7 +89,7 @@ No capture yet.
   - **Done when:** each shortcut logs its distinct mode-request; no `⌃1`–`⌃4` used.
   - **Depends on:** M0.6
 
-- [ ] **M1.2 — `ModeController` state machine**
+- [x] **M1.2 — `ModeController` state machine**
   - **Do:** `enum Mode { idle, zoom, draw, liveZoom, record }`; transitions enforce
     **exactly one** active mode. (See core.md "State machine".)
   - **Done when:** unit test drives Idle→Zoom→Draw→Idle and asserts the single-active
