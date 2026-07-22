@@ -164,8 +164,16 @@ Mac.
 - **M1.2** ModeController — ✅ done.
 - **M1.3** OverlayWindow — `[~]` code + unit tests done; visual check pending
   (`specs/m1-manual-checklist.md`).
-- **Next up:** M1.4 (window level + Spaces), M1.5 (Esc/right-click exit), M1.6
-  (display-targeting pure function + test — fully unit-testable, no manual part).
+- **M1.4** Level + Spaces — `[~]` code + unit tests done; visual check pending.
+- **M1.5** Esc / right-click exit — `[~]` code + unit tests done; visual check
+  pending.
+- **M1.6** Display targeting — ✅ done (fully unit-testable, no manual part).
+- **M1 is now code-complete** — every task is `[x]` or `[~]` pending only a
+  manual/visual check. Per §5 this is a STOP condition: three checklist items in
+  `specs/m1-manual-checklist.md` need a real Mac before M1's `[~]` boxes can
+  become `[x]`. 21 tests total, all green.
+- **Next up:** M2.1 (`CaptureService.snapshot(of:)`) — first real capture code,
+  needs Screen Recording permission on the machine it runs on.
 
 Keep this section honest; it's the fastest way for the next loop session to know
 where to resume.
