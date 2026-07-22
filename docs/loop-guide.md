@@ -160,18 +160,14 @@ Mac.
 ## 8. Current state (update as you go)
 
 - **M0** — ✅ done (toolchain, CI, menu-bar app).
-- **M1.1** HotkeyService — ✅ done.
-- **M1.2** ModeController — ✅ done.
-- **M1.3** OverlayWindow — `[~]` code + unit tests done; visual check pending
-  (`specs/m1-manual-checklist.md`).
-- **M1.4** Level + Spaces — `[~]` code + unit tests done; visual check pending.
-- **M1.5** Esc / right-click exit — `[~]` code + unit tests done; visual check
-  pending.
-- **M1.6** Display targeting — ✅ done (fully unit-testable, no manual part).
-- **M1 is now code-complete** — every task is `[x]` or `[~]` pending only a
-  manual/visual check. Per §5 this is a STOP condition: three checklist items in
-  `specs/m1-manual-checklist.md` need a real Mac before M1's `[~]` boxes can
-  become `[x]`. 21 tests total, all green.
+- **M1 — ✅ fully done** (M1.1–M1.6 all `[x]`). M1.3–M1.5's manual checks in
+  `specs/m1-manual-checklist.md` were verified live with the user on 2026-07-23
+  (cross-checked against the console log stream, not just eyeballed) — overlay
+  placement, level/Spaces behavior, and Esc/right-click exit (16 cleanly paired
+  transitions across a rapid ×10 cycle, no stuck windows) all confirmed. One item
+  intentionally left unchecked: multi-display placement, untested on a
+  single-display setup — revisit if this ever runs on a multi-monitor Mac.
+  21 tests total, all green.
 - **Next up:** M2.1 (`CaptureService.snapshot(of:)`) — first real capture code,
   needs Screen Recording permission on the machine it runs on.
 
