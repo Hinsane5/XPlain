@@ -83,7 +83,7 @@ all pass locally **and** green in CI.
 Goal: pressing a hotkey opens/closes a blank full-screen overlay on the right display.
 No capture yet.
 
-- [ ] **M1.1 — `HotkeyService` with default shortcuts**
+- [x] **M1.1 — `HotkeyService` with default shortcuts**
   - **Do:** Define `KeyboardShortcuts.Name`s for Zoom/Draw/LiveZoom/Record with
     defaults `⌘⌃Z / ⌘⌃D / ⌘⌃L / ⌘⌃R`; emit a mode-request on each.
   - **Done when:** each shortcut logs its distinct mode-request; no `⌃1`–`⌃4` used.

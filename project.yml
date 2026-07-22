@@ -43,6 +43,7 @@ targets:
         GENERATE_INFOPLIST_FILE: YES
     dependencies:
       - target: XPlain
+      - package: KeyboardShortcuts
 
 schemes:
   XPlain:

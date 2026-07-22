@@ -3,3 +3,9 @@ excluded:
   - build
   - DerivedData
   - Packages
+
+disabled_rules:
+  # swift-format owns comma style — it mandates trailing commas in multi-line
+  # collection literals, which SwiftLint's default trailing_comma rule forbids.
+  # Disable the SwiftLint rule so the two tools don't conflict.
+  - trailing_comma
