@@ -114,7 +114,7 @@ No capture yet.
   - **Done when:** both inputs reliably dismiss the overlay; no window leak.
   - **Depends on:** M1.3
 
-- [ ] **M1.6 — Multi-display targeting test**
+- [x] **M1.6 — Multi-display targeting test**
   - **Do:** Extract display-selection into a pure function.
   - **Done when:** unit test maps sample cursor points to the expected `NSScreen`.
   - **Depends on:** M1.3

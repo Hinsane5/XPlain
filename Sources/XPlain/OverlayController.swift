@@ -35,10 +35,13 @@ final class OverlayController {
 
 extension NSScreen {
   /// The frame of the display currently under the cursor, falling back to the
-  /// main display. M1.6 replaces the selection logic with a tested pure function.
+  /// main display. The selection itself is `DisplayTargeting.frame`, a pure
+  /// function unit-tested in isolation (M1.6); this just supplies live inputs.
   static func frameUnderCursor() -> NSRect {
-    let cursor = NSEvent.mouseLocation
-    let match = screens.first { NSMouseInRect(cursor, $0.frame, false) }
-    return (match ?? main ?? screens.first)?.frame ?? .zero
+    DisplayTargeting.frame(
+      at: NSEvent.mouseLocation,
+      in: screens.map(\.frame),
+      fallback: main?.frame
+    ) ?? .zero
   }
 }
