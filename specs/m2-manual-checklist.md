@@ -7,16 +7,14 @@ guarded tests correctly **skip** (not fail) without permission, per
 `docs/testing.md`'s CI-skip convention. Run these once permission is granted to
 confirm the real behavior.
 
-## M2.1 — `CaptureService.snapshot(of:)`  *(code + guarded test: ✅ done)*
+## M2.1 — `CaptureService.snapshot(of:)`  ✅ verified 2026-07-23
 
-1. Grant Screen Recording to the built app: System Settings ▸ Privacy & Security
-   ▸ Screen Recording ▸ add/enable the built `XPlain.app`, then relaunch it.
-2. Re-run `xcodebuild -scheme XPlain -destination 'platform=macOS' test` — the two
-   `CaptureServiceTests` should now **run and pass** instead of skipping:
-   - [ ] `testSnapshotReturnsNonEmptyImageAtDisplayPixelSize` passes (non-empty
-         image, dimensions > 0).
-   - [ ] `testSnapshotThrowsForUnknownDisplay` passes (`noMatchingDisplay` for a
-         bogus display ID).
+Permission was granted to the specific hosting app binary (unit tests run
+*hosted* inside `XPlain.app` — see `TEST_HOST` build setting — not to the
+terminal/shell invoking `xcodebuild`). Once granted to that exact path:
+- [x] `testSnapshotReturnsNonEmptyImageAtDisplayPixelSize` passes for real
+      (0.237s — an actual capture round-trip, not skipped).
+- [x] `testSnapshotThrowsForUnknownDisplay` passes for real.
 
 ## M2.2 — Permission prompt  *(code + unit tests: ✅ done — no manual row in
 docs/testing.md's matrix, ticked `[x]`)*
