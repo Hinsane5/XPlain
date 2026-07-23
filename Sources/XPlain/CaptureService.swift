@@ -27,6 +27,11 @@ enum CaptureService {
     let config = SCStreamConfiguration()
     config.width = Int(pixelSize.width)
     config.height = Int(pixelSize.height)
+    // Don't bake the pointer into the frozen frame: the live hardware cursor
+    // still floats over the overlay, so a captured cursor would render a
+    // confusing second cursor (docs/spec.md §3 — pan the frozen image under
+    // one live cursor).
+    config.showsCursor = false
 
     return try await SCScreenshotManager.captureImage(
       contentFilter: filter,

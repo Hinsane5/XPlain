@@ -80,6 +80,21 @@ final class OverlayWindowTests: XCTestCase {
     XCTAssertEqual(button?.title, PermissionPromptContent.buttonTitle)
   }
 
+  func testRightClickOnPermissionButtonStillDismisses() {
+    // Regression: NSButton's default swallows rightMouseDown, so a right-click
+    // landing on the prompt's button never reached the window — it took a second
+    // click outside the button to dismiss. The button must forward right-clicks.
+    let window = OverlayWindow(displayFrame: NSRect(x: 0, y: 0, width: 800, height: 600))
+    var dismissed = false
+    window.onDismissRequested = { dismissed = true }
+    window.showPermissionPrompt()
+
+    let button = window.contentView?.subviews.compactMap { $0 as? NSButton }.first
+    button?.rightMouseDown(with: Self.mouseEvent())
+
+    XCTAssertTrue(dismissed)
+  }
+
   func testShowImageInstallsAnImageViewWithTheGivenImage() {
     let window = OverlayWindow(displayFrame: NSRect(x: 0, y: 0, width: 800, height: 600))
     let image = Self.makeTestImage(width: 100, height: 50)

@@ -6,6 +6,11 @@ import Cocoa
 final class OverlayController {
   private var window: OverlayWindow?
 
+  /// Bumped by every mode-entry/exit so an in-flight async capture that finishes
+  /// *after* the user already moved on (pressed Esc, switched modes) is dropped
+  /// instead of popping a stale overlay onto the screen. See `showCapturedSnapshot`.
+  private var generation = 0
+
   /// Called when the on-screen overlay reports an Esc / right-click dismissal
   /// request (M1.5). Set this before calling `show`.
   var onDismissRequested: (() -> Void)?
@@ -28,6 +33,7 @@ final class OverlayController {
 
   /// Removes the overlay, if any.
   func hide() {
+    generation &+= 1
     window?.orderOut(nil)
     window = nil
   }
@@ -35,27 +41,38 @@ final class OverlayController {
   /// Shows the overlay with the Screen Recording permission prompt (M2.2)
   /// instead of a mode's real content.
   func showPermissionPrompt(onDisplayFrame frame: NSRect) {
+    generation &+= 1
     show(onDisplayFrame: frame)
     window?.showPermissionPrompt()
   }
 
-  /// Shows the overlay immediately (the M1.3 placeholder fill), then replaces
-  /// it with the real captured desktop image once the async capture completes
-  /// (M2.4). Falls back to the permission prompt if capture fails — e.g.
-  /// permission was revoked after the preflight check in `AppDelegate` — so the
-  /// user is never left looking at a stuck placeholder.
+  /// Captures the display first, *then* shows the overlay already holding the
+  /// real desktop image (M2.4). Capturing before the window appears is what
+  /// keeps our own translucent overlay out of the screenshot — showing first
+  /// would let `SCScreenshotManager` grab the overlay too, baking a ghost layer
+  /// into the "frozen" image. Falls back to the permission prompt if capture
+  /// fails (e.g. permission revoked after `AppDelegate`'s preflight).
+  ///
+  /// The `generation` guard drops the result if the user already dismissed or
+  /// switched modes during the async capture, so a late frame never pops a stale
+  /// overlay back onto the screen.
   func showCapturedSnapshot(of display: Display) {
-    show(onDisplayFrame: display.frame)
-    Task { [weak self] in
+    generation &+= 1
+    let gen = generation
+    Task { @MainActor [weak self] in
       do {
         let image = try await CaptureService.snapshot(
           of: display.displayID,
           pixelSize: display.pixelSize
         )
-        await self?.window?.showImage(image)
+        guard let self, self.generation == gen else { return }
+        self.show(onDisplayFrame: display.frame)
+        self.window?.showImage(image)
       } catch {
         NSLog("XPlain: capture failed - \(error)")
-        await self?.window?.showPermissionPrompt()
+        guard let self, self.generation == gen else { return }
+        self.show(onDisplayFrame: display.frame)
+        self.window?.showPermissionPrompt()
       }
     }
   }

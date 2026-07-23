@@ -70,7 +70,7 @@ final class OverlayWindow: NSWindow {
     )
     container.addSubview(label)
 
-    let button = NSButton(
+    let button = RightClickForwardingButton(
       title: PermissionPromptContent.buttonTitle,
       target: self,
       action: #selector(openSystemSettings)
@@ -99,5 +99,15 @@ final class OverlayWindow: NSWindow {
     imageView.image = NSImage(cgImage: image, size: frame.size)
     imageView.imageScaling = .scaleAxesIndependently
     contentView = imageView
+  }
+}
+
+/// An `NSButton` that forwards right-clicks up the responder chain instead of
+/// swallowing them (NSControl's default). Without this, right-clicking the
+/// permission prompt's button would never reach `OverlayWindow.rightMouseDown`,
+/// so it took a second right-click *outside* the button to dismiss the overlay.
+private final class RightClickForwardingButton: NSButton {
+  override func rightMouseDown(with event: NSEvent) {
+    nextResponder?.rightMouseDown(with: event)
   }
 }
