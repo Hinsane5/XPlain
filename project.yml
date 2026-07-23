@@ -11,6 +11,15 @@ settings:
   base:
     SWIFT_VERSION: "5.9"
     MACOSX_DEPLOYMENT_TARGET: "14.0"
+    # Sign local builds with Howard's free "Personal Team" (Apple ID) so the
+    # binary has a STABLE code-signing identity. macOS anchors TCC grants (e.g.
+    # Screen Recording) to this Team ID + designated requirement, so the grant
+    # survives rebuilds — unlike ad-hoc signing, whose hash changes every build
+    # and forces macOS to re-prompt every time. A Team ID is not a secret (it's
+    # embedded in every signed app). CI has no access to this cert, so
+    # .github/workflows/ci.yml overrides signing to ad-hoc there — see that file.
+    DEVELOPMENT_TEAM: "37784HMFS9"
+    CODE_SIGN_STYLE: Automatic
 
 packages:
   KeyboardShortcuts:

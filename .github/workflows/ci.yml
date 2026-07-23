@@ -26,7 +26,13 @@ jobs:
         run: swiftlint --strict
 
       - name: Format check
-        run: swift-format lint --recursive Sources
+        run: swift-format lint --recursive Sources Tests
 
+      # project.yml pins DEVELOPMENT_TEAM for local builds so Screen Recording
+      # permission persists across rebuilds (see project.yml). CI's runner has no
+      # access to that Personal Team cert, so override signing back to ad-hoc here
+      # — CI only needs to build + run tests, not hold any TCC grant.
       - name: Build & test
-        run: xcodebuild -scheme XPlain -destination 'platform=macOS' build test
+        run: |
+          xcodebuild -scheme XPlain -destination 'platform=macOS' build test \
+            CODE_SIGN_STYLE=Manual CODE_SIGN_IDENTITY="-" DEVELOPMENT_TEAM=""
