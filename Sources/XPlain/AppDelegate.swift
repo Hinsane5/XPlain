@@ -12,6 +12,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     item.button?.title = "X"
 
     let menu = NSMenu()
+    menu.addItem(makeLiveZoomFollowMenuItem())  // M5.4
+    menu.addItem(.separator())
     menu.addItem(
       NSMenuItem(
         title: "Quit",
@@ -47,6 +49,39 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
     service.start()
     hotkeys = service
+  }
+
+  /// The "LiveZoom Follow" submenu (M5.4): one item per follow mode with a
+  /// checkmark on the active one, letting the user switch cursor-centered vs.
+  /// edge-push. Selection persists via `Preferences`.
+  private func makeLiveZoomFollowMenuItem() -> NSMenuItem {
+    let parent = NSMenuItem(title: "LiveZoom Follow", action: nil, keyEquivalent: "")
+    let submenu = NSMenu()
+    let active = Preferences.liveZoomFollowMode
+    for mode in LiveZoomFollow.Mode.allCases {
+      let item = NSMenuItem(
+        title: mode.title,
+        action: #selector(selectLiveZoomFollowMode(_:)),
+        keyEquivalent: ""
+      )
+      item.target = self
+      item.representedObject = mode.rawValue
+      item.state = (mode == active) ? .on : .off
+      submenu.addItem(item)
+    }
+    parent.submenu = submenu
+    return parent
+  }
+
+  @objc private func selectLiveZoomFollowMode(_ sender: NSMenuItem) {
+    guard let raw = sender.representedObject as? String,
+      let mode = LiveZoomFollow.Mode(rawValue: raw)
+    else { return }
+    Preferences.liveZoomFollowMode = mode
+    // Re-check the sibling items so the menu reflects the new selection.
+    for item in sender.menu?.items ?? [] {
+      item.state = (item === sender) ? .on : .off
+    }
   }
 
   /// Presents the overlay content for a mode transition. Draw has two entry

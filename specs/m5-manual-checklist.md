@@ -17,8 +17,11 @@ screen, so they're verified here. CI skips the capture-bound integration tests.
 - [x] ⌘⌃L again cleanly exits LiveZoom (the hotkey is the exit, since Esc /
       right-click now pass through too).
 
-## M5.4 — Cursor-follow modes  *(pending)*
-- [ ] Cursor-centered vs. edge-push both track the cursor as specified.
+## M5.4 — Cursor-follow modes  *(code + unit tests done; live check pending)*
+- [ ] Status menu ▸ "LiveZoom Follow" shows both modes, checkmark on the active one.
+- [ ] Cursor-centered: magnified view re-centers on the pointer continuously.
+- [ ] Edge-push: view holds still while the cursor roams the center, scrolls only
+      when the cursor nears an edge.
 
 ## M5.5 — Recorder  *(pending)*
 - [ ] ⌘⌃R start→stop writes a playable .mp4 to ~/Movies/XPlain at native resolution.

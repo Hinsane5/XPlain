@@ -222,8 +222,10 @@ Goal: live magnification and screen recording. Highest technical risk — see co
   **Depends on:** M5.2
   *(click-through removes Esc / right-click as exits, so the activation hotkey now
   toggles — `ModeController.toggle` — and ⌘⌃L again exits LiveZoom)*
-- [ ] **M5.4 — Cursor-follow modes** — cursor-centered vs. edge-push (configurable).
+- [~] **M5.4 — Cursor-follow modes** — cursor-centered vs. edge-push (configurable).
   **Done when:** both follow modes track the cursor as specified. **Depends on:** M5.2
+  *(pure follow math in `LiveZoomFollow` unit-tested; persisted in `Preferences`;
+  status-menu "LiveZoom Follow" submenu switches modes. Live verification pending.)*
 - [ ] **M5.5 — `Recorder` (H.264 mp4)** — `AVAssetWriter` fed by `SCStream` buffers → mp4 in
   `~/Movies/XPlain`. **Done when:** start→stop yields a playable file at native
   resolution. **Depends on:** M5.1
