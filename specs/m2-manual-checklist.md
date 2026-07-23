@@ -65,8 +65,13 @@ below — 0 failures, verified 2026-07-23 before the incident below started).
    the shell's launchd session (`launchctl managername` reports
    `Background`) being orphaned from the *new* WindowServer session created
    by the logout, unable to bridge into it to launch/track a GUI test host.
-   Not fixable from within that shell; needs a genuinely fresh session (e.g.
-   a new Terminal.app window, or restarting whatever hosts the shell).
+6. **Confirmed the theory**: the user ran the identical `xcodebuild test`
+   command in a genuinely fresh Terminal.app window and got a clean run —
+   44 tests, 3 skipped (still permission-gated, same ad-hoc-signing issue),
+   0 failures, `** TEST SUCCEEDED **`. So the crash really was specific to
+   that one stale automation shell, not the machine, Xcode, or the code.
+   The permission-gated skip is the only piece still open, and is purely
+   the ad-hoc-signing issue in point 1.
 
 **To actually close this out:** on a machine/session without the above two
 issues (or once this one's session state is fresh again), or ideally once
