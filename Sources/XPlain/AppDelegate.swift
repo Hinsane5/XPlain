@@ -66,8 +66,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     case .draw:
       // M4.2: freeze the screen as a backdrop and draw annotations over it.
       withDisplayUnderCursor { overlay.showDrawing(of: $0) }
-    case .liveZoom, .record:
-      // 1× frozen desktop for now (M5+).
+    case .liveZoom:
+      // M5.2: continuously-updating magnified view of the live screen.
+      withDisplayUnderCursor { overlay.showLiveZoom(of: $0) }
+    case .record:
+      // 1× frozen desktop for now (M5.5).
       withDisplayUnderCursor { overlay.showCapturedSnapshot(of: $0) }
     }
   }

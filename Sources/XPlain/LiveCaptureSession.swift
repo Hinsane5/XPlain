@@ -16,14 +16,20 @@ final class LiveCaptureSession: NSObject, SCStreamOutput {
   }
 
   /// Starts streaming the given display at the requested pixel size. Frames flow
-  /// to `onFrame` until `stop()`.
-  func start(of displayID: CGDirectDisplayID, pixelSize: CGSize) async throws {
+  /// to `onFrame` until `stop()`. `excludingWindow` keeps a window (the LiveZoom
+  /// overlay) out of the capture so it doesn't feed back on itself.
+  func start(
+    of displayID: CGDirectDisplayID,
+    pixelSize: CGSize,
+    excludingWindow windowID: CGWindowID? = nil
+  ) async throws {
     let content = try await SCShareableContent.current
     guard let display = content.displays.first(where: { $0.displayID == displayID }) else {
       throw CaptureService.CaptureError.noMatchingDisplay
     }
 
-    let filter = SCContentFilter(display: display, excludingWindows: [])
+    let excluded = content.windows.filter { $0.windowID == windowID }
+    let filter = SCContentFilter(display: display, excludingWindows: excluded)
     let config = SCStreamConfiguration()
     config.width = Int(pixelSize.width)
     config.height = Int(pixelSize.height)

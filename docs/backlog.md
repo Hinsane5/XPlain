@@ -210,11 +210,13 @@ Goal: full annotation toolset, over a zoom or standalone.
 
 Goal: live magnification and screen recording. Highest technical risk — see core.md risks.
 
-- [~] **M5.1 — `CaptureService.stream(of:)`** — async `SCStream` frame feed. **Done when:**
+- [x] **M5.1 — `CaptureService.stream(of:)`** — async `SCStream` frame feed. **Done when:**
   a live frame sequence is delivered for a display. **Depends on:** M2.1
-  *(code + guarded integration test done; live frame delivery verified via M5.2)*
-- [ ] **M5.2 — `MTKView` live magnification** — render the stream magnified. **Done when:**
+  *(verified live via M5.2 — the magnified view updates continuously)*
+- [x] **M5.2 — live magnification** — render the stream magnified. **Done when:**
   live screen shows magnified and updates continuously. **Depends on:** M5.1
+  *(layer-backed `LiveZoomView`, not `MTKView` — updates continuously; Metal is a
+  future perf optimization if needed, per core.md risks)*
 - [ ] **M5.3 — Click-through overlay** — `ignoresMouseEvents = true` for LiveZoom so input
   hits the app underneath. **Done when:** you can click/type through the magnifier.
   **Depends on:** M5.2

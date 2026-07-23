@@ -15,6 +15,10 @@ final class OverlayController {
   /// request (M1.5). Set this before calling `show`.
   var onDismissRequested: (() -> Void)?
 
+  /// The live capture feed while in LiveZoom, retained so it can be stopped on
+  /// exit (M5.2). nil otherwise.
+  private var liveSession: LiveCaptureSession?
+
   /// Whether an overlay is currently on screen.
   var isShowing: Bool { window != nil }
 
@@ -36,11 +40,45 @@ final class OverlayController {
     }
   }
 
-  /// Removes the overlay, if any.
+  /// Removes the overlay, if any, and stops any live capture.
   func hide() {
     generation &+= 1
+    stopLiveSession()
     window?.orderOut(nil)
     window = nil
+  }
+
+  /// LiveZoom (M5.2): shows a click-through-later overlay with a continuously
+  /// updating magnified view of the live screen, excluding the overlay itself
+  /// from the capture so it doesn't feed back.
+  func showLiveZoom(of display: Display) {
+    generation &+= 1
+    show(onDisplayFrame: display.frame)
+    guard let window else { return }
+    let view = window.showLiveZoom()
+    view.scale = ZoomRenderer.defaultScale
+    let excludedWindow = CGWindowID(window.windowNumber)
+
+    stopLiveSession()
+    let session = LiveCaptureSession { [weak view] frame in view?.update(frame: frame) }
+    liveSession = session
+    Task {
+      do {
+        try await session.start(
+          of: display.displayID,
+          pixelSize: display.pixelSize,
+          excludingWindow: excludedWindow
+        )
+      } catch {
+        NSLog("XPlain: live capture failed - \(error)")
+      }
+    }
+  }
+
+  private func stopLiveSession() {
+    guard let session = liveSession else { return }
+    liveSession = nil
+    Task { await session.stop() }
   }
 
   /// Shows the overlay with the Screen Recording permission prompt (M2.2)

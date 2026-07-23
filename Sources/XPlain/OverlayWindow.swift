@@ -90,6 +90,17 @@ final class OverlayWindow: NSWindow {
     }
   }
 
+  /// Shows a live-magnification view (LiveZoom, M5.2) filling the overlay, fed
+  /// by an `SCStream`. Returns the view so the caller can push frames into it.
+  @discardableResult
+  func showLiveZoom() -> LiveZoomView {
+    zoomScale = 1
+    acceptsMouseMovedEvents = false
+    let view = LiveZoomView(frame: NSRect(origin: .zero, size: frame.size))
+    contentView = view
+    return view
+  }
+
   /// Draw-over-zoom (M4.9): snapshots whatever's currently shown (the magnified,
   /// panned zoom image) and hands it to the annotation canvas as the backdrop,
   /// so you annotate the *magnified* view rather than a fresh 1× capture.

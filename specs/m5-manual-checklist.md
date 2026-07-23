@@ -5,11 +5,12 @@ math (follow modes, region rect, elapsed formatting) is unit-tested; the
 capture/GPU/recorder paths need real Screen Recording permission and a live
 screen, so they're verified here. CI skips the capture-bound integration tests.
 
-## M5.1 — Live SCStream frame feed  *(code + guarded test: ✅ done)*
-- [ ] Verified indirectly via M5.2 (the live magnified view updates continuously).
+## M5.1 — Live SCStream frame feed  ✅ verified live 2026-07-23
+- [x] Verified via M5.2 (the live magnified view updates continuously).
 
-## M5.2 — Live magnification  *(pending)*
-- [ ] ⌘⌃L shows a magnified, continuously-updating view of the live screen.
+## M5.2 — Live magnification  ✅ verified live 2026-07-23
+- [x] ⌘⌃L shows a magnified view of the live screen that updates continuously
+      (menu-bar clock ticks) and follows the cursor. No self-capture feedback.
 
 ## M5.3 — Click-through  *(pending)*
 - [ ] Clicks/typing pass through the LiveZoom overlay to the app underneath.
