@@ -53,22 +53,36 @@ final class AnnotationView: NSView {
   }
 
   override func draw(_ dirtyRect: NSRect) {
-    if let backdrop {
-      NSImage(cgImage: backdrop, size: bounds.size).draw(in: bounds)
+    switch canvas.board {
+    case .screen:
+      if let backdrop {
+        NSImage(cgImage: backdrop, size: bounds.size).draw(in: bounds)
+      }
+    case .whiteboard:
+      NSColor.white.setFill()
+      bounds.fill()
+    case .blackboard:
+      NSColor.black.setFill()
+      bounds.fill()
     }
     guard let context = NSGraphicsContext.current?.cgContext else { return }
     for drawable in canvas.drawables {
-      Self.render(drawable, in: context)
+      DrawableRenderer.render(drawable, in: context)
     }
     if canvas.inProgressStroke.count > 1 {
-      Self.strokeFreehand(canvas.inProgressStroke, pen: canvas.pen, in: context)
+      DrawableRenderer.strokeFreehand(canvas.inProgressStroke, pen: canvas.pen, in: context)
     }
     if let preview = canvas.inProgressShape {
-      Self.render(preview, in: context)
+      DrawableRenderer.render(preview, in: context)
     }
     if let draft = canvas.textDraft {
       // Trailing caret while typing.
-      Self.write(draft.string + "|", at: draft.location, size: draft.size, color: draft.color)
+      DrawableRenderer.write(
+        draft.string + "|",
+        at: draft.location,
+        size: draft.size,
+        color: draft.color
+      )
     } else if textArmed {
       drawTextCaret(in: context)  // show where/how big the text will land
     } else {
@@ -159,10 +173,24 @@ final class AnnotationView: NSView {
       handleTextKey(event)
       return
     }
-    // `t` arms text placement for the next click (M4.5).
-    if !event.modifierFlags.contains(.command), event.charactersIgnoringModifiers == "t" {
-      textArmed = true
-      return
+    // `t` arms text placement for the next click (M4.5); `w`/`k` swap the board
+    // (M4.6). All plain (no ⌘) single keys.
+    if !event.modifierFlags.contains(.command) {
+      switch event.charactersIgnoringModifiers {
+      case "t":
+        textArmed = true
+        return
+      case "w":
+        canvas.toggleWhiteboard()
+        needsDisplay = true
+        return
+      case "k":
+        canvas.toggleBlackboard()
+        needsDisplay = true
+        return
+      default:
+        break
+      }
     }
     // M4.4: pen keys (r/g/b/o/y/p, h, [ ]) mutate the pen; anything else (Esc,
     // ⌘C/⌘S) forwards up the responder chain to the window.
@@ -207,106 +235,5 @@ final class AnnotationView: NSView {
       canvas.apply(event.scrollingDeltaY > 0 ? .widen : .narrow)  // M4.4
     }
     needsDisplay = true
-  }
-
-  // MARK: Rendering
-
-  private static func render(_ drawable: Drawable, in context: CGContext) {
-    switch drawable {
-    case .freehand(let points, let pen):
-      strokeFreehand(points, pen: pen, in: context)
-    case .line(let from, let to, let pen):
-      apply(pen, to: context)
-      context.saveGState()
-      context.move(to: from)
-      context.addLine(to: to)
-      context.strokePath()
-      context.restoreGState()
-    case .rect(let rect, let pen):
-      apply(pen, to: context)
-      context.saveGState()
-      context.stroke(rect)
-      context.restoreGState()
-    case .ellipse(let rect, let pen):
-      apply(pen, to: context)
-      context.saveGState()
-      context.strokeEllipse(in: rect)
-      context.restoreGState()
-    case .arrow(let from, let to, let pen):
-      strokeArrow(from: from, to: to, pen: pen, in: context)
-    case .text(let string, let point, let size, let color):
-      write(string, at: point, size: size, color: color)
-    }
-  }
-
-  private static func write(_ string: String, at point: CGPoint, size: CGFloat, color: PenColor) {
-    (string as NSString).draw(
-      at: point,
-      withAttributes: [
-        .font: NSFont.systemFont(ofSize: size),
-        .foregroundColor: color.nsColor,
-      ]
-    )
-  }
-
-  private static func strokeArrow(
-    from start: CGPoint,
-    to end: CGPoint,
-    pen: Pen,
-    in context: CGContext
-  ) {
-    context.saveGState()
-    apply(pen, to: context)
-    // Shaft.
-    context.move(to: start)
-    context.addLine(to: end)
-    // Two barbs at the tip, angled back along the shaft.
-    let angle = atan2(end.y - start.y, end.x - start.x)
-    let headLength = max(12, pen.width * 4)
-    let spread = CGFloat.pi / 7
-    for side in [angle + .pi - spread, angle + .pi + spread] {
-      context.move(to: end)
-      context.addLine(
-        to: CGPoint(x: end.x + cos(side) * headLength, y: end.y + sin(side) * headLength)
-      )
-    }
-    context.strokePath()
-    context.restoreGState()
-  }
-
-  private static func strokeFreehand(_ points: [CGPoint], pen: Pen, in context: CGContext) {
-    guard let first = points.first else { return }
-    context.saveGState()
-    apply(pen, to: context)
-    context.move(to: first)
-    for point in points.dropFirst() {
-      context.addLine(to: point)
-    }
-    context.strokePath()
-    context.restoreGState()
-  }
-
-  private static func apply(_ pen: Pen, to context: CGContext) {
-    // The highlighter draws semi-transparent and wide (spec §4).
-    let alpha: CGFloat = pen.isHighlighter ? 0.4 : 1
-    let width = pen.isHighlighter ? pen.width * 4 : pen.width
-    context.setStrokeColor(pen.color.nsColor.withAlphaComponent(alpha).cgColor)
-    context.setLineWidth(width)
-    context.setLineCap(.round)
-    context.setLineJoin(.round)
-  }
-}
-
-extension PenColor {
-  /// The on-screen color for each named pen color (spec §4).
-  var nsColor: NSColor {
-    switch self {
-    case .red: return .systemRed
-    case .green: return .systemGreen
-    case .blue: return .systemBlue
-    case .orange: return .systemOrange
-    case .yellow: return .systemYellow
-    case .pink: return .systemPink
-    }
   }
 }

@@ -39,6 +39,21 @@ final class AnnotationCanvas {
   /// Whether a text draft is open (typing in progress).
   var isEditingText: Bool { textDraft != nil }
 
+  /// The canvas backdrop (M4.6): the frozen screen, or a blank white/black
+  /// board. Toggling never touches `drawables`, so annotations survive a swap.
+  enum Board: Equatable { case screen, whiteboard, blackboard }
+  private(set) var board: Board = .screen
+
+  /// `w`: white board on, or back to the screen if already on it.
+  func toggleWhiteboard() {
+    board = board == .whiteboard ? .screen : .whiteboard
+  }
+
+  /// `k`: black board on, or back to the screen if already on it.
+  func toggleBlackboard() {
+    board = board == .blackboard ? .screen : .blackboard
+  }
+
   /// The kind of thing the current drag draws (spec §4). Chosen from the held
   /// modifiers at mouse-down (see `shape(shift:command:option:)`).
   enum Shape: Equatable {

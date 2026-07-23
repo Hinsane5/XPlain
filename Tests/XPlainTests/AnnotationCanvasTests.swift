@@ -212,4 +212,47 @@ final class AnnotationCanvasTests: XCTestCase {
     for _ in 0..<1000 { canvas.resizeText(by: -1) }
     XCTAssertGreaterThanOrEqual(canvas.textDraft?.size ?? 0, AnnotationCanvas.minTextSize)
   }
+
+  // MARK: Whiteboard / blackboard (M4.6)
+
+  func testBoardStartsOnTheScreen() {
+    XCTAssertEqual(AnnotationCanvas().board, .screen)
+  }
+
+  func testWhiteboardTogglesOnAndBackToScreen() {
+    let canvas = AnnotationCanvas()
+    canvas.toggleWhiteboard()
+    XCTAssertEqual(canvas.board, .whiteboard)
+    canvas.toggleWhiteboard()
+    XCTAssertEqual(canvas.board, .screen)
+  }
+
+  func testBlackboardTogglesOnAndBackToScreen() {
+    let canvas = AnnotationCanvas()
+    canvas.toggleBlackboard()
+    XCTAssertEqual(canvas.board, .blackboard)
+    canvas.toggleBlackboard()
+    XCTAssertEqual(canvas.board, .screen)
+  }
+
+  func testSwitchingDirectlyBetweenBoards() {
+    let canvas = AnnotationCanvas()
+    canvas.toggleWhiteboard()
+    canvas.toggleBlackboard()  // white → black (not back to screen)
+    XCTAssertEqual(canvas.board, .blackboard)
+  }
+
+  func testTogglingABoardKeepsExistingAnnotations() {
+    let canvas = AnnotationCanvas()
+    canvas.beginStroke(at: CGPoint(x: 0, y: 0))
+    canvas.appendPoint(CGPoint(x: 5, y: 5))
+    canvas.endStroke()
+    let before = canvas.drawables
+
+    canvas.toggleWhiteboard()
+    canvas.toggleBlackboard()
+    canvas.toggleBlackboard()
+
+    XCTAssertEqual(canvas.drawables, before)  // annotations survive board swaps
+  }
 }

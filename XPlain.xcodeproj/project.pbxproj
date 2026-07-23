@@ -27,6 +27,7 @@
 		81E766CD25517D06495D66D7 /* PermissionPromptContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93187BEF54DBE980B162DF78 /* PermissionPromptContentTests.swift */; };
 		8B522B048AAA644CC79C7A59 /* CaptureService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE4710EB08FD2C9B0E4BE4AF /* CaptureService.swift */; };
 		8EB5A95EFD8022479875271A /* InputRouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51F335EB9B843CC490F08C8 /* InputRouterTests.swift */; };
+		9B788D0599B00E3589DE4EE1 /* DrawableRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7883E60FCAA109BCC28572EE /* DrawableRenderer.swift */; };
 		A5D7FBD17863C5B3303D6936 /* ModeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4A20C5A9AA497E1717BE97 /* ModeController.swift */; };
 		A99B893E4E17E39F2AD40489 /* CaptureServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3211295A0EC9D89E431A3F6 /* CaptureServiceTests.swift */; };
 		B032DED43CFA197A134E7742 /* AnnotationCanvasTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = FD647D9B815192AA27574E47 /* AnnotationCanvasTests.swift */; };
@@ -70,6 +71,7 @@
 		5F05975A4FBC4D4387E7C45A /* SnapshotExporterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapshotExporterTests.swift; sourceTree = "<group>"; };
 		6044724AAE9FC763652A82C2 /* XPlainTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = XPlainTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		72B0F388BBC7FD2AC3D6FFA2 /* OverlayWindowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayWindowTests.swift; sourceTree = "<group>"; };
+		7883E60FCAA109BCC28572EE /* DrawableRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawableRenderer.swift; sourceTree = "<group>"; };
 		813E7D75A6547579579A7704 /* ModeActivationGateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeActivationGateTests.swift; sourceTree = "<group>"; };
 		8698B1906602666644D86D7C /* PermissionPromptContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionPromptContent.swift; sourceTree = "<group>"; };
 		8B4A20C5A9AA497E1717BE97 /* ModeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeController.swift; sourceTree = "<group>"; };
@@ -139,6 +141,7 @@
 				EE4710EB08FD2C9B0E4BE4AF /* CaptureService.swift */,
 				92F2D3F6D57E8BE65A9E4D82 /* DisplayTargeting.swift */,
 				E79266B2514B5AB7AAEB47AA /* Drawable.swift */,
+				7883E60FCAA109BCC28572EE /* DrawableRenderer.swift */,
 				53AE3F82BF1E64962D56F17D /* HotkeyService.swift */,
 				A47192C5703C456B51A71270 /* InputRouter.swift */,
 				0BC2ABBEE510E67FE2BE3B81 /* KeyboardShortcuts+Names.swift */,
@@ -296,6 +299,7 @@
 				8B522B048AAA644CC79C7A59 /* CaptureService.swift in Sources */,
 				D771ECB0A667E6C253E8802F /* DisplayTargeting.swift in Sources */,
 				45ADAFF482C870AA0E25B8EF /* Drawable.swift in Sources */,
+				9B788D0599B00E3589DE4EE1 /* DrawableRenderer.swift in Sources */,
 				E1D1708520AE3BDAEE40A8DE /* HotkeyService.swift in Sources */,
 				7C1EF9806C23A167351024CA /* InputRouter.swift in Sources */,
 				0F7EEB4EA53DF2F43ADFBEF6 /* KeyboardShortcuts+Names.swift in Sources */,

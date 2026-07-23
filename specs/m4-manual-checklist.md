@@ -20,8 +20,8 @@ Enter Draw mode with ⌘⌃D (freezes the screen as a backdrop).
 - [x] A centered vertical caret previews the insertion point + font size before
       placing (⌥+scroll grows it up and down).
 
-## M4.6 — Whiteboard / blackboard  *(pending)*
-- [ ] w = white backdrop, k = black; press again to restore; annotations survive.
+## M4.6 — Whiteboard / blackboard  ✅ verified live 2026-07-23
+- [x] w = white backdrop, k = black; press again to restore; annotations survive.
 
 ## M4.7 — Undo / redo  *(pending)*
 - [ ] ⌘Z undo, ⌘⇧Z redo; e / Delete clears all.

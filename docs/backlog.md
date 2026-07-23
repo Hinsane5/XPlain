@@ -190,7 +190,7 @@ Goal: full annotation toolset, over a zoom or standalone.
   **Depends on:** M4.2
 - [x] **M4.5 — Text tool** — `t` → click → type → Enter/Esc commits; `⌥+scroll` resizes
   pre-commit. **Done when:** text places, edits, and commits correctly. **Depends on:** M4.2
-- [ ] **M4.6 — Whiteboard / blackboard** — `w` / `k` swap the backdrop; press again to
+- [x] **M4.6 — Whiteboard / blackboard** — `w` / `k` swap the backdrop; press again to
   restore. **Done when:** backdrop toggles without losing annotations. **Depends on:** M4.2
 - [ ] **M4.7 — Undo / redo** — `⌘Z` / `⌘⇧Z`; `e` or Delete clears all. **Done when:**
   undo/redo is exact across every `Drawable` type (unit-tested). **Depends on:** M4.1
