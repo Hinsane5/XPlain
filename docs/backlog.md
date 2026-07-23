@@ -143,7 +143,7 @@ Goal: overlays show a pixel-accurate frozen snapshot; missing permission is hand
   - **Done when:** unit test verifies flip for a few points/rects on multiple displays.
   - **Depends on:** M2.1
 
-- [~] **M2.4 — Render the snapshot into the overlay**  *(code + unit tests done; live "indistinguishable from desktop" check blocked on this machine — see `specs/m2-manual-checklist.md`)*
+- [x] **M2.4 — Render the snapshot into the overlay**  *(verified live 2026-07-23 once stable code signing made the Screen Recording grant persist — see `specs/m2-manual-checklist.md`)*
   - **Do:** Replace M1.3's test color with the captured `CGImage` at 1×.
   - **Done when:** the overlay is visually indistinguishable from the frozen desktop.
   - **Depends on:** M2.1, M1.4

@@ -24,20 +24,31 @@ docs/testing.md's matrix, ticked `[x]`)*
       System Settings directly to the Screen Recording pane, exactly as
       designed. See M2.4 below for how this got exercised.
 
-## M2.4 — Render the snapshot into the overlay  *(code + unit tests: ✅ done;
-live visual check: ⚠️ blocked on this machine — not the code's fault, see below)*
+## M2.4 — Render the snapshot into the overlay  ✅ verified live 2026-07-23
 
-**What's done:** `CaptureService.snapshot` now takes an explicit `pixelSize`
-(fixes a real bug caught before it shipped — requesting a display's *point*
-size instead of its native pixel size would have captured at half resolution
-on this Retina display, visibly blurry once rendered). `Display` carries
-`backingScaleFactor` so `OverlayController.showCapturedSnapshot` always
-requests the true native pixel size. `OverlayWindow.showImage` installs the
-result as an `NSImageView` sized to fill the window exactly (1×, no scaling).
-All unit-testable behavior is covered and green (44 tests, 3 skipped — see
-below — 0 failures, verified 2026-07-23 before the incident below started).
+**Resolved.** The blocker below was ad-hoc code signing not persisting the
+Screen Recording grant across rebuilds. Fixed by signing local builds with a
+stable Apple Development identity (Personal Team `37784HMFS9` — see
+`project.yml` and the "Sign local builds with a stable Apple Development
+identity" commit). With that in place:
+- [x] ⌘⌃Z captures the real display and renders it into the overlay (permission
+      now persists across rebuilds — granted once, no re-prompt).
+- [x] A **red-dot cursor** marks the active overlay (M2.4's frozen 1× snapshot
+      is otherwise pixel-identical to the live desktop — the visible 2× zoom is
+      M3). ZoomIt-style "you're in" cue.
+- [x] Confirmed no blue self-capture ghost and a single cursor (the
+      capture-before-show + `showsCursor = false` fixes — see the "Fix overlay
+      self-capture, double cursor, and two-click dismiss" commit).
 
-**What's blocked, and why it's not a code problem:**
+`CaptureService.snapshot` takes an explicit `pixelSize` (fixes a real bug caught
+before it shipped — requesting a display's *point* size instead of its native
+pixel size would have captured at half resolution on this Retina display).
+`Display` carries `backingScaleFactor` so the true native pixel size is
+requested.
+
+---
+
+**Historical: what was blocked before the signing fix (kept as a record):**
 
 1. Screen Recording permission was granted to the exact `TEST_HOST` binary
    (`~/Library/Developer/Xcode/DerivedData/XPlain-.../Build/Products/Debug/
