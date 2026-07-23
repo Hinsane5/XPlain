@@ -19,5 +19,6 @@ Recording permission (now persists via stable signing — see M2 checklist).
 ## M3.4 — Animated zoom-in  ✅ verified live 2026-07-23
 - [x] Entry animates smoothly (not a hard jump); can be disabled by a flag.
 
-## M3.5 — Copy / Save  *(pending)*
-- [ ] ⌘C copies the visible region; ⌘S writes a PNG to ~/Pictures/XPlain.
+## M3.5 — Copy / Save  ✅ verified live 2026-07-23
+- [x] ⌘C copies the visible region; ⌘S writes a PNG to ~/Pictures/XPlain
+      (confirmed: valid 1920×1080 PNGs, timestamped filenames).

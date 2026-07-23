@@ -64,6 +64,17 @@ final class OverlayWindow: NSWindow {
   }
 
   override func keyDown(with event: NSEvent) {
+    if event.modifierFlags.contains(.command) {
+      switch event.charactersIgnoringModifiers {
+      case "c":
+        copyVisibleRegion()
+        return
+      case "s":
+        saveVisibleRegion()
+        return
+      default: break
+      }
+    }
     switch event.keyCode {
     case Self.escKeyCode:
       onDismissRequested?()
@@ -73,6 +84,37 @@ final class OverlayWindow: NSWindow {
       zoomBy(steps: -1)
     default:
       super.keyDown(with: event)
+    }
+  }
+
+  /// The currently visible overlay content (magnified + panned) as an image —
+  /// the "visible region" ⌘C / ⌘S export (M3.5).
+  func visibleRegionImage() -> NSImage? {
+    guard let contentView,
+      let rep = contentView.bitmapImageRepForCachingDisplay(in: contentView.bounds)
+    else { return nil }
+    contentView.cacheDisplay(in: contentView.bounds, to: rep)
+    let image = NSImage(size: contentView.bounds.size)
+    image.addRepresentation(rep)
+    return image
+  }
+
+  private func copyVisibleRegion() {
+    guard let image = visibleRegionImage() else { return }
+    SnapshotExporter.copy(image, to: .general)
+  }
+
+  private func saveVisibleRegion() {
+    guard let image = visibleRegionImage() else { return }
+    do {
+      let url = try SnapshotExporter.savePNG(
+        image,
+        to: SnapshotExporter.defaultSaveDirectory,
+        filename: SnapshotExporter.timestampedFilename()
+      )
+      NSLog("XPlain: saved \(url.path)")
+    } catch {
+      NSLog("XPlain: save failed - \(error)")
     }
   }
 
