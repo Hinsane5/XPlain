@@ -178,7 +178,7 @@ Goal: the core feature — freeze, magnify, pan.
 
 Goal: full annotation toolset, over a zoom or standalone.
 
-- [ ] **M4.1 — `Drawable` model + `Pen`** — value types per core.md "Data model".
+- [x] **M4.1 — `Drawable` model + `Pen`** — value types per core.md "Data model".
   **Done when:** each case constructs and round-trips in a test. **Depends on:** M2.4
 - [ ] **M4.2 — Freehand drawing** — left-drag paints with the current pen. **Done when:**
   a dragged stroke renders live. **Depends on:** M4.1

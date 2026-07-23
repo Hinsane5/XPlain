@@ -9,3 +9,13 @@ disabled_rules:
   # collection literals, which SwiftLint's default trailing_comma rule forbids.
   # Disable the SwiftLint rule so the two tools don't conflict.
   - trailing_comma
+
+identifier_name:
+  # Short names that read naturally as geometry/label vocabulary — `to`/`at` are
+  # Drawable's argument labels (line(from:to:), text(_:at:)); x/y are coordinates.
+  excluded:
+    - to
+    - at
+    - x
+    - y
+    - id
