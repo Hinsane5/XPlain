@@ -176,30 +176,35 @@ Mac.
   *and* confirmed live: correctly showed the prompt + deep-link when a rebuild
   reset the grant, never a blank screen.
 - **M2.3** Coordinate Y-flip — ✅ done (fully unit-testable, no manual row).
-- **M2.4** Render snapshot into overlay — `[~]` code + unit tests done (44
-  tests, 3 skipped, 0 failures, verified 2026-07-23 before the incident below).
-  Along the way, caught and fixed a real bug pre-ship: capturing at a
-  display's *point* size instead of point-size × `backingScaleFactor` would
-  have silently produced a half-resolution, visibly blurry capture on this
-  Retina machine — `CaptureService.snapshot` now takes an explicit
-  `pixelSize`. Live "indistinguishable from desktop" check is **blocked on
-  this machine**, not by the code: ad-hoc code signing means Screen Recording
-  permission doesn't survive a rebuild here, and — after a permission-toggle
-  retry and a full logout/login *also* didn't fix it — the shell driving this
-  work is now in an orphaned `Background` launchd session that crashes
-  `xcodebuild test`'s GUI-test-host launcher (`IDELaunchServicesLauncher`)
-  entirely; `swiftlint`/`swift-format`/plain `build` still work fine, so this
-  is a session artifact, not a regression. Full writeup in
-  `specs/m2-manual-checklist.md`. A stable (non-ad-hoc) code-signing identity
-  would very likely fix the permission side of this for good, and is needed
-  anyway by M6.7 — worth doing before pushing on this further.
-- **Next up:** either get a fresh session to confirm M2.4 visually (a new
-  Terminal.app window, not this one) and set up stable code signing, or move
-  on to M3.1 (`ZoomRenderer`) — its `Depends on: M2.4` is satisfied by M2.4's
-  `[~]` per §2's rule (code done; only the live check is pending), same as
-  M1.4–M1.6 proceeding on M1.3's `[~]` earlier.
-  44 tests total (3 skipped), CI green on every push through M2.3 (M2.4 not
-  yet pushed as of this writing).
+- **M2.4** Render snapshot into overlay — ✅ done, verified live 2026-07-23.
+  ⌘⌃Z captures the real display and renders it into the overlay, permission
+  persists across rebuilds, red-dot cursor marks the active overlay. Caught +
+  fixed several bugs along the way (see below).
+- **M2 is complete.** All of M0–M2 done.
+
+**Signing (important — read before building locally):** local builds are now
+signed with a stable Apple Development identity (Personal Team `37784HMFS9`,
+set in `project.yml`), NOT ad-hoc. This is what makes the Screen Recording
+grant persist across rebuilds — ad-hoc signing changes the binary hash every
+build and forces macOS to re-prompt. CI overrides signing back to ad-hoc (it
+has no cert). First build on a new machine needs: Apple ID signed into Xcode,
+the Apple Development cert created (Xcode ▸ Settings ▸ Accounts ▸ Manage
+Certificates), and "Always Allow" clicked on the first codesign keychain
+prompt. See `specs/m2-manual-checklist.md` for the full saga.
+
+**Bugs fixed while dogfooding M2.4 (all committed):** capturing at point-size
+instead of native pixel size (half-res on Retina) → explicit `pixelSize`;
+self-capture ghost (overlay shown before capture) → capture-before-show +
+generation guard; double cursor → `showsCursor = false`; two right-clicks to
+dismiss (NSButton swallows right-click) → `RightClickForwardingButton`.
+
+- **Session-shell gotcha (still true):** `xcodebuild test` crashes in this
+  automation shell (orphaned `Background` launchd session, `IDELaunchServices`
+  launcher). Run the test suite in a **fresh Terminal.app window** or rely on
+  CI — `swiftlint`/`swift-format`/plain `build` work fine here.
+- **Next up:** M3.1 (`ZoomRenderer`) — the actual 2× magnification. This is
+  what makes the frozen overlay visibly do something (the red dot is just the
+  interim "you're in" cue). 45 tests total (3 skipped), CI green through M2.4.
 
 Keep this section honest; it's the fastest way for the next loop session to know
 where to resume.
