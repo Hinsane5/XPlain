@@ -12,4 +12,23 @@ enum DisplayTargeting {
   static func frame(at point: NSPoint, in screens: [NSRect], fallback: NSRect?) -> NSRect? {
     screens.first { $0.contains(point) } ?? fallback ?? screens.first
   }
+
+  /// Same selection logic as `frame(at:in:fallback:)`, but carrying the extra
+  /// identity `CaptureService.snapshot` needs (M2.4): which `CGDirectDisplayID`
+  /// to capture, and the `backingScaleFactor` to compute its native pixel size.
+  static func display(at point: NSPoint, in list: [Display], fallback: Display?) -> Display? {
+    list.first { $0.frame.contains(point) } ?? fallback ?? list.first
+  }
+}
+
+/// A display's frame plus the identity needed to capture it (M2.4).
+struct Display: Equatable {
+  let frame: NSRect
+  let displayID: CGDirectDisplayID
+  let backingScaleFactor: CGFloat
+
+  /// The display's true native pixel size — `frame` is in points.
+  var pixelSize: CGSize {
+    CGSize(width: frame.width * backingScaleFactor, height: frame.height * backingScaleFactor)
+  }
 }

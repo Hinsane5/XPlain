@@ -89,4 +89,15 @@ final class OverlayWindow: NSWindow {
   @objc private func openSystemSettings() {
     NSWorkspace.shared.open(PermissionPromptContent.systemSettingsURL)
   }
+
+  /// Replaces the M1.3 placeholder color fill with the real captured desktop
+  /// image (M2.4), rendered at 1× — the image view's frame matches the
+  /// window's own size exactly, no scaling, so a pixel-accurate (native
+  /// resolution) capture looks identical to the live desktop it replaced.
+  func showImage(_ image: CGImage) {
+    let imageView = NSImageView(frame: NSRect(origin: .zero, size: frame.size))
+    imageView.image = NSImage(cgImage: image, size: frame.size)
+    imageView.imageScaling = .scaleAxesIndependently
+    contentView = imageView
+  }
 }

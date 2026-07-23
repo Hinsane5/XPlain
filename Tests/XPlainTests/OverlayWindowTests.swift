@@ -80,6 +80,41 @@ final class OverlayWindowTests: XCTestCase {
     XCTAssertEqual(button?.title, PermissionPromptContent.buttonTitle)
   }
 
+  func testShowImageInstallsAnImageViewWithTheGivenImage() {
+    let window = OverlayWindow(displayFrame: NSRect(x: 0, y: 0, width: 800, height: 600))
+    let image = Self.makeTestImage(width: 100, height: 50)
+
+    window.showImage(image)
+
+    let imageView = window.contentView as? NSImageView
+    XCTAssertNotNil(imageView)
+    // The image's logical size matches the window frame exactly (1x fill, no
+    // scaling) regardless of the source CGImage's own pixel dimensions.
+    XCTAssertEqual(imageView?.image?.size, window.frame.size)
+
+    var proposedRect = NSRect(origin: .zero, size: imageView?.image?.size ?? .zero)
+    let resolved = imageView?.image?.cgImage(
+      forProposedRect: &proposedRect,
+      context: nil,
+      hints: nil
+    )
+    XCTAssertEqual(resolved?.width, 100)
+    XCTAssertEqual(resolved?.height, 50)
+  }
+
+  private static func makeTestImage(width: Int, height: Int) -> CGImage {
+    let context = CGContext(
+      data: nil,
+      width: width,
+      height: height,
+      bitsPerComponent: 8,
+      bytesPerRow: 0,
+      space: CGColorSpaceCreateDeviceRGB(),
+      bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue
+    )!
+    return context.makeImage()!
+  }
+
   private static func keyEvent(keyCode: UInt16) -> NSEvent {
     NSEvent.keyEvent(
       with: .keyDown,

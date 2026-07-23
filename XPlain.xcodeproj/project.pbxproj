@@ -12,6 +12,7 @@
 		1B039DF84F33E01994A6B778 /* Mode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A52A940C0E0BD00703CB03D /* Mode.swift */; };
 		208C4A0293D43EF4ADF48951 /* OverlayController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145FEFBC3C7A6A6BD746201B /* OverlayController.swift */; };
 		244993B4B30F002EC555EE17 /* OverlayWindowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72B0F388BBC7FD2AC3D6FFA2 /* OverlayWindowTests.swift */; };
+		38C7E70A0289D00BFAB9D1E7 /* DisplayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3A83500C45B80164C5F8E7 /* DisplayTests.swift */; };
 		5299E28D89D008D00AFF8AB4 /* ModeActivationGate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD484AD67A8DE0FFAB5BE70 /* ModeActivationGate.swift */; };
 		54A2314C646EDD079DDC583B /* DisplayTargetingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FC22988150A79781CCE30D /* DisplayTargetingTests.swift */; };
 		6F31F42976F6C05F368E76A3 /* HotkeyServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ACB92481DB5B32344B15C0C /* HotkeyServiceTests.swift */; };
@@ -62,6 +63,7 @@
 		C1F3371A77584726FDC954F4 /* ModeControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeControllerTests.swift; sourceTree = "<group>"; };
 		D3211295A0EC9D89E431A3F6 /* CaptureServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureServiceTests.swift; sourceTree = "<group>"; };
 		D8F7C74C29B70B72DDB8DE90 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		DC3A83500C45B80164C5F8E7 /* DisplayTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayTests.swift; sourceTree = "<group>"; };
 		DD2B5DDBAFC698E5957E1E37 /* CaptureServiceYFlipTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureServiceYFlipTests.swift; sourceTree = "<group>"; };
 		E5FC22988150A79781CCE30D /* DisplayTargetingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayTargetingTests.swift; sourceTree = "<group>"; };
 		ECD484AD67A8DE0FFAB5BE70 /* ModeActivationGate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeActivationGate.swift; sourceTree = "<group>"; };
@@ -132,6 +134,7 @@
 				D3211295A0EC9D89E431A3F6 /* CaptureServiceTests.swift */,
 				DD2B5DDBAFC698E5957E1E37 /* CaptureServiceYFlipTests.swift */,
 				E5FC22988150A79781CCE30D /* DisplayTargetingTests.swift */,
+				DC3A83500C45B80164C5F8E7 /* DisplayTests.swift */,
 				5ACB92481DB5B32344B15C0C /* HotkeyServiceTests.swift */,
 				813E7D75A6547579579A7704 /* ModeActivationGateTests.swift */,
 				C1F3371A77584726FDC954F4 /* ModeControllerTests.swift */,
@@ -230,6 +233,7 @@
 				A99B893E4E17E39F2AD40489 /* CaptureServiceTests.swift in Sources */,
 				F75C2E131A1217BE3FB1C836 /* CaptureServiceYFlipTests.swift in Sources */,
 				54A2314C646EDD079DDC583B /* DisplayTargetingTests.swift in Sources */,
+				38C7E70A0289D00BFAB9D1E7 /* DisplayTests.swift in Sources */,
 				6F31F42976F6C05F368E76A3 /* HotkeyServiceTests.swift in Sources */,
 				FD52B995BBE95AD7B6035C6B /* ModeActivationGateTests.swift in Sources */,
 				B4A231B13F95C8BE9179E88D /* ModeControllerTests.swift in Sources */,

@@ -26,6 +26,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     // M1.3: hotkeys drive the mode controller, which shows/hides the overlay on
     // the display under the cursor. Entering idle tears the overlay down.
     // M2.2: a permission-prompt "mode" shows different overlay content.
+    // M2.4: real modes show the actual captured desktop, not a color fill.
     modeController.onChange = { [overlay] from, next in
       NSLog("XPlain: \(from) → \(next)")
       switch next {
@@ -34,7 +35,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
       case .permissionPrompt:
         overlay.showPermissionPrompt(onDisplayFrame: NSScreen.frameUnderCursor())
       default:
-        overlay.show(onDisplayFrame: NSScreen.frameUnderCursor())
+        if let display = NSScreen.displayUnderCursor() {
+          overlay.showCapturedSnapshot(of: display)
+        } else {
+          overlay.show(onDisplayFrame: NSScreen.frameUnderCursor())
+        }
       }
     }
     // M1.5: Esc / right-click on the overlay routes back to Idle.

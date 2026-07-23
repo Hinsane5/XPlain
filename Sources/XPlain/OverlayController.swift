@@ -38,6 +38,27 @@ final class OverlayController {
     show(onDisplayFrame: frame)
     window?.showPermissionPrompt()
   }
+
+  /// Shows the overlay immediately (the M1.3 placeholder fill), then replaces
+  /// it with the real captured desktop image once the async capture completes
+  /// (M2.4). Falls back to the permission prompt if capture fails — e.g.
+  /// permission was revoked after the preflight check in `AppDelegate` — so the
+  /// user is never left looking at a stuck placeholder.
+  func showCapturedSnapshot(of display: Display) {
+    show(onDisplayFrame: display.frame)
+    Task { [weak self] in
+      do {
+        let image = try await CaptureService.snapshot(
+          of: display.displayID,
+          pixelSize: display.pixelSize
+        )
+        self?.window?.showImage(image)
+      } catch {
+        NSLog("XPlain: capture failed - \(error)")
+        self?.window?.showPermissionPrompt()
+      }
+    }
+  }
 }
 
 extension NSScreen {
@@ -50,5 +71,26 @@ extension NSScreen {
       in: screens.map(\.frame),
       fallback: main?.frame
     ) ?? .zero
+  }
+
+  /// The `CGDirectDisplayID` ScreenCaptureKit needs to capture this screen.
+  var displayID: CGDirectDisplayID? {
+    (deviceDescription[NSDeviceDescriptionKey("NSScreenNumber")] as? NSNumber)?.uint32Value
+  }
+
+  /// The display currently under the cursor, as a full `Display` (frame +
+  /// capture identity), falling back to the main display (M2.4). The
+  /// selection itself is `DisplayTargeting.display`, unit-tested in isolation;
+  /// this just supplies live inputs.
+  static func displayUnderCursor() -> Display? {
+    DisplayTargeting.display(
+      at: NSEvent.mouseLocation,
+      in: screens.compactMap(\.asDisplay),
+      fallback: main?.asDisplay
+    )
+  }
+
+  private var asDisplay: Display? {
+    displayID.map { Display(frame: frame, displayID: $0, backingScaleFactor: backingScaleFactor) }
   }
 }

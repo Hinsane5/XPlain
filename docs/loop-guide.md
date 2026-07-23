@@ -168,21 +168,38 @@ Mac.
   intentionally left unchecked: multi-display placement, untested on a
   single-display setup — revisit if this ever runs on a multi-monitor Mac.
   21 tests total, all green.
-- **M2.1** `CaptureService.snapshot(of:)` — `[~]` code + guarded integration
-  test done; real-capture verification pending Screen Recording permission
-  (`specs/m2-manual-checklist.md`). Tests skip cleanly without it.
+- **M2.1** `CaptureService.snapshot(of:)` — ✅ done, verified for real (permission
+  was granted to the exact `TEST_HOST` app binary — tests run *hosted* inside
+  it, not the invoking shell — see `specs/m2-manual-checklist.md`).
 - **M2.2** Permission preflight + `PermissionPrompt` state — ✅ done (fully
-  unit-testable per the matrix, no manual row — 8 real, non-skipped tests).
+  unit-testable per the matrix, no manual row — 8 real, non-skipped tests) —
+  *and* confirmed live: correctly showed the prompt + deep-link when a rebuild
+  reset the grant, never a blank screen.
 - **M2.3** Coordinate Y-flip — ✅ done (fully unit-testable, no manual row).
-- **M2.4** Render snapshot into overlay — not started. STOP condition (per §5):
-  pure manual/visual per the matrix (no unit-test row at all) *and* needs real
-  Screen Recording permission, same as M2.1 — nothing here can be meaningfully
-  written or verified test-first without both. Decided 2026-07-23: stop rather
-  than write unverifiable async capture-rendering code.
-- **Next up:** grant Screen Recording permission to a built `XPlain.app`, then
-  resume with M2.4 (and finish M2.1's real-capture verification in
-  `specs/m2-manual-checklist.md` at the same time — same permission gate).
-  37 tests total (2 skipped), all green, CI green on every push through M2.3.
+- **M2.4** Render snapshot into overlay — `[~]` code + unit tests done (44
+  tests, 3 skipped, 0 failures, verified 2026-07-23 before the incident below).
+  Along the way, caught and fixed a real bug pre-ship: capturing at a
+  display's *point* size instead of point-size × `backingScaleFactor` would
+  have silently produced a half-resolution, visibly blurry capture on this
+  Retina machine — `CaptureService.snapshot` now takes an explicit
+  `pixelSize`. Live "indistinguishable from desktop" check is **blocked on
+  this machine**, not by the code: ad-hoc code signing means Screen Recording
+  permission doesn't survive a rebuild here, and — after a permission-toggle
+  retry and a full logout/login *also* didn't fix it — the shell driving this
+  work is now in an orphaned `Background` launchd session that crashes
+  `xcodebuild test`'s GUI-test-host launcher (`IDELaunchServicesLauncher`)
+  entirely; `swiftlint`/`swift-format`/plain `build` still work fine, so this
+  is a session artifact, not a regression. Full writeup in
+  `specs/m2-manual-checklist.md`. A stable (non-ad-hoc) code-signing identity
+  would very likely fix the permission side of this for good, and is needed
+  anyway by M6.7 — worth doing before pushing on this further.
+- **Next up:** either get a fresh session to confirm M2.4 visually (a new
+  Terminal.app window, not this one) and set up stable code signing, or move
+  on to M3.1 (`ZoomRenderer`) — its `Depends on: M2.4` is satisfied by M2.4's
+  `[~]` per §2's rule (code done; only the live check is pending), same as
+  M1.4–M1.6 proceeding on M1.3's `[~]` earlier.
+  44 tests total (3 skipped), CI green on every push through M2.3 (M2.4 not
+  yet pushed as of this writing).
 
 Keep this section honest; it's the fastest way for the next loop session to know
 where to resume.

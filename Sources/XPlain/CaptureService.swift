@@ -11,9 +11,13 @@ enum CaptureService {
     case noMatchingDisplay
   }
 
-  /// Captures a still image of the given display's current contents, at that
-  /// display's native pixel size.
-  static func snapshot(of displayID: CGDirectDisplayID) async throws -> CGImage {
+  /// Captures a still image of the given display's current contents, at the
+  /// requested pixel size. `SCStreamConfiguration.width/height` set the exact
+  /// output pixel dimensions — `SCDisplay.width/height` are in *points*, so
+  /// callers must pass the true native pixel size (point size ×
+  /// `NSScreen.backingScaleFactor`) to avoid a sub-native-resolution capture on
+  /// Retina displays (see `DisplayInfo` / `OverlayController.showCapturedSnapshot`).
+  static func snapshot(of displayID: CGDirectDisplayID, pixelSize: CGSize) async throws -> CGImage {
     let content = try await SCShareableContent.current
     guard let display = content.displays.first(where: { $0.displayID == displayID }) else {
       throw CaptureError.noMatchingDisplay
@@ -21,8 +25,8 @@ enum CaptureService {
 
     let filter = SCContentFilter(display: display, excludingWindows: [])
     let config = SCStreamConfiguration()
-    config.width = display.width
-    config.height = display.height
+    config.width = Int(pixelSize.width)
+    config.height = Int(pixelSize.height)
 
     return try await SCScreenshotManager.captureImage(
       contentFilter: filter,
