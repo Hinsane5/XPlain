@@ -189,7 +189,16 @@ Mac.
   (transform, clamp, step, animation duration); `OverlayWindow` applies it and
   handles pan/zoom/copy/save; `SnapshotExporter` handles the export. Red-dot
   cursor shows immediately (the overlay activates the app so it's key on entry).
-- **M0–M3 all done.** 69 tests, CI green.
+- **M4 — ✅ fully done** (M4.1–M4.10), verified live 2026-07-23. Draw / Annotate:
+  Codable `Drawable`/`Pen` model (M4.1), freehand (M4.2), shape modifiers with
+  rubber-band preview (M4.3), color/highlighter/width keys (M4.4), text tool with
+  a sizing caret (M4.5), whiteboard/blackboard (M4.6), undo/redo incl. undoable
+  clear (M4.7), ⌘C/⌘S annotated export (M4.8), standalone + draw-over-zoom entry
+  (M4.9), and the full key table consolidated in `InputRouter` (M4.10). Split
+  across `AnnotationCanvas` (pure model), `AnnotationView` (input/render),
+  `DrawableRenderer` (drawing), `InputRouter` (key→command). Plus a UX extra: a
+  pen-colored dot cursor sized to the brush (system cursor hidden, dot drawn by us).
+- **M0–M4 all done.** 118 tests, CI green.
 
 **Signing (important — read before building locally):** local builds are now
 signed with a stable Apple Development identity (Personal Team `37784HMFS9`,
@@ -212,8 +221,11 @@ dismiss (NSButton swallows right-click) → `RightClickForwardingButton`.
   launcher). Use `xcodebuild build-for-testing` to compile-check tests (confirms
   RED/GREEN compiles), and rely on **CI** or a **fresh Terminal.app window** to
   actually run them. `swiftlint`/`swift-format`/plain `build` work fine here.
-- **Next up:** M4.1 (`Drawable` model + `Pen`) — start of Draw mode (spec §4).
-  69 tests, CI green through M3.
+- **Next up:** M5 — LiveZoom + Record (spec §5–§6). Highest technical risk:
+  live `SCStream` frame feed (M5.1), Metal/live magnification (M5.2), AVAssetWriter
+  recording (M5.5). Many M5 tasks are integration/manual — need real capture, a
+  GPU, and live verification (and CI skips the capture-bound ones). 118 tests,
+  CI green through M4.
 
 Keep this section honest; it's the fastest way for the next loop session to know
 where to resume.
