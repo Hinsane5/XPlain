@@ -1,4 +1,5 @@
 import Cocoa
+import CoreGraphics
 
 final class AppDelegate: NSObject, NSApplicationDelegate {
   private var statusItem: NSStatusItem?
@@ -24,11 +25,15 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     // M1.3: hotkeys drive the mode controller, which shows/hides the overlay on
     // the display under the cursor. Entering idle tears the overlay down.
+    // M2.2: a permission-prompt "mode" shows different overlay content.
     modeController.onChange = { [overlay] from, next in
       NSLog("XPlain: \(from) → \(next)")
-      if next == .idle {
+      switch next {
+      case .idle:
         overlay.hide()
-      } else {
+      case .permissionPrompt:
+        overlay.showPermissionPrompt(onDisplayFrame: NSScreen.frameUnderCursor())
+      default:
         overlay.show(onDisplayFrame: NSScreen.frameUnderCursor())
       }
     }
@@ -36,8 +41,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     overlay.onDismissRequested = { [modeController] in
       modeController.exit()
     }
+    // M2.2: gate activation on Screen Recording permission — denied requests
+    // resolve to .permissionPrompt instead of a blank/failed capture.
     let service = HotkeyService { [modeController] mode in
-      modeController.request(mode)
+      let resolved = ModeActivationGate.resolve(
+        requested: mode,
+        permissionGranted: CGPreflightScreenCaptureAccess()
+      )
+      modeController.request(resolved)
     }
     service.start()
     hotkeys = service

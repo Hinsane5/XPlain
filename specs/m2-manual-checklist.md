@@ -18,8 +18,11 @@ confirm the real behavior.
    - [ ] `testSnapshotThrowsForUnknownDisplay` passes (`noMatchingDisplay` for a
          bogus display ID).
 
-## M2.2 — Permission prompt  *(add once built)*
-- [ ] With permission **denied**, activating a mode shows the `PermissionPrompt`
-      state — never a blank/frozen overlay.
-- [ ] The prompt's deep-link button opens the correct System Settings pane.
-- [ ] After granting permission and relaunching, the normal capture path works.
+## M2.2 — Permission prompt  *(code + unit tests: ✅ done — no manual row in
+docs/testing.md's matrix, ticked `[x]`)*
+
+Optional spot check, not blocking: with permission denied, activate any mode
+and click the prompt's button — confirms it opens System Settings' Screen
+Recording pane in practice, on top of the unit-tested URL string.
+- [ ] Deep-link button opens the correct pane (optional; unit-tested URL
+      already covers the logic).

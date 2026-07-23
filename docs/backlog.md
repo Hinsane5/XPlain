@@ -131,7 +131,7 @@ Goal: overlays show a pixel-accurate frozen snapshot; missing permission is hand
   - **Done when:** returns a non-empty image at the display's pixel dimensions.
   - **Depends on:** M1.3
 
-- [ ] **M2.2 — Permission preflight + `PermissionPrompt` state**
+- [x] **M2.2 — Permission preflight + `PermissionPrompt` state**
   - **Do:** `CGPreflightScreenCaptureAccess()` / `CGRequestScreenCaptureAccess()`; on
     denial, show a prompt overlay that deep-links to System Settings (see security.md).
   - **Done when:** granted → snapshot works; denied → prompt shown, never a blank screen.

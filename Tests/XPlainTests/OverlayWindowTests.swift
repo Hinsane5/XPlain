@@ -68,6 +68,18 @@ final class OverlayWindowTests: XCTestCase {
     XCTAssertTrue(dismissed)
   }
 
+  func testShowPermissionPromptInstallsMessageAndDeepLinkButton() {
+    let window = OverlayWindow(displayFrame: NSRect(x: 0, y: 0, width: 800, height: 600))
+
+    window.showPermissionPrompt()
+
+    let label = window.contentView?.subviews.compactMap { $0 as? NSTextField }.first
+    XCTAssertEqual(label?.stringValue, PermissionPromptContent.message)
+
+    let button = window.contentView?.subviews.compactMap { $0 as? NSButton }.first
+    XCTAssertEqual(button?.title, PermissionPromptContent.buttonTitle)
+  }
+
   private static func keyEvent(keyCode: UInt16) -> NSEvent {
     NSEvent.keyEvent(
       with: .keyDown,

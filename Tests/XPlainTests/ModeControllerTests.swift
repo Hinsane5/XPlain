@@ -42,6 +42,24 @@ final class ModeControllerTests: XCTestCase {
     XCTAssertEqual(controller.current, .liveZoom)
   }
 
+  func testPermissionPromptIsReachableFromIdleAndExitsToIdle() {
+    let controller = ModeController()
+    XCTAssertTrue(controller.request(.permissionPrompt))
+    XCTAssertEqual(controller.current, .permissionPrompt)
+
+    XCTAssertTrue(controller.exit())
+    XCTAssertEqual(controller.current, .idle)
+  }
+
+  func testPermissionPromptCannotSwitchDirectlyToAnotherMode() {
+    let controller = ModeController()
+    controller.request(.permissionPrompt)
+
+    // Must exit to idle first, same as every other mode.
+    XCTAssertFalse(controller.request(.zoom))
+    XCTAssertEqual(controller.current, .permissionPrompt)
+  }
+
   func testOnChangeReportsFromAndTo() {
     let controller = ModeController()
     var changes: [String] = []

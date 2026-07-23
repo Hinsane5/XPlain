@@ -31,6 +31,13 @@ final class OverlayController {
     window?.orderOut(nil)
     window = nil
   }
+
+  /// Shows the overlay with the Screen Recording permission prompt (M2.2)
+  /// instead of a mode's real content.
+  func showPermissionPrompt(onDisplayFrame frame: NSRect) {
+    show(onDisplayFrame: frame)
+    window?.showPermissionPrompt()
+  }
 }
 
 extension NSScreen {

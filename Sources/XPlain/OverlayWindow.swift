@@ -51,4 +51,42 @@ final class OverlayWindow: NSWindow {
   override func rightMouseDown(with event: NSEvent) {
     onDismissRequested?()
   }
+
+  /// Replaces the overlay's content with the permission prompt (M2.2): a
+  /// centered message plus a button that deep-links to System Settings' Screen
+  /// Recording pane. Shown instead of a mode's real content when capture
+  /// permission is denied, so the user never sees a blank/frozen screen.
+  func showPermissionPrompt() {
+    let container = NSView(frame: NSRect(origin: .zero, size: frame.size))
+
+    let label = NSTextField(wrappingLabelWithString: PermissionPromptContent.message)
+    label.alignment = .center
+    label.font = .systemFont(ofSize: 18)
+    label.frame = NSRect(
+      x: 40,
+      y: frame.height / 2,
+      width: frame.width - 80,
+      height: 80
+    )
+    container.addSubview(label)
+
+    let button = NSButton(
+      title: PermissionPromptContent.buttonTitle,
+      target: self,
+      action: #selector(openSystemSettings)
+    )
+    button.frame = NSRect(
+      x: frame.width / 2 - 100,
+      y: frame.height / 2 - 60,
+      width: 200,
+      height: 32
+    )
+    container.addSubview(button)
+
+    contentView = container
+  }
+
+  @objc private func openSystemSettings() {
+    NSWorkspace.shared.open(PermissionPromptContent.systemSettingsURL)
+  }
 }

@@ -7,4 +7,10 @@ enum Mode: Equatable, CaseIterable {
   case draw
   case liveZoom
   case record
+
+  /// Shown instead of a requested mode when Screen Recording permission is
+  /// denied (M2.2), per docs/core.md's invariant: a capture-permission failure
+  /// must route here, never leave the user looking at a blank overlay. See
+  /// `ModeActivationGate`.
+  case permissionPrompt
 }

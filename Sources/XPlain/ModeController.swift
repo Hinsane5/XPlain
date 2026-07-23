@@ -7,11 +7,12 @@ final class ModeController {
   /// enter any activatable mode from idle; Zoom↔Draw; and Esc-to-idle from any
   /// active mode. Anything else must exit to idle first.
   private static let legalTransitions: [Mode: Set<Mode>] = [
-    .idle: [.zoom, .draw, .liveZoom, .record],
+    .idle: [.zoom, .draw, .liveZoom, .record, .permissionPrompt],
     .zoom: [.draw, .idle],
     .draw: [.zoom, .idle],
     .liveZoom: [.idle],
     .record: [.idle],
+    .permissionPrompt: [.idle],
   ]
 
   private(set) var current: Mode = .idle

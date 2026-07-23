@@ -12,8 +12,11 @@
 		1B039DF84F33E01994A6B778 /* Mode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A52A940C0E0BD00703CB03D /* Mode.swift */; };
 		208C4A0293D43EF4ADF48951 /* OverlayController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145FEFBC3C7A6A6BD746201B /* OverlayController.swift */; };
 		244993B4B30F002EC555EE17 /* OverlayWindowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72B0F388BBC7FD2AC3D6FFA2 /* OverlayWindowTests.swift */; };
+		5299E28D89D008D00AFF8AB4 /* ModeActivationGate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD484AD67A8DE0FFAB5BE70 /* ModeActivationGate.swift */; };
 		54A2314C646EDD079DDC583B /* DisplayTargetingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FC22988150A79781CCE30D /* DisplayTargetingTests.swift */; };
 		6F31F42976F6C05F368E76A3 /* HotkeyServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ACB92481DB5B32344B15C0C /* HotkeyServiceTests.swift */; };
+		766DF61BE3B59E8DD815DDA6 /* PermissionPromptContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8698B1906602666644D86D7C /* PermissionPromptContent.swift */; };
+		81E766CD25517D06495D66D7 /* PermissionPromptContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93187BEF54DBE980B162DF78 /* PermissionPromptContentTests.swift */; };
 		8B522B048AAA644CC79C7A59 /* CaptureService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE4710EB08FD2C9B0E4BE4AF /* CaptureService.swift */; };
 		A5D7FBD17863C5B3303D6936 /* ModeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4A20C5A9AA497E1717BE97 /* ModeController.swift */; };
 		A99B893E4E17E39F2AD40489 /* CaptureServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3211295A0EC9D89E431A3F6 /* CaptureServiceTests.swift */; };
@@ -25,6 +28,7 @@
 		E4F79FED67B3F7A9F5399784 /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = D9FCAC2F4D9F6F80CED14158 /* KeyboardShortcuts */; };
 		E54EA3CDBDC204A990EA9B60 /* OverlayWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A99EAC64E53FCAE0750E23B /* OverlayWindow.swift */; };
 		FD4CF7DE9759E3C12A08091A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA5FDD7E196925C46DDDFCA /* AppDelegate.swift */; };
+		FD52B995BBE95AD7B6035C6B /* ModeActivationGateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 813E7D75A6547579579A7704 /* ModeActivationGateTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,12 +53,16 @@
 		5ACB92481DB5B32344B15C0C /* HotkeyServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotkeyServiceTests.swift; sourceTree = "<group>"; };
 		6044724AAE9FC763652A82C2 /* XPlainTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = XPlainTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		72B0F388BBC7FD2AC3D6FFA2 /* OverlayWindowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayWindowTests.swift; sourceTree = "<group>"; };
+		813E7D75A6547579579A7704 /* ModeActivationGateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeActivationGateTests.swift; sourceTree = "<group>"; };
+		8698B1906602666644D86D7C /* PermissionPromptContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionPromptContent.swift; sourceTree = "<group>"; };
 		8B4A20C5A9AA497E1717BE97 /* ModeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeController.swift; sourceTree = "<group>"; };
 		92F2D3F6D57E8BE65A9E4D82 /* DisplayTargeting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayTargeting.swift; sourceTree = "<group>"; };
+		93187BEF54DBE980B162DF78 /* PermissionPromptContentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionPromptContentTests.swift; sourceTree = "<group>"; };
 		C1F3371A77584726FDC954F4 /* ModeControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeControllerTests.swift; sourceTree = "<group>"; };
 		D3211295A0EC9D89E431A3F6 /* CaptureServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureServiceTests.swift; sourceTree = "<group>"; };
 		D8F7C74C29B70B72DDB8DE90 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		E5FC22988150A79781CCE30D /* DisplayTargetingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayTargetingTests.swift; sourceTree = "<group>"; };
+		ECD484AD67A8DE0FFAB5BE70 /* ModeActivationGate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeActivationGate.swift; sourceTree = "<group>"; };
 		EE4710EB08FD2C9B0E4BE4AF /* CaptureService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -106,9 +114,11 @@
 				0BC2ABBEE510E67FE2BE3B81 /* KeyboardShortcuts+Names.swift */,
 				D8F7C74C29B70B72DDB8DE90 /* main.swift */,
 				5A52A940C0E0BD00703CB03D /* Mode.swift */,
+				ECD484AD67A8DE0FFAB5BE70 /* ModeActivationGate.swift */,
 				8B4A20C5A9AA497E1717BE97 /* ModeController.swift */,
 				145FEFBC3C7A6A6BD746201B /* OverlayController.swift */,
 				2A99EAC64E53FCAE0750E23B /* OverlayWindow.swift */,
+				8698B1906602666644D86D7C /* PermissionPromptContent.swift */,
 			);
 			name = XPlain;
 			path = Sources/XPlain;
@@ -120,8 +130,10 @@
 				D3211295A0EC9D89E431A3F6 /* CaptureServiceTests.swift */,
 				E5FC22988150A79781CCE30D /* DisplayTargetingTests.swift */,
 				5ACB92481DB5B32344B15C0C /* HotkeyServiceTests.swift */,
+				813E7D75A6547579579A7704 /* ModeActivationGateTests.swift */,
 				C1F3371A77584726FDC954F4 /* ModeControllerTests.swift */,
 				72B0F388BBC7FD2AC3D6FFA2 /* OverlayWindowTests.swift */,
+				93187BEF54DBE980B162DF78 /* PermissionPromptContentTests.swift */,
 				4D09F167839FABAE5225D701 /* XPlainTests.swift */,
 			);
 			name = XPlainTests;
@@ -215,8 +227,10 @@
 				A99B893E4E17E39F2AD40489 /* CaptureServiceTests.swift in Sources */,
 				54A2314C646EDD079DDC583B /* DisplayTargetingTests.swift in Sources */,
 				6F31F42976F6C05F368E76A3 /* HotkeyServiceTests.swift in Sources */,
+				FD52B995BBE95AD7B6035C6B /* ModeActivationGateTests.swift in Sources */,
 				B4A231B13F95C8BE9179E88D /* ModeControllerTests.swift in Sources */,
 				244993B4B30F002EC555EE17 /* OverlayWindowTests.swift in Sources */,
+				81E766CD25517D06495D66D7 /* PermissionPromptContentTests.swift in Sources */,
 				E3622238D7375D2E918F01F7 /* XPlainTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -231,9 +245,11 @@
 				E1D1708520AE3BDAEE40A8DE /* HotkeyService.swift in Sources */,
 				0F7EEB4EA53DF2F43ADFBEF6 /* KeyboardShortcuts+Names.swift in Sources */,
 				1B039DF84F33E01994A6B778 /* Mode.swift in Sources */,
+				5299E28D89D008D00AFF8AB4 /* ModeActivationGate.swift in Sources */,
 				A5D7FBD17863C5B3303D6936 /* ModeController.swift in Sources */,
 				208C4A0293D43EF4ADF48951 /* OverlayController.swift in Sources */,
 				E54EA3CDBDC204A990EA9B60 /* OverlayWindow.swift in Sources */,
+				766DF61BE3B59E8DD815DDA6 /* PermissionPromptContent.swift in Sources */,
 				B6F718B883F26DCC1CF0C03B /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
