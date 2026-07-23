@@ -14,6 +14,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     let menu = NSMenu()
     menu.addItem(makeLiveZoomFollowMenuItem())  // M5.4
+    menu.addItem(makeRecordingScopeMenuItem())  // M5.6
     menu.addItem(.separator())
     menu.addItem(
       NSMenuItem(
@@ -79,7 +80,41 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
       let mode = LiveZoomFollow.Mode(rawValue: raw)
     else { return }
     Preferences.liveZoomFollowMode = mode
-    // Re-check the sibling items so the menu reflects the new selection.
+    checkOnly(sender)
+  }
+
+  /// The "Recording Scope" submenu (M5.6): full display vs. selected region,
+  /// checkmark on the active one. Selection persists via `Preferences`.
+  private func makeRecordingScopeMenuItem() -> NSMenuItem {
+    let parent = NSMenuItem(title: "Recording Scope", action: nil, keyEquivalent: "")
+    let submenu = NSMenu()
+    let active = Preferences.recordingScope
+    for scope in RecordingScope.allCases {
+      let item = NSMenuItem(
+        title: scope.title,
+        action: #selector(selectRecordingScope(_:)),
+        keyEquivalent: ""
+      )
+      item.target = self
+      item.representedObject = scope.rawValue
+      item.state = (scope == active) ? .on : .off
+      submenu.addItem(item)
+    }
+    parent.submenu = submenu
+    return parent
+  }
+
+  @objc private func selectRecordingScope(_ sender: NSMenuItem) {
+    guard let raw = sender.representedObject as? String,
+      let scope = RecordingScope(rawValue: raw)
+    else { return }
+    Preferences.recordingScope = scope
+    checkOnly(sender)
+  }
+
+  /// Puts the checkmark on `sender` and clears its siblings, so a radio-style
+  /// submenu reflects the new selection.
+  private func checkOnly(_ sender: NSMenuItem) {
     for item in sender.menu?.items ?? [] {
       item.state = (item === sender) ? .on : .off
     }
@@ -119,16 +154,51 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
   }
 
-  /// M5.5: begins recording the display under the cursor to a timestamped mp4 in
-  /// `~/Movies/XPlain`. No overlay — Record captures the live screen while you
-  /// keep using it. Stopped by leaving Record (see `stopRecording`).
+  /// M5.5/M5.6: begins recording the display under the cursor to a timestamped
+  /// mp4 in `~/Movies/XPlain`. Full-display scope records immediately with no
+  /// overlay (you keep using the screen); region scope first shows a drag-select
+  /// overlay, then records just that rectangle. Stopped by leaving Record.
   private func startRecording() {
     guard let display = NSScreen.displayUnderCursor() else { return }
+    switch Preferences.recordingScope {
+    case .fullDisplay:
+      beginRecording(display: display, pixelSize: display.pixelSize, sourceRect: nil)
+    case .selectedRegion:
+      overlay.selectRegion(of: display) { [weak self] rect in
+        guard let self else { return }
+        guard let region = rect.map({ RecordingRegion.clamped($0, to: display.frame.size) }),
+          RecordingRegion.isUsable(region)
+        else {
+          // Cancelled or too small — leave Record rather than record nothing.
+          self.modeController.exit()
+          return
+        }
+        self.beginRecording(
+          display: display,
+          pixelSize: RecordingRegion.pixelSize(
+            selection: region,
+            scale: display.backingScaleFactor
+          ),
+          sourceRect: RecordingRegion.sourceRect(
+            selection: region,
+            displayHeightPoints: display.frame.height
+          )
+        )
+      }
+    }
+  }
+
+  private func beginRecording(display: Display, pixelSize: CGSize, sourceRect: CGRect?) {
     let url = Recorder.defaultSaveDirectory
       .appendingPathComponent(Recorder.timestampedFilename())
     Task { [recorder] in
       do {
-        try await recorder.start(of: display.displayID, pixelSize: display.pixelSize, to: url)
+        try await recorder.start(
+          of: display.displayID,
+          pixelSize: pixelSize,
+          to: url,
+          sourceRect: sourceRect
+        )
       } catch {
         NSLog("XPlain: recording failed to start - \(error)")
       }

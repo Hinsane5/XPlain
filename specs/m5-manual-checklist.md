@@ -27,8 +27,13 @@ screen, so they're verified here. CI skips the capture-bound integration tests.
 - [x] ⌘⌃R start→stop writes a playable .mp4 to ~/Movies/XPlain at native resolution.
       Probed: playable, H.264 (avc1), 1920×1080, ~32.7 fps, 3.65 s.
 
-## M5.6 — Region vs full-screen  *(pending)*
-- [ ] Full-display and a selected region both record correctly.
+## M5.6 — Region vs full-screen  ✅ verified live 2026-07-23
+- [x] Status menu ▸ "Recording Scope" toggles full display vs. selected region.
+- [x] Selected region shows a dim drag-select overlay; Esc / tiny click cancels.
+- [x] Full-display records at native resolution; region records cropped to the
+      drag rectangle. Probed: full 1920×1080/5.12s, region 146×90/4.96s.
+- [x] Duration is wall-clock accurate even for a static region (stop() ends the
+      writer session at the real stop time — SCStream only emits frames on change).
 
 ## M5.7 — Optional audio  *(pending)*
 - [ ] Enabling system/mic audio puts an audio track in the file.

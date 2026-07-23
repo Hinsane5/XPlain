@@ -107,6 +107,23 @@ final class OverlayWindow: NSWindow {
     return view
   }
 
+  /// Shows the region-selection overlay for region recording (M5.6): a dimmed
+  /// display you drag a rectangle on. Returns the view so the caller can hook
+  /// its completion. Captures the mouse (not click-through) to gather the drag.
+  @discardableResult
+  func showRegionSelection() -> RegionSelectionView {
+    zoomScale = 1
+    acceptsMouseMovedEvents = false
+    ignoresMouseEvents = false
+    // Clear the window's blue test-fill so the selection's clear hole shows the
+    // true desktop; the view draws its own dim backdrop.
+    backgroundColor = .clear
+    let view = RegionSelectionView(frame: NSRect(origin: .zero, size: frame.size))
+    contentView = view
+    makeFirstResponder(view)  // so Esc reaches the view to cancel
+    return view
+  }
+
   /// Draw-over-zoom (M4.9): snapshots whatever's currently shown (the magnified,
   /// panned zoom image) and hands it to the annotation canvas as the backdrop,
   /// so you annotate the *magnified* view rather than a fresh 1× capture.

@@ -231,8 +231,12 @@ Goal: live magnification and screen recording. Highest technical risk — see co
   resolution. **Depends on:** M5.1
   *(⌘⌃R toggles start/stop, no blocking overlay. Verified live: playable H.264
   avc1, 1920×1080 native, ~33 fps. Pure helpers unit-tested in `RecorderTests`.)*
-- [ ] **M5.6 — Region vs. full-screen recording** — optional drag-rectangle at start.
+- [x] **M5.6 — Region vs. full-screen recording** — optional drag-rectangle at start.
   **Done when:** both scopes record correctly. **Depends on:** M5.5
+  *(status-menu "Recording Scope" toggle; region shows a dim drag-select overlay,
+  crops via `SCStreamConfiguration.sourceRect` (pure math in `RecordingRegion`).
+  Verified live: full 1920×1080/5.12s, region 146×90/4.96s. Fixed a duration bug —
+  SCStream only emits on change, so `stop()` now `endSession`s at wall-clock time.)*
 - [ ] **M5.7 — Optional audio** — system + mic toggles (off by default; mic permission
   requested lazily). **Done when:** enabling either captures audio in the file.
   **Depends on:** M5.5

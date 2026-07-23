@@ -76,6 +76,26 @@ final class OverlayController {
     }
   }
 
+  /// Region recording (M5.6): shows the drag-to-select overlay on `display` and
+  /// calls `completion` with the chosen rect (display points, bottom-left) or
+  /// `nil` on cancel. Tears the overlay down before the callback so it isn't in
+  /// the subsequent capture.
+  func selectRegion(of display: Display, completion: @escaping (CGRect?) -> Void) {
+    generation &+= 1
+    show(onDisplayFrame: display.frame)
+    guard let window else {
+      completion(nil)
+      return
+    }
+    NSApp.activate(ignoringOtherApps: true)
+    window.makeKeyAndOrderFront(nil)
+    let view = window.showRegionSelection()
+    view.onComplete = { [weak self] rect in
+      self?.hide()
+      completion(rect)
+    }
+  }
+
   private func stopLiveSession() {
     guard let session = liveSession else { return }
     liveSession = nil

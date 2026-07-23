@@ -36,10 +36,16 @@ final class Recorder: NSObject, SCStreamOutput {
   /// Begins recording `displayID` at `pixelSize`, writing to `outputURL` (a
   /// `.mp4` path; its parent directory is created if needed). Throws before any
   /// frame is captured if the display is unknown or the writer can't be set up.
+  /// - Parameters:
+  ///   - pixelSize: output frame size in native pixels (the region's size for a
+  ///     cropped recording, or the whole display's).
+  ///   - sourceRect: the display region to capture (points, top-left origin) for
+  ///     region recording (M5.6); `nil` records the full display.
   func start(
     of displayID: CGDirectDisplayID,
     pixelSize: CGSize,
     to outputURL: URL,
+    sourceRect: CGRect? = nil,
     excludingWindow windowID: CGWindowID? = nil
   ) async throws {
     let content = try await SCShareableContent.current
@@ -61,6 +67,9 @@ final class Recorder: NSObject, SCStreamOutput {
     let excluded = content.windows.filter { $0.windowID == windowID }
     let filter = SCContentFilter(display: display, excludingWindows: excluded)
     let config = SCStreamConfiguration()
+    if let sourceRect {
+      config.sourceRect = sourceRect  // M5.6: crop to the selected region
+    }
     config.width = Int(pixelSize.width)
     config.height = Int(pixelSize.height)
     config.showsCursor = true
@@ -84,7 +93,16 @@ final class Recorder: NSObject, SCStreamOutput {
     try? await stream?.stopCapture()
     stream = nil
 
+    // Hold the last frame until the real (wall-clock) stop time. SCStream only
+    // emits a frame when the captured content *changes*, so a mostly-static
+    // region delivers a few frames up front and then nothing — without this the
+    // file's duration would be ~0s (last PTS − first PTS) instead of the true
+    // recording length. `endSession` extends the timeline to `endTime`.
+    let endTime = CMClockGetTime(CMClockGetHostTimeClock())
     videoInput.markAsFinished()
+    if writer.status == .writing {
+      writer.endSession(atSourceTime: endTime)
+    }
     await writer.finishWriting()
     self.writer = nil
     self.videoInput = nil
@@ -99,6 +117,7 @@ final class Recorder: NSObject, SCStreamOutput {
     didOutputSampleBuffer sampleBuffer: CMSampleBuffer,
     of type: SCStreamOutputType
   ) {
+    guard isRecording else { return }  // drop late frames after stop()
     guard type == .screen, sampleBuffer.isValid, Self.isCompleteFrame(sampleBuffer) else { return }
     guard let writer, let videoInput else { return }
 
