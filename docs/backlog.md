@@ -199,7 +199,7 @@ Goal: full annotation toolset, over a zoom or standalone.
 - [x] **M4.9 — Standalone draw + draw-over-zoom** — `⌘⌃D` from Idle freezes the live
   screen; from Zoom it draws on the magnified image. **Done when:** both entry paths work
   and exit cleanly. **Depends on:** M4.2, M3.1
-- [ ] **M4.10 — Model + input-mapping unit tests** — `InputRouter` key/modifier → action
+- [x] **M4.10 — Model + input-mapping unit tests** — `InputRouter` key/modifier → action
   coverage. **Done when:** the mapping table from spec §4 is fully asserted. **Depends
   on:** M4.3, M4.4
 

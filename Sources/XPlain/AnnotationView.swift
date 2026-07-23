@@ -191,49 +191,39 @@ final class AnnotationView: NSView {
       handleTextKey(event)
       return
     }
-    // M4.7: ⌘Z undo / ⌘⇧Z redo. Shift uppercases the character, so lowercase it.
-    let isUndoRedo =
-      event.modifierFlags.contains(.command)
-      && event.charactersIgnoringModifiers?.lowercased() == "z"
-    if isUndoRedo {
-      if event.modifierFlags.contains(.shift) { canvas.redo() } else { canvas.undo() }
-      needsDisplay = true
-      return
-    }
-    // M4.7: `e` or Delete clears everything.
-    let isEKey = !event.modifierFlags.contains(.command) && event.charactersIgnoringModifiers == "e"
-    if event.keyCode == Self.deleteKeyCode || isEKey {
+    // Delete (a key code, not a character) clears everything (M4.7).
+    if event.keyCode == Self.deleteKeyCode {
       canvas.clearAll()
       needsDisplay = true
       return
     }
-    // `t` arms text placement for the next click (M4.5); `w`/`k` swap the board
-    // (M4.6). All plain (no ⌘) single keys.
-    if !event.modifierFlags.contains(.command) {
-      switch event.charactersIgnoringModifiers {
-      case "t":
-        textArmed = true
-        return
-      case "w":
-        canvas.toggleWhiteboard()
-        needsDisplay = true
-        return
-      case "k":
-        canvas.toggleBlackboard()
-        needsDisplay = true
-        return
-      default:
-        break
-      }
+    // M4.10: the full spec §4 key table lives in InputRouter.
+    let command = event.charactersIgnoringModifiers.flatMap {
+      InputRouter.command(
+        $0,
+        command: event.modifierFlags.contains(.command),
+        shift: event.modifierFlags.contains(.shift)
+      )
     }
-    // M4.4: pen keys (r/g/b/o/y/p, h, [ ]) mutate the pen; anything else (Esc,
-    // ⌘C/⌘S) forwards up the responder chain to the window.
-    if let command = Self.penCommand(for: event) {
-      canvas.apply(command)
-      needsDisplay = true  // redraws the dot in the new color/width
+    if let command {
+      perform(command)
+      needsDisplay = true
       return
     }
+    // Anything else (Esc, ⌘C/⌘S) forwards up the chain to the window.
     super.keyDown(with: event)
+  }
+
+  private func perform(_ command: DrawCommand) {
+    switch command {
+    case .pen(let penCommand): canvas.apply(penCommand)
+    case .beginText: textArmed = true
+    case .whiteboard: canvas.toggleWhiteboard()
+    case .blackboard: canvas.toggleBlackboard()
+    case .clear: canvas.clearAll()
+    case .undo: canvas.undo()
+    case .redo: canvas.redo()
+    }
   }
 
   private func handleTextKey(_ event: NSEvent) {
@@ -248,13 +238,6 @@ final class AnnotationView: NSView {
       }
     }
     needsDisplay = true
-  }
-
-  private static func penCommand(for event: NSEvent) -> PenCommand? {
-    guard !event.modifierFlags.contains(.command),
-      let key = event.charactersIgnoringModifiers
-    else { return nil }
-    return InputRouter.penCommand(forKey: key)
   }
 
   override func scrollWheel(with event: NSEvent) {
