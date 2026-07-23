@@ -126,7 +126,7 @@ No capture yet.
 
 Goal: overlays show a pixel-accurate frozen snapshot; missing permission is handled.
 
-- [ ] **M2.1 — `CaptureService.snapshot(of:)`**
+- [~] **M2.1 — `CaptureService.snapshot(of:)`**  *(code + guarded integration test done; real-capture verification pending Screen Recording permission — see `specs/m2-manual-checklist.md`)*
   - **Do:** Wrap `SCScreenshotManager` to return a `CGImage` of a given display.
   - **Done when:** returns a non-empty image at the display's pixel dimensions.
   - **Depends on:** M1.3

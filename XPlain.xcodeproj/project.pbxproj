@@ -14,7 +14,9 @@
 		244993B4B30F002EC555EE17 /* OverlayWindowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72B0F388BBC7FD2AC3D6FFA2 /* OverlayWindowTests.swift */; };
 		54A2314C646EDD079DDC583B /* DisplayTargetingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FC22988150A79781CCE30D /* DisplayTargetingTests.swift */; };
 		6F31F42976F6C05F368E76A3 /* HotkeyServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ACB92481DB5B32344B15C0C /* HotkeyServiceTests.swift */; };
+		8B522B048AAA644CC79C7A59 /* CaptureService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE4710EB08FD2C9B0E4BE4AF /* CaptureService.swift */; };
 		A5D7FBD17863C5B3303D6936 /* ModeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4A20C5A9AA497E1717BE97 /* ModeController.swift */; };
+		A99B893E4E17E39F2AD40489 /* CaptureServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3211295A0EC9D89E431A3F6 /* CaptureServiceTests.swift */; };
 		B4A231B13F95C8BE9179E88D /* ModeControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1F3371A77584726FDC954F4 /* ModeControllerTests.swift */; };
 		B6F718B883F26DCC1CF0C03B /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8F7C74C29B70B72DDB8DE90 /* main.swift */; };
 		D771ECB0A667E6C253E8802F /* DisplayTargeting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F2D3F6D57E8BE65A9E4D82 /* DisplayTargeting.swift */; };
@@ -50,8 +52,10 @@
 		8B4A20C5A9AA497E1717BE97 /* ModeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeController.swift; sourceTree = "<group>"; };
 		92F2D3F6D57E8BE65A9E4D82 /* DisplayTargeting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayTargeting.swift; sourceTree = "<group>"; };
 		C1F3371A77584726FDC954F4 /* ModeControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeControllerTests.swift; sourceTree = "<group>"; };
+		D3211295A0EC9D89E431A3F6 /* CaptureServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureServiceTests.swift; sourceTree = "<group>"; };
 		D8F7C74C29B70B72DDB8DE90 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		E5FC22988150A79781CCE30D /* DisplayTargetingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayTargetingTests.swift; sourceTree = "<group>"; };
+		EE4710EB08FD2C9B0E4BE4AF /* CaptureService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -96,6 +100,7 @@
 			isa = PBXGroup;
 			children = (
 				3AA5FDD7E196925C46DDDFCA /* AppDelegate.swift */,
+				EE4710EB08FD2C9B0E4BE4AF /* CaptureService.swift */,
 				92F2D3F6D57E8BE65A9E4D82 /* DisplayTargeting.swift */,
 				53AE3F82BF1E64962D56F17D /* HotkeyService.swift */,
 				0BC2ABBEE510E67FE2BE3B81 /* KeyboardShortcuts+Names.swift */,
@@ -112,6 +117,7 @@
 		A6396D2C609505E67AE2282D /* XPlainTests */ = {
 			isa = PBXGroup;
 			children = (
+				D3211295A0EC9D89E431A3F6 /* CaptureServiceTests.swift */,
 				E5FC22988150A79781CCE30D /* DisplayTargetingTests.swift */,
 				5ACB92481DB5B32344B15C0C /* HotkeyServiceTests.swift */,
 				C1F3371A77584726FDC954F4 /* ModeControllerTests.swift */,
@@ -206,6 +212,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A99B893E4E17E39F2AD40489 /* CaptureServiceTests.swift in Sources */,
 				54A2314C646EDD079DDC583B /* DisplayTargetingTests.swift in Sources */,
 				6F31F42976F6C05F368E76A3 /* HotkeyServiceTests.swift in Sources */,
 				B4A231B13F95C8BE9179E88D /* ModeControllerTests.swift in Sources */,
@@ -219,6 +226,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				FD4CF7DE9759E3C12A08091A /* AppDelegate.swift in Sources */,
+				8B522B048AAA644CC79C7A59 /* CaptureService.swift in Sources */,
 				D771ECB0A667E6C253E8802F /* DisplayTargeting.swift in Sources */,
 				E1D1708520AE3BDAEE40A8DE /* HotkeyService.swift in Sources */,
 				0F7EEB4EA53DF2F43ADFBEF6 /* KeyboardShortcuts+Names.swift in Sources */,
