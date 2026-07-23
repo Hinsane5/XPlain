@@ -109,10 +109,16 @@ final class AnnotationCanvas {
     guard isDrawing, let start = gestureStart, let end = lastPoint else { return }
     if gestureShape == .freehand {
       guard inProgressStroke.count > 1 else { return }
-      drawables.append(.freehand(points: inProgressStroke, pen: pen))
+      commit(.freehand(points: inProgressStroke, pen: pen))
     } else if start != end {
-      drawables.append(Self.drawable(shape: gestureShape, from: start, to: end, pen: pen))
+      commit(Self.drawable(shape: gestureShape, from: start, to: end, pen: pen))
     }
+  }
+
+  /// Appends a committed drawable, snapshotting first so it can be undone (M4.7).
+  private func commit(_ drawable: Drawable) {
+    saveUndoState()
+    drawables.append(drawable)
   }
 
   /// Applies a pen command (M4.4): color, highlighter toggle, or width step
@@ -169,9 +175,40 @@ final class AnnotationCanvas {
   func commitText() {
     defer { textDraft = nil }
     guard let draft = textDraft, !draft.string.isEmpty else { return }
-    drawables.append(
-      .text(draft.string, at: draft.location, size: draft.size, color: draft.color)
-    )
+    commit(.text(draft.string, at: draft.location, size: draft.size, color: draft.color))
+  }
+
+  // MARK: Undo / redo (M4.7)
+
+  // Snapshot-based history (whole `drawables` array per step) so multi-drawable
+  // operations like Clear are undoable too, not just single strokes.
+  private var undoStack: [[Drawable]] = []
+  private var redoStack: [[Drawable]] = []
+
+  private func saveUndoState() {
+    undoStack.append(drawables)
+    redoStack.removeAll()  // a new change invalidates the redo history
+  }
+
+  /// Restores the state before the last change (⌘Z). No-op if nothing to undo.
+  func undo() {
+    guard let previous = undoStack.popLast() else { return }
+    redoStack.append(drawables)
+    drawables = previous
+  }
+
+  /// Re-applies the last undone change (⌘⇧Z). No-op if nothing to redo.
+  func redo() {
+    guard let next = redoStack.popLast() else { return }
+    undoStack.append(drawables)
+    drawables = next
+  }
+
+  /// Clears every annotation (`e` / Delete). Undoable — restores what was there.
+  func clearAll() {
+    guard !drawables.isEmpty else { return }
+    saveUndoState()
+    drawables.removeAll()
   }
 
   // MARK: Shape geometry (pure — M4.3)

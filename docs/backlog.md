@@ -192,7 +192,7 @@ Goal: full annotation toolset, over a zoom or standalone.
   pre-commit. **Done when:** text places, edits, and commits correctly. **Depends on:** M4.2
 - [x] **M4.6 — Whiteboard / blackboard** — `w` / `k` swap the backdrop; press again to
   restore. **Done when:** backdrop toggles without losing annotations. **Depends on:** M4.2
-- [ ] **M4.7 — Undo / redo** — `⌘Z` / `⌘⇧Z`; `e` or Delete clears all. **Done when:**
+- [x] **M4.7 — Undo / redo** — `⌘Z` / `⌘⇧Z`; `e` or Delete clears all. **Done when:**
   undo/redo is exact across every `Drawable` type (unit-tested). **Depends on:** M4.1
 - [ ] **M4.8 — Copy / Save annotated output** — `⌘C` / `⌘S` composite backdrop + strokes.
   **Done when:** output PNG/clipboard includes annotations. **Depends on:** M4.2, M3.5

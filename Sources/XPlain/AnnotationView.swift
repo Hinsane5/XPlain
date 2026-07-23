@@ -173,6 +173,22 @@ final class AnnotationView: NSView {
       handleTextKey(event)
       return
     }
+    // M4.7: ⌘Z undo / ⌘⇧Z redo. Shift uppercases the character, so lowercase it.
+    let isUndoRedo =
+      event.modifierFlags.contains(.command)
+      && event.charactersIgnoringModifiers?.lowercased() == "z"
+    if isUndoRedo {
+      if event.modifierFlags.contains(.shift) { canvas.redo() } else { canvas.undo() }
+      needsDisplay = true
+      return
+    }
+    // M4.7: `e` or Delete clears everything.
+    let isEKey = !event.modifierFlags.contains(.command) && event.charactersIgnoringModifiers == "e"
+    if event.keyCode == Self.deleteKeyCode || isEKey {
+      canvas.clearAll()
+      needsDisplay = true
+      return
+    }
     // `t` arms text placement for the next click (M4.5); `w`/`k` swap the board
     // (M4.6). All plain (no ⌘) single keys.
     if !event.modifierFlags.contains(.command) {

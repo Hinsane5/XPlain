@@ -255,4 +255,5 @@ final class AnnotationCanvasTests: XCTestCase {
 
     XCTAssertEqual(canvas.drawables, before)  // annotations survive board swaps
   }
+
 }

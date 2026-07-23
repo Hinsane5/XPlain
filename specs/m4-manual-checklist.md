@@ -23,8 +23,8 @@ Enter Draw mode with ⌘⌃D (freezes the screen as a backdrop).
 ## M4.6 — Whiteboard / blackboard  ✅ verified live 2026-07-23
 - [x] w = white backdrop, k = black; press again to restore; annotations survive.
 
-## M4.7 — Undo / redo  *(pending)*
-- [ ] ⌘Z undo, ⌘⇧Z redo; e / Delete clears all.
+## M4.7 — Undo / redo  ✅ verified live 2026-07-23
+- [x] ⌘Z undo, ⌘⇧Z redo; e / Delete clears all — and the clear itself is undoable.
 
 ## M4.8 — Copy / save annotated  *(pending)*
 - [ ] ⌘C / ⌘S include the annotations, not just the backdrop.
