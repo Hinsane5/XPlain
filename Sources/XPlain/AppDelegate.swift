@@ -51,11 +51,22 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     let service = HotkeyService { [modeController] mode in
       let resolved = ModeActivationGate.resolve(
         requested: mode,
-        permissionGranted: CGPreflightScreenCaptureAccess()
+        permissionGranted: Self.requestScreenRecordingAccessIfNeeded()
       )
       modeController.request(resolved)
     }
     service.start()
     hotkeys = service
+  }
+
+  /// `CGPreflightScreenCaptureAccess()` alone never prompts — if permission has
+  /// never been decided, the user would be stuck reading our own in-app prompt
+  /// forever with no way to grant it short of manually finding the right
+  /// System Settings pane themselves. `CGRequestScreenCaptureAccess()` shows
+  /// the real system dialog the first time (and returns immediately if the
+  /// decision is already made either way), so try preflight first and only
+  /// fall through to a real request if it's actually needed.
+  private static func requestScreenRecordingAccessIfNeeded() -> Bool {
+    CGPreflightScreenCaptureAccess() || CGRequestScreenCaptureAccess()
   }
 }
