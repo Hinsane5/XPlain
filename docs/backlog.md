@@ -226,9 +226,11 @@ Goal: live magnification and screen recording. Highest technical risk — see co
   **Done when:** both follow modes track the cursor as specified. **Depends on:** M5.2
   *(pure follow math in `LiveZoomFollow` unit-tested; persisted in `Preferences`;
   status-menu "LiveZoom Follow" submenu switches modes. Live verification pending.)*
-- [ ] **M5.5 — `Recorder` (H.264 mp4)** — `AVAssetWriter` fed by `SCStream` buffers → mp4 in
+- [x] **M5.5 — `Recorder` (H.264 mp4)** — `AVAssetWriter` fed by `SCStream` buffers → mp4 in
   `~/Movies/XPlain`. **Done when:** start→stop yields a playable file at native
   resolution. **Depends on:** M5.1
+  *(⌘⌃R toggles start/stop, no blocking overlay. Verified live: playable H.264
+  avc1, 1920×1080 native, ~33 fps. Pure helpers unit-tested in `RecorderTests`.)*
 - [ ] **M5.6 — Region vs. full-screen recording** — optional drag-rectangle at start.
   **Done when:** both scopes record correctly. **Depends on:** M5.5
 - [ ] **M5.7 — Optional audio** — system + mic toggles (off by default; mic permission

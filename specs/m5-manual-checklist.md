@@ -23,8 +23,9 @@ screen, so they're verified here. CI skips the capture-bound integration tests.
 - [ ] Edge-push: view holds still while the cursor roams the center, scrolls only
       when the cursor nears an edge.
 
-## M5.5 — Recorder  *(pending)*
-- [ ] ⌘⌃R start→stop writes a playable .mp4 to ~/Movies/XPlain at native resolution.
+## M5.5 — Recorder  ✅ verified live 2026-07-23
+- [x] ⌘⌃R start→stop writes a playable .mp4 to ~/Movies/XPlain at native resolution.
+      Probed: playable, H.264 (avc1), 1920×1080, ~32.7 fps, 3.65 s.
 
 ## M5.6 — Region vs full-screen  *(pending)*
 - [ ] Full-display and a selected region both record correctly.
