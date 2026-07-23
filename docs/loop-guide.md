@@ -180,7 +180,16 @@ Mac.
   ⌘⌃Z captures the real display and renders it into the overlay, permission
   persists across rebuilds, red-dot cursor marks the active overlay. Caught +
   fixed several bugs along the way (see below).
-- **M2 is complete.** All of M0–M2 done.
+- **M2 is complete.** Screen capture + permission + render into overlay.
+- **M3 — ✅ fully done** (M3.1–M3.6), verified live 2026-07-23. Zoom mode:
+  2× magnified present centered on the cursor (M3.1), mouse-move pan 1:1
+  (M3.2), scroll/↑↓ zoom clamped 1.25×–8× (M3.3), animated entry (M3.4),
+  ⌘C/⌘S copy+save the visible region to `~/Pictures/XPlain` (M3.5), and the
+  dedicated zoom-math suite (M3.6). All pure math is in `ZoomRenderer`
+  (transform, clamp, step, animation duration); `OverlayWindow` applies it and
+  handles pan/zoom/copy/save; `SnapshotExporter` handles the export. Red-dot
+  cursor shows immediately (the overlay activates the app so it's key on entry).
+- **M0–M3 all done.** 69 tests, CI green.
 
 **Signing (important — read before building locally):** local builds are now
 signed with a stable Apple Development identity (Personal Team `37784HMFS9`,
@@ -198,13 +207,13 @@ self-capture ghost (overlay shown before capture) → capture-before-show +
 generation guard; double cursor → `showsCursor = false`; two right-clicks to
 dismiss (NSButton swallows right-click) → `RightClickForwardingButton`.
 
-- **Session-shell gotcha (still true):** `xcodebuild test` crashes in this
+- **Session-shell gotcha (still true):** `xcodebuild test` crashes in the loop's
   automation shell (orphaned `Background` launchd session, `IDELaunchServices`
-  launcher). Run the test suite in a **fresh Terminal.app window** or rely on
-  CI — `swiftlint`/`swift-format`/plain `build` work fine here.
-- **Next up:** M3.1 (`ZoomRenderer`) — the actual 2× magnification. This is
-  what makes the frozen overlay visibly do something (the red dot is just the
-  interim "you're in" cue). 45 tests total (3 skipped), CI green through M2.4.
+  launcher). Use `xcodebuild build-for-testing` to compile-check tests (confirms
+  RED/GREEN compiles), and rely on **CI** or a **fresh Terminal.app window** to
+  actually run them. `swiftlint`/`swift-format`/plain `build` work fine here.
+- **Next up:** M4.1 (`Drawable` model + `Pen`) — start of Draw mode (spec §4).
+  69 tests, CI green through M3.
 
 Keep this section honest; it's the fastest way for the next loop session to know
 where to resume.
