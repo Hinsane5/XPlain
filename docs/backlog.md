@@ -137,7 +137,7 @@ Goal: overlays show a pixel-accurate frozen snapshot; missing permission is hand
   - **Done when:** granted → snapshot works; denied → prompt shown, never a blank screen.
   - **Depends on:** M2.1
 
-- [ ] **M2.3 — Centralize the coordinate Y-flip**
+- [x] **M2.3 — Centralize the coordinate Y-flip**
   - **Do:** Convert AppKit (bottom-left) ↔ CGImage (top-left) **once**, in
     `CaptureService`. (See core.md "Coordinate discipline".)
   - **Done when:** unit test verifies flip for a few points/rects on multiple displays.
