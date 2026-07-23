@@ -53,22 +53,8 @@ final class AnnotationView: NSView {
   }
 
   override func draw(_ dirtyRect: NSRect) {
-    switch canvas.board {
-    case .screen:
-      if let backdrop {
-        NSImage(cgImage: backdrop, size: bounds.size).draw(in: bounds)
-      }
-    case .whiteboard:
-      NSColor.white.setFill()
-      bounds.fill()
-    case .blackboard:
-      NSColor.black.setFill()
-      bounds.fill()
-    }
+    drawContent()  // backdrop + committed annotations (also used by export)
     guard let context = NSGraphicsContext.current?.cgContext else { return }
-    for drawable in canvas.drawables {
-      DrawableRenderer.render(drawable, in: context)
-    }
     if canvas.inProgressStroke.count > 1 {
       DrawableRenderer.strokeFreehand(canvas.inProgressStroke, pen: canvas.pen, in: context)
     }
@@ -103,6 +89,38 @@ final class AnnotationView: NSView {
     context.addLine(to: CGPoint(x: pointer.x, y: pointer.y + halfHeight))
     context.strokePath()
     context.restoreGState()
+  }
+
+  /// Draws the backdrop (board or captured screen) and all committed
+  /// annotations — everything that belongs in the ⌘C/⌘S export (M4.8), i.e.
+  /// *not* the pen dot, caret, or in-progress preview.
+  private func drawContent() {
+    switch canvas.board {
+    case .screen:
+      if let backdrop {
+        NSImage(cgImage: backdrop, size: bounds.size).draw(in: bounds)
+      }
+    case .whiteboard:
+      NSColor.white.setFill()
+      bounds.fill()
+    case .blackboard:
+      NSColor.black.setFill()
+      bounds.fill()
+    }
+    guard let context = NSGraphicsContext.current?.cgContext else { return }
+    for drawable in canvas.drawables {
+      DrawableRenderer.render(drawable, in: context)
+    }
+  }
+
+  /// The annotated result (backdrop + annotations, no cursor/preview) for
+  /// ⌘C / ⌘S (M4.8).
+  func exportImage() -> NSImage {
+    let image = NSImage(size: bounds.size)
+    image.lockFocus()
+    drawContent()
+    image.unlockFocus()
+    return image
   }
 
   /// The pen preview dot at the pointer — pen color, sized to the brush.

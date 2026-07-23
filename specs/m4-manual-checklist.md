@@ -26,8 +26,8 @@ Enter Draw mode with ⌘⌃D (freezes the screen as a backdrop).
 ## M4.7 — Undo / redo  ✅ verified live 2026-07-23
 - [x] ⌘Z undo, ⌘⇧Z redo; e / Delete clears all — and the clear itself is undoable.
 
-## M4.8 — Copy / save annotated  *(pending)*
-- [ ] ⌘C / ⌘S include the annotations, not just the backdrop.
+## M4.8 — Copy / save annotated  ✅ verified live 2026-07-23
+- [x] ⌘C / ⌘S include the annotations, not just the backdrop (and not the pen dot).
 
 ## M4.9 — Standalone vs over-zoom  *(pending)*
 - [ ] ⌘⌃D from Idle draws on the frozen screen; from Zoom draws on the magnified image.

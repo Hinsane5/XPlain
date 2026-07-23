@@ -194,7 +194,7 @@ Goal: full annotation toolset, over a zoom or standalone.
   restore. **Done when:** backdrop toggles without losing annotations. **Depends on:** M4.2
 - [x] **M4.7 — Undo / redo** — `⌘Z` / `⌘⇧Z`; `e` or Delete clears all. **Done when:**
   undo/redo is exact across every `Drawable` type (unit-tested). **Depends on:** M4.1
-- [ ] **M4.8 — Copy / Save annotated output** — `⌘C` / `⌘S` composite backdrop + strokes.
+- [x] **M4.8 — Copy / Save annotated output** — `⌘C` / `⌘S` composite backdrop + strokes.
   **Done when:** output PNG/clipboard includes annotations. **Depends on:** M4.2, M3.5
 - [ ] **M4.9 — Standalone draw + draw-over-zoom** — `⌘⌃D` from Idle freezes the live
   screen; from Zoom it draws on the magnified image. **Done when:** both entry paths work

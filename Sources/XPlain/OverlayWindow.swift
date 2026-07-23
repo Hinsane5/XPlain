@@ -102,9 +102,14 @@ final class OverlayWindow: NSWindow {
     makeFirstResponder(view)  // so the pen keys reach the view (M4.4)
   }
 
-  /// The currently visible overlay content (magnified + panned) as an image —
-  /// the "visible region" ⌘C / ⌘S export (M3.5).
+  /// The currently visible overlay content as an image — the "visible region"
+  /// ⌘C / ⌘S export (M3.5). In Draw mode uses the annotation view's clean
+  /// export (backdrop + annotations, no pen dot/caret — M4.8); otherwise
+  /// snapshots the content view (the zoom case).
   func visibleRegionImage() -> NSImage? {
+    if let annotationView {
+      return annotationView.exportImage()
+    }
     guard let contentView,
       let rep = contentView.bitmapImageRepForCachingDisplay(in: contentView.bounds)
     else { return nil }

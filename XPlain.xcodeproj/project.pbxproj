@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		010967C3E20D75FEF3CC8EF3 /* ZoomRendererTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940196E9F66C3520E925614D /* ZoomRendererTests.swift */; };
 		07CA21936976B7A6CEF1ECB4 /* AnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C642F36F18B03B343ED8F0 /* AnnotationView.swift */; };
+		09F89ED6ED2BF872BE5AEE20 /* AnnotationExportTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B5E32342319E90FD1EC081A /* AnnotationExportTests.swift */; };
 		0E25469336758B42C431A7F9 /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = 84CF7173C5A869E6325AE0BF /* KeyboardShortcuts */; };
 		0F37123C0B00F650D3A10CB4 /* SnapshotExporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F05975A4FBC4D4387E7C45A /* SnapshotExporterTests.swift */; };
 		0F7EEB4EA53DF2F43ADFBEF6 /* KeyboardShortcuts+Names.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC2ABBEE510E67FE2BE3B81 /* KeyboardShortcuts+Names.swift */; };
@@ -60,6 +61,7 @@
 		02ACA590DA9BA5EB8E87BFDE /* SnapshotExporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapshotExporter.swift; sourceTree = "<group>"; };
 		0BC2ABBEE510E67FE2BE3B81 /* KeyboardShortcuts+Names.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KeyboardShortcuts+Names.swift"; sourceTree = "<group>"; };
 		145FEFBC3C7A6A6BD746201B /* OverlayController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayController.swift; sourceTree = "<group>"; };
+		1B5E32342319E90FD1EC081A /* AnnotationExportTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationExportTests.swift; sourceTree = "<group>"; };
 		2A99EAC64E53FCAE0750E23B /* OverlayWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayWindow.swift; sourceTree = "<group>"; };
 		38C642F36F18B03B343ED8F0 /* AnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationView.swift; sourceTree = "<group>"; };
 		39FC97B7F0CB94F5B9431130 /* DrawableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawableTests.swift; sourceTree = "<group>"; };
@@ -166,6 +168,7 @@
 			children = (
 				FD647D9B815192AA27574E47 /* AnnotationCanvasTests.swift */,
 				A0ED1BC744AC41B7BC002707 /* AnnotationCanvasUndoTests.swift */,
+				1B5E32342319E90FD1EC081A /* AnnotationExportTests.swift */,
 				D3211295A0EC9D89E431A3F6 /* CaptureServiceTests.swift */,
 				DD2B5DDBAFC698E5957E1E37 /* CaptureServiceYFlipTests.swift */,
 				E5FC22988150A79781CCE30D /* DisplayTargetingTests.swift */,
@@ -276,6 +279,7 @@
 			files = (
 				B032DED43CFA197A134E7742 /* AnnotationCanvasTests.swift in Sources */,
 				C272B973CE6C31ACA320406B /* AnnotationCanvasUndoTests.swift in Sources */,
+				09F89ED6ED2BF872BE5AEE20 /* AnnotationExportTests.swift in Sources */,
 				A99B893E4E17E39F2AD40489 /* CaptureServiceTests.swift in Sources */,
 				F75C2E131A1217BE3FB1C836 /* CaptureServiceYFlipTests.swift in Sources */,
 				54A2314C646EDD079DDC583B /* DisplayTargetingTests.swift in Sources */,
