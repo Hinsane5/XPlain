@@ -73,6 +73,30 @@ final class ModeControllerTests: XCTestCase {
     XCTAssertEqual(controller.current, .permissionPrompt)
   }
 
+  func testToggleReentersAndExitsTheSameMode() {
+    // M5.3: click-through LiveZoom removes the Esc / right-click exit paths, so
+    // pressing its activation hotkey again is the only way out. `toggle` enters
+    // a mode from idle and exits it back to idle when it's already current.
+    let controller = ModeController()
+
+    XCTAssertTrue(controller.toggle(.liveZoom))
+    XCTAssertEqual(controller.current, .liveZoom)
+
+    XCTAssertTrue(controller.toggle(.liveZoom))  // same hotkey again exits
+    XCTAssertEqual(controller.current, .idle)
+  }
+
+  func testToggleADifferentModeRequestsItRatherThanExiting() {
+    // Toggling a *different* mode requests it (subject to legal transitions),
+    // it never exits. Zoom → Draw is legal, so it switches instead of leaving.
+    let controller = ModeController()
+    controller.toggle(.zoom)
+    XCTAssertEqual(controller.current, .zoom)
+
+    controller.toggle(.draw)
+    XCTAssertEqual(controller.current, .draw)
+  }
+
   func testOnChangeReportsFromAndTo() {
     let controller = ModeController()
     var changes: [String] = []

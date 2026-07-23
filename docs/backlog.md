@@ -217,9 +217,11 @@ Goal: live magnification and screen recording. Highest technical risk — see co
   live screen shows magnified and updates continuously. **Depends on:** M5.1
   *(layer-backed `LiveZoomView`, not `MTKView` — updates continuously; Metal is a
   future perf optimization if needed, per core.md risks)*
-- [ ] **M5.3 — Click-through overlay** — `ignoresMouseEvents = true` for LiveZoom so input
+- [x] **M5.3 — Click-through overlay** — `ignoresMouseEvents = true` for LiveZoom so input
   hits the app underneath. **Done when:** you can click/type through the magnifier.
   **Depends on:** M5.2
+  *(click-through removes Esc / right-click as exits, so the activation hotkey now
+  toggles — `ModeController.toggle` — and ⌘⌃L again exits LiveZoom)*
 - [ ] **M5.4 — Cursor-follow modes** — cursor-centered vs. edge-push (configurable).
   **Done when:** both follow modes track the cursor as specified. **Depends on:** M5.2
 - [ ] **M5.5 — `Recorder` (H.264 mp4)** — `AVAssetWriter` fed by `SCStream` buffers → mp4 in

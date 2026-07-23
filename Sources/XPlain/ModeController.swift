@@ -42,4 +42,13 @@ final class ModeController {
   func exit() -> Bool {
     request(.idle)
   }
+
+  /// Toggles `mode`: exits to idle if it's already current, otherwise requests
+  /// it. The global activation hotkeys route through this so pressing a mode's
+  /// shortcut again leaves that mode — the only exit path for click-through
+  /// LiveZoom (M5.3), which passes Esc / right-click through to the app beneath.
+  @discardableResult
+  func toggle(_ mode: Mode) -> Bool {
+    current == mode ? exit() : request(mode)
+  }
 }

@@ -40,7 +40,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         requested: mode,
         permissionGranted: Self.requestScreenRecordingAccessIfNeeded()
       )
-      modeController.request(resolved)
+      // Toggle, not request: pressing a mode's hotkey while already in it exits.
+      // This is the only way out of click-through LiveZoom (M5.3), where Esc /
+      // right-click pass through to the app underneath.
+      modeController.toggle(resolved)
     }
     service.start()
     hotkeys = service

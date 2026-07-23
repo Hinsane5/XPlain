@@ -96,6 +96,12 @@ final class OverlayWindow: NSWindow {
   func showLiveZoom() -> LiveZoomView {
     zoomScale = 1
     acceptsMouseMovedEvents = false
+    // M5.3: click-through — mouse events pass to the app underneath so LiveZoom
+    // is a live magnifier you can keep working through (like ZoomIt's LiveZoom).
+    // The view follows the cursor by reading its global position each frame, so
+    // it doesn't need the mouse events it's giving up. Exit is the hotkey again
+    // (see ModeController.toggle) since Esc / right-click now pass through too.
+    ignoresMouseEvents = true
     let view = LiveZoomView(frame: NSRect(origin: .zero, size: frame.size))
     contentView = view
     return view

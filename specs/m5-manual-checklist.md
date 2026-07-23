@@ -12,8 +12,10 @@ screen, so they're verified here. CI skips the capture-bound integration tests.
 - [x] ⌘⌃L shows a magnified view of the live screen that updates continuously
       (menu-bar clock ticks) and follows the cursor. No self-capture feedback.
 
-## M5.3 — Click-through  *(pending)*
-- [ ] Clicks/typing pass through the LiveZoom overlay to the app underneath.
+## M5.3 — Click-through  ✅ verified live 2026-07-23
+- [x] Clicks/typing pass through the LiveZoom overlay to the app underneath.
+- [x] ⌘⌃L again cleanly exits LiveZoom (the hotkey is the exit, since Esc /
+      right-click now pass through too).
 
 ## M5.4 — Cursor-follow modes  *(pending)*
 - [ ] Cursor-centered vs. edge-push both track the cursor as specified.
