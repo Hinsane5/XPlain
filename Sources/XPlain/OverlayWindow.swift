@@ -34,6 +34,9 @@ final class OverlayWindow: NSWindow {
   private var zoomScale: CGFloat = 1
   private var lastCursor: CGPoint = .zero
 
+  /// The Draw-mode annotation view, when in Draw mode (M4.2). nil otherwise.
+  private(set) weak var annotationView: AnnotationView?
+
   /// - Parameter displayFrame: the target display's frame in global screen
   ///   coordinates (bottom-left origin). See `NSScreen.frameUnderCursor()`.
   init(displayFrame: NSRect) {
@@ -85,6 +88,17 @@ final class OverlayWindow: NSWindow {
     default:
       super.keyDown(with: event)
     }
+  }
+
+  /// Shows the Draw-mode annotation canvas over a frozen backdrop (M4.2): an
+  /// `AnnotationView` filling the window, left-drag drawing freehand strokes.
+  func showAnnotationCanvas(backdrop: CGImage) {
+    zoomScale = 1
+    acceptsMouseMovedEvents = false
+    let view = AnnotationView(frame: NSRect(origin: .zero, size: frame.size))
+    view.backdrop = backdrop
+    contentView = view
+    annotationView = view
   }
 
   /// The currently visible overlay content (magnified + panned) as an image —

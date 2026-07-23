@@ -180,7 +180,7 @@ Goal: full annotation toolset, over a zoom or standalone.
 
 - [x] **M4.1 — `Drawable` model + `Pen`** — value types per core.md "Data model".
   **Done when:** each case constructs and round-trips in a test. **Depends on:** M2.4
-- [ ] **M4.2 — Freehand drawing** — left-drag paints with the current pen. **Done when:**
+- [x] **M4.2 — Freehand drawing** — left-drag paints with the current pen. **Done when:**
   a dragged stroke renders live. **Depends on:** M4.1
 - [ ] **M4.3 — Shape modifiers** — Shift = line, ⌘ = rect, ⌥ = ellipse, Shift+⌘ = arrow
   (drawn as a rubber-band preview, committed on mouse-up). **Done when:** each modifier

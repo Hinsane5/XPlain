@@ -23,31 +23,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
 
     statusItem = item
 
-    // M1.3: hotkeys drive the mode controller, which shows/hides the overlay on
-    // the display under the cursor. Entering idle tears the overlay down.
-    // M2.2: a permission-prompt "mode" shows different overlay content.
-    // M2.4: real modes show the actual captured desktop, not a color fill.
-    modeController.onChange = { [overlay] from, next in
+    // M1.3+: hotkeys drive the mode controller, which shows/hides the overlay
+    // per mode (see `enter`). Entering idle tears the overlay down.
+    modeController.onChange = { [weak self] from, next in
       NSLog("XPlain: \(from) → \(next)")
-      switch next {
-      case .idle:
-        overlay.hide()
-      case .permissionPrompt:
-        overlay.showPermissionPrompt(onDisplayFrame: NSScreen.frameUnderCursor())
-      case .zoom:
-        if let display = NSScreen.displayUnderCursor() {
-          overlay.showCapturedSnapshot(of: display, magnifiedBy: ZoomRenderer.defaultScale)
-        } else {
-          overlay.show(onDisplayFrame: NSScreen.frameUnderCursor())
-        }
-      default:
-        // Draw / LiveZoom / Record show the frozen desktop at 1× for now (M4+).
-        if let display = NSScreen.displayUnderCursor() {
-          overlay.showCapturedSnapshot(of: display)
-        } else {
-          overlay.show(onDisplayFrame: NSScreen.frameUnderCursor())
-        }
-      }
+      self?.enter(next)
     }
     // M1.5: Esc / right-click on the overlay routes back to Idle.
     overlay.onDismissRequested = { [modeController] in
@@ -64,6 +44,35 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
     service.start()
     hotkeys = service
+  }
+
+  /// Presents the overlay content for a mode. Real modes capture the display
+  /// under the cursor; a missing display falls back to a plain overlay.
+  private func enter(_ mode: Mode) {
+    switch mode {
+    case .idle:
+      overlay.hide()
+    case .permissionPrompt:
+      overlay.showPermissionPrompt(onDisplayFrame: NSScreen.frameUnderCursor())
+    case .zoom:
+      withDisplayUnderCursor {
+        overlay.showCapturedSnapshot(of: $0, magnifiedBy: ZoomRenderer.defaultScale)
+      }
+    case .draw:
+      // M4.2: freeze the screen as a backdrop and draw annotations over it.
+      withDisplayUnderCursor { overlay.showDrawing(of: $0) }
+    case .liveZoom, .record:
+      // 1× frozen desktop for now (M5+).
+      withDisplayUnderCursor { overlay.showCapturedSnapshot(of: $0) }
+    }
+  }
+
+  private func withDisplayUnderCursor(_ present: (Display) -> Void) {
+    if let display = NSScreen.displayUnderCursor() {
+      present(display)
+    } else {
+      overlay.show(onDisplayFrame: NSScreen.frameUnderCursor())
+    }
   }
 
   /// `CGPreflightScreenCaptureAccess()` alone never prompts — if permission has

@@ -51,6 +51,30 @@ final class OverlayController {
     window?.showPermissionPrompt()
   }
 
+  /// Draw mode (M4.2): captures the display as a frozen backdrop, then shows the
+  /// annotation canvas over it. Same capture-first + generation-guard structure
+  /// as `showCapturedSnapshot`; falls back to the permission prompt on failure.
+  func showDrawing(of display: Display) {
+    generation &+= 1
+    let gen = generation
+    Task { @MainActor [weak self] in
+      do {
+        let image = try await CaptureService.snapshot(
+          of: display.displayID,
+          pixelSize: display.pixelSize
+        )
+        guard let self, self.generation == gen else { return }
+        self.show(onDisplayFrame: display.frame)
+        self.window?.showAnnotationCanvas(backdrop: image)
+      } catch {
+        NSLog("XPlain: capture failed - \(error)")
+        guard let self, self.generation == gen else { return }
+        self.show(onDisplayFrame: display.frame)
+        self.window?.showPermissionPrompt()
+      }
+    }
+  }
+
   /// Captures the display first, *then* shows the overlay already holding the
   /// real desktop image (M2.4). Capturing before the window appears is what
   /// keeps our own translucent overlay out of the screenshot — showing first
