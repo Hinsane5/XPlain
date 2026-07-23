@@ -25,6 +25,11 @@ final class OverlayWindow: NSWindow {
   /// (see `AppDelegate`) routes it through `ModeController.exit()`.
   var onDismissRequested: (() -> Void)?
 
+  // The magnified image view and its zoom scale, retained so mouse-move panning
+  // (M3.2) can re-anchor the frame on the live cursor. nil / 1 when not zoomed.
+  private weak var zoomImageView: NSImageView?
+  private var zoomScale: CGFloat = 1
+
   /// - Parameter displayFrame: the target display's frame in global screen
   ///   coordinates (bottom-left origin). See `NSScreen.frameUnderCursor()`.
   init(displayFrame: NSRect) {
@@ -127,10 +132,27 @@ final class OverlayWindow: NSWindow {
     container.addSubview(imageView)
 
     contentView = container
+    zoomImageView = imageView
+    zoomScale = scale
+    acceptsMouseMovedEvents = scale != 1  // pan only when magnified (M3.2)
     invalidateCursorRects(for: imageView)
     // Cursor rects only update on the next mouse move; set the red dot now so
     // it's shown the instant the overlay appears, not after the first move.
     Self.zoomCursor.set()
+  }
+
+  /// M3.2: while magnified, moving the mouse re-anchors the frozen image on the
+  /// live cursor, panning the view 1:1 so the content under the pointer tracks
+  /// it. Uses the same `ZoomRenderer.transform` as the initial present.
+  override func mouseMoved(with event: NSEvent) {
+    guard zoomScale != 1, let zoomImageView else {
+      super.mouseMoved(with: event)
+      return
+    }
+    let base = NSRect(origin: .zero, size: frame.size)
+    zoomImageView.frame = base.applying(
+      ZoomRenderer.transform(scale: zoomScale, about: event.locationInWindow)
+    )
   }
 }
 

@@ -10,8 +10,8 @@ Recording permission (now persists via stable signing — see M2 checklist).
 - [ ] The point under the cursor stays put (zoom is anchored on the pointer, not
       a corner or the wrong spot) — confirm by eye.
 
-## M3.2 — Pan on mouse move  *(pending)*
-- [ ] Moving the mouse pans the magnified view 1:1 (content tracks the cursor).
+## M3.2 — Pan on mouse move  ✅ verified live 2026-07-23
+- [x] Moving the mouse pans the magnified view 1:1 (content tracks the cursor).
 
 ## M3.3 — Zoom in/out  *(pending)*
 - [ ] Scroll wheel and ↑/↓ change the zoom level, clamped to 1.25×–8×.

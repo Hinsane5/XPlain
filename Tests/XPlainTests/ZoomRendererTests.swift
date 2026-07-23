@@ -37,6 +37,24 @@ final class ZoomRendererTests: XCTestCase {
     XCTAssertEqual(transform, .identity)
   }
 
+  func testPanIsLinearInCursorMovement() {
+    // M3.2: as the cursor moves by Δ, the magnified image's origin shifts by
+    // −Δ·(scale−1) — i.e. panning tracks the cursor 1:1 (the point under the
+    // pointer stays under it). Verify the origin delta between two cursors.
+    let display = CGRect(x: 0, y: 0, width: 1000, height: 800)
+    let scale: CGFloat = 3
+    let before = display.applying(
+      ZoomRenderer.transform(scale: scale, about: CGPoint(x: 100, y: 100))
+    )
+    let after = display.applying(
+      ZoomRenderer.transform(scale: scale, about: CGPoint(x: 140, y: 90))
+    )
+
+    // Δcursor = (40, −10) → Δorigin = −Δ·(scale−1) = (−80, 20).
+    XCTAssertEqual(after.origin.x - before.origin.x, -80, accuracy: 0.0001)
+    XCTAssertEqual(after.origin.y - before.origin.y, 20, accuracy: 0.0001)
+  }
+
   func testMagnifiedFrameForARectScalesAndReanchorsOnTheCursor() {
     // The overlay applies the transform to its full-display rect to place the
     // magnified image view. A 1000×800 display zoomed 2× about its center

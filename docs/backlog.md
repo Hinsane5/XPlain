@@ -158,7 +158,7 @@ Goal: the core feature — freeze, magnify, pan.
 - [x] **M3.1 — `ZoomRenderer`: initial magnified present** — scale (default 2×) centered
   on the cursor. **Done when:** activation shows the snapshot magnified around the
   cursor. **Depends on:** M2.4
-- [ ] **M3.2 — Pan on mouse move** — 1:1 cursor tracking. **Done when:** panning matches
+- [x] **M3.2 — Pan on mouse move** — 1:1 cursor tracking. **Done when:** panning matches
   cursor movement exactly. **Depends on:** M3.1
 - [ ] **M3.3 — Zoom in/out** — scroll wheel + ↑/↓, clamped to **1.25×–8×**, configurable
   step. **Done when:** level changes within range and never exceeds bounds (unit-tested).

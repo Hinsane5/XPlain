@@ -141,6 +141,48 @@ final class OverlayWindowTests: XCTestCase {
     XCTAssertEqual(imageView?.frame, NSRect(x: -400, y: -300, width: 1600, height: 1200))
   }
 
+  func testMouseMoveRepansTheMagnifiedImageOnTheNewCursor() {
+    // M3.2: while zoomed, moving the mouse re-anchors the magnified image on the
+    // new cursor position (pan), so the content under the pointer tracks it 1:1.
+    let window = OverlayWindow(displayFrame: NSRect(x: 0, y: 0, width: 800, height: 600))
+    window.showImage(
+      Self.makeTestImage(width: 100, height: 50),
+      magnifiedBy: 2,
+      about: CGPoint(x: 400, y: 300)
+    )
+
+    window.mouseMoved(with: Self.mouseMovedEvent(at: CGPoint(x: 200, y: 150)))
+
+    let imageView = window.contentView?.subviews.compactMap { $0 as? NSImageView }.first
+    // Re-anchored on (200,150): origin = point · (1 − scale) = (−200, −150).
+    XCTAssertEqual(imageView?.frame, NSRect(x: -200, y: -150, width: 1600, height: 1200))
+  }
+
+  func testMouseMoveDoesNothingAtOneX() {
+    // At 1× there's nothing to pan; a mouse move must not move the image view.
+    let window = OverlayWindow(displayFrame: NSRect(x: 0, y: 0, width: 800, height: 600))
+    window.showImage(Self.makeTestImage(width: 100, height: 50), magnifiedBy: 1, about: .zero)
+
+    window.mouseMoved(with: Self.mouseMovedEvent(at: CGPoint(x: 200, y: 150)))
+
+    let imageView = window.contentView?.subviews.compactMap { $0 as? NSImageView }.first
+    XCTAssertEqual(imageView?.frame, NSRect(x: 0, y: 0, width: 800, height: 600))
+  }
+
+  private static func mouseMovedEvent(at point: CGPoint) -> NSEvent {
+    NSEvent.mouseEvent(
+      with: .mouseMoved,
+      location: point,
+      modifierFlags: [],
+      timestamp: 0,
+      windowNumber: 0,
+      context: nil,
+      eventNumber: 0,
+      clickCount: 0,
+      pressure: 0
+    )!
+  }
+
   private static func makeTestImage(width: Int, height: Int) -> CGImage {
     let context = CGContext(
       data: nil,
