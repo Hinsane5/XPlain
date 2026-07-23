@@ -27,7 +27,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     // per mode (see `enter`). Entering idle tears the overlay down.
     modeController.onChange = { [weak self] from, next in
       NSLog("XPlain: \(from) → \(next)")
-      self?.enter(next)
+      self?.transition(from: from, to: next)
     }
     // M1.5: Esc / right-click on the overlay routes back to Idle.
     overlay.onDismissRequested = { [modeController] in
@@ -46,10 +46,15 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     hotkeys = service
   }
 
-  /// Presents the overlay content for a mode. Real modes capture the display
-  /// under the cursor; a missing display falls back to a plain overlay.
-  private func enter(_ mode: Mode) {
-    switch mode {
+  /// Presents the overlay content for a mode transition. Draw has two entry
+  /// paths (M4.9): from Zoom it annotates the current magnified image
+  /// (`drawOverCurrent`); standalone it freezes a fresh 1× capture.
+  private func transition(from: Mode, to next: Mode) {
+    if next == .draw, from == .zoom {
+      overlay.drawOverCurrent()
+      return
+    }
+    switch next {
     case .idle:
       overlay.hide()
     case .permissionPrompt:

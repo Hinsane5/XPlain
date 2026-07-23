@@ -90,6 +90,18 @@ final class OverlayWindow: NSWindow {
     }
   }
 
+  /// Draw-over-zoom (M4.9): snapshots whatever's currently shown (the magnified,
+  /// panned zoom image) and hands it to the annotation canvas as the backdrop,
+  /// so you annotate the *magnified* view rather than a fresh 1× capture.
+  func beginDrawingOverCurrentContent() {
+    guard let contentView,
+      let rep = contentView.bitmapImageRepForCachingDisplay(in: contentView.bounds)
+    else { return }
+    contentView.cacheDisplay(in: contentView.bounds, to: rep)
+    guard let snapshot = rep.cgImage else { return }
+    showAnnotationCanvas(backdrop: snapshot)
+  }
+
   /// Shows the Draw-mode annotation canvas over a frozen backdrop (M4.2): an
   /// `AnnotationView` filling the window, left-drag drawing freehand strokes.
   func showAnnotationCanvas(backdrop: CGImage) {

@@ -29,5 +29,6 @@ Enter Draw mode with ⌘⌃D (freezes the screen as a backdrop).
 ## M4.8 — Copy / save annotated  ✅ verified live 2026-07-23
 - [x] ⌘C / ⌘S include the annotations, not just the backdrop (and not the pen dot).
 
-## M4.9 — Standalone vs over-zoom  *(pending)*
-- [ ] ⌘⌃D from Idle draws on the frozen screen; from Zoom draws on the magnified image.
+## M4.9 — Standalone vs over-zoom  ✅ verified live 2026-07-23
+- [x] ⌘⌃D from Idle draws on the frozen screen; from Zoom (⌘⌃Z then ⌘⌃D) draws on
+      the magnified image.

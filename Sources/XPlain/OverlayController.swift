@@ -51,6 +51,13 @@ final class OverlayController {
     window?.showPermissionPrompt()
   }
 
+  /// Draw-over-zoom (M4.9): keep the current (magnified) overlay content and draw
+  /// on it, instead of re-capturing. No-op if no overlay is up.
+  func drawOverCurrent() {
+    generation &+= 1  // cancel any in-flight capture
+    window?.beginDrawingOverCurrentContent()
+  }
+
   /// Draw mode (M4.2): captures the display as a frozen backdrop, then shows the
   /// annotation canvas over it. Same capture-first + generation-guard structure
   /// as `showCapturedSnapshot`; falls back to the permission prompt on failure.

@@ -3,6 +3,19 @@ import XCTest
 @testable import XPlain
 
 final class ModeControllerTests: XCTestCase {
+  func testDrawIsReachableFromIdleAndFromZoom() {
+    // M4.9: the two Draw entry paths — standalone (from idle) and draw-over-zoom
+    // (from zoom) — both reach Draw.
+    let standalone = ModeController()
+    XCTAssertTrue(standalone.request(.draw))
+    XCTAssertEqual(standalone.current, .draw)
+
+    let overZoom = ModeController()
+    overZoom.request(.zoom)
+    XCTAssertTrue(overZoom.request(.draw))
+    XCTAssertEqual(overZoom.current, .draw)
+  }
+
   func testIdleZoomDrawIdleSequence() {
     let controller = ModeController()
     XCTAssertEqual(controller.current, .idle)
