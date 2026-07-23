@@ -5,6 +5,8 @@ import Cocoa
 /// confirm it lands on the right display.
 final class OverlayWindow: NSWindow {
   private static let escKeyCode: UInt16 = 53
+  private static let upArrowKeyCode: UInt16 = 126
+  private static let downArrowKeyCode: UInt16 = 125
 
   /// A red-dot pointer shown while a frozen snapshot is up, so it's obvious the
   /// overlay is active — otherwise the 1× capture is pixel-identical to the live
@@ -25,10 +27,12 @@ final class OverlayWindow: NSWindow {
   /// (see `AppDelegate`) routes it through `ModeController.exit()`.
   var onDismissRequested: (() -> Void)?
 
-  // The magnified image view and its zoom scale, retained so mouse-move panning
-  // (M3.2) can re-anchor the frame on the live cursor. nil / 1 when not zoomed.
+  // The magnified image view, its zoom scale, and the last cursor position (in
+  // window space), retained so mouse-move panning (M3.2) and scroll/arrow zoom
+  // (M3.3) can re-anchor the frame. nil / 1 when not zoomed.
   private weak var zoomImageView: NSImageView?
   private var zoomScale: CGFloat = 1
+  private var lastCursor: CGPoint = .zero
 
   /// - Parameter displayFrame: the target display's frame in global screen
   ///   coordinates (bottom-left origin). See `NSScreen.frameUnderCursor()`.
@@ -60,15 +64,45 @@ final class OverlayWindow: NSWindow {
   }
 
   override func keyDown(with event: NSEvent) {
-    if event.keyCode == Self.escKeyCode {
+    switch event.keyCode {
+    case Self.escKeyCode:
       onDismissRequested?()
-    } else {
+    case Self.upArrowKeyCode where zoomScale != 1:
+      zoomBy(steps: 1)
+    case Self.downArrowKeyCode where zoomScale != 1:
+      zoomBy(steps: -1)
+    default:
       super.keyDown(with: event)
+    }
+  }
+
+  override func scrollWheel(with event: NSEvent) {
+    guard zoomScale != 1 else {
+      super.scrollWheel(with: event)
+      return
+    }
+    if event.scrollingDeltaY != 0 {
+      lastCursor = event.locationInWindow
+      zoomBy(steps: event.scrollingDeltaY > 0 ? 1 : -1)  // scroll up = zoom in
     }
   }
 
   override func rightMouseDown(with event: NSEvent) {
     onDismissRequested?()
+  }
+
+  /// Steps the zoom level (M3.3), keeping the point under the cursor fixed.
+  /// Both scroll and ↑/↓ route here so they behave identically.
+  func zoomBy(steps: Int) {
+    guard zoomScale != 1 else { return }
+    zoomScale = ZoomRenderer.zoomed(from: zoomScale, steps: steps)
+    reanchorMagnifiedFrame()
+  }
+
+  private func reanchorMagnifiedFrame() {
+    guard let zoomImageView else { return }
+    let base = NSRect(origin: .zero, size: frame.size)
+    zoomImageView.frame = base.applying(ZoomRenderer.transform(scale: zoomScale, about: lastCursor))
   }
 
   /// Replaces the overlay's content with the permission prompt (M2.2): a
@@ -134,6 +168,7 @@ final class OverlayWindow: NSWindow {
     contentView = container
     zoomImageView = imageView
     zoomScale = scale
+    lastCursor = cursor
     acceptsMouseMovedEvents = scale != 1  // pan only when magnified (M3.2)
     invalidateCursorRects(for: imageView)
     // Cursor rects only update on the next mouse move; set the red dot now so
@@ -145,14 +180,12 @@ final class OverlayWindow: NSWindow {
   /// live cursor, panning the view 1:1 so the content under the pointer tracks
   /// it. Uses the same `ZoomRenderer.transform` as the initial present.
   override func mouseMoved(with event: NSEvent) {
-    guard zoomScale != 1, let zoomImageView else {
+    guard zoomScale != 1 else {
       super.mouseMoved(with: event)
       return
     }
-    let base = NSRect(origin: .zero, size: frame.size)
-    zoomImageView.frame = base.applying(
-      ZoomRenderer.transform(scale: zoomScale, about: event.locationInWindow)
-    )
+    lastCursor = event.locationInWindow
+    reanchorMagnifiedFrame()
   }
 }
 

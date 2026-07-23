@@ -169,6 +169,54 @@ final class OverlayWindowTests: XCTestCase {
     XCTAssertEqual(imageView?.frame, NSRect(x: 0, y: 0, width: 800, height: 600))
   }
 
+  func testUpArrowZoomsInReanchoredOnTheCursor() {
+    // M3.3: ↑ steps the zoom in by one notch (2 → 2.25) about the current
+    // cursor; the image view grows accordingly.
+    let window = OverlayWindow(displayFrame: NSRect(x: 0, y: 0, width: 800, height: 600))
+    window.showImage(
+      Self.makeTestImage(width: 100, height: 50),
+      magnifiedBy: 2,
+      about: CGPoint(x: 400, y: 300)
+    )
+
+    window.keyDown(with: Self.keyEvent(keyCode: 126))  // up arrow
+
+    let imageView = window.contentView?.subviews.compactMap { $0 as? NSImageView }.first
+    // 2.25× about (400,300): size 800·2.25 = 1800, 600·2.25 = 1350;
+    // origin = point·(1 − 2.25) = (−500, −375).
+    XCTAssertEqual(imageView?.frame, NSRect(x: -500, y: -375, width: 1800, height: 1350))
+  }
+
+  func testDownArrowZoomsOut() {
+    let window = OverlayWindow(displayFrame: NSRect(x: 0, y: 0, width: 800, height: 600))
+    window.showImage(
+      Self.makeTestImage(width: 100, height: 50),
+      magnifiedBy: 2,
+      about: CGPoint(x: 400, y: 300)
+    )
+
+    window.keyDown(with: Self.keyEvent(keyCode: 125))  // down arrow
+
+    let imageView = window.contentView?.subviews.compactMap { $0 as? NSImageView }.first
+    // 1.75× about (400,300): size 1400×1050; origin = point·(1 − 1.75) = (−300, −225).
+    XCTAssertEqual(imageView?.frame, NSRect(x: -300, y: -225, width: 1400, height: 1050))
+  }
+
+  func testZoomByClampsAtTheMaximum() {
+    let window = OverlayWindow(displayFrame: NSRect(x: 0, y: 0, width: 800, height: 600))
+    window.showImage(
+      Self.makeTestImage(width: 100, height: 50),
+      magnifiedBy: 2,
+      about: CGPoint(x: 0, y: 0)
+    )
+
+    window.zoomBy(steps: 100)  // way past 8×
+
+    let imageView = window.contentView?.subviews.compactMap { $0 as? NSImageView }.first
+    // Clamped to 8×: size 6400×4800 (origin 0 since anchored at (0,0)).
+    XCTAssertEqual(imageView?.frame, NSRect(x: 0, y: 0, width: 6400, height: 4800))
+  }
+
   private static func mouseMovedEvent(at point: CGPoint) -> NSEvent {
     NSEvent.mouseEvent(
       with: .mouseMoved,

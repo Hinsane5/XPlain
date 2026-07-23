@@ -10,6 +10,22 @@ enum ZoomRenderer {
   /// The zoom level applied on activation, per docs/spec.md §3.
   static let defaultScale: CGFloat = 2
 
+  /// Zoom range and per-notch step (spec §3): 1.25×–8×, 0.25× per notch.
+  static let minScale: CGFloat = 1.25
+  static let maxScale: CGFloat = 8
+  static let defaultStep: CGFloat = 0.25
+
+  /// Clamps a scale into `[minScale, maxScale]`.
+  static func clamped(_ scale: CGFloat) -> CGFloat {
+    min(max(scale, minScale), maxScale)
+  }
+
+  /// The scale after `steps` notches (positive = zoom in), clamped to range.
+  /// Both scroll and ↑/↓ funnel through this so they step identically (M3.3).
+  static func zoomed(from scale: CGFloat, steps: Int, step: CGFloat = defaultStep) -> CGFloat {
+    clamped(scale + CGFloat(steps) * step)
+  }
+
   /// The "zoom about a point" transform: `p' = point + scale · (p − point)`.
   /// `point` is a fixed point (maps to itself); everything else moves `scale`×
   /// farther from it. Applying it to the display rect gives the magnified

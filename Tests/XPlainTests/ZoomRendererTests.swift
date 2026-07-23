@@ -8,6 +8,30 @@ final class ZoomRendererTests: XCTestCase {
     XCTAssertEqual(ZoomRenderer.defaultScale, 2)
   }
 
+  func testScaleRangeMatchesTheSpec() {
+    // spec §3: zoom range 1.25×–8×, default step 0.25× per notch.
+    XCTAssertEqual(ZoomRenderer.minScale, 1.25)
+    XCTAssertEqual(ZoomRenderer.maxScale, 8)
+    XCTAssertEqual(ZoomRenderer.defaultStep, 0.25)
+  }
+
+  func testClampedKeepsScaleWithinRange() {
+    XCTAssertEqual(ZoomRenderer.clamped(0.5), 1.25)  // below min
+    XCTAssertEqual(ZoomRenderer.clamped(100), 8)  // above max
+    XCTAssertEqual(ZoomRenderer.clamped(3), 3)  // in range, unchanged
+  }
+
+  func testZoomedAppliesTheStepTimesTheNumberOfNotches() {
+    XCTAssertEqual(ZoomRenderer.zoomed(from: 2, steps: 1), 2.25, accuracy: 0.0001)  // +1 notch
+    XCTAssertEqual(ZoomRenderer.zoomed(from: 2, steps: -1), 1.75, accuracy: 0.0001)  // −1 notch
+    XCTAssertEqual(ZoomRenderer.zoomed(from: 2, steps: 4), 3, accuracy: 0.0001)  // +4 notches
+  }
+
+  func testZoomedNeverExceedsTheBounds() {
+    XCTAssertEqual(ZoomRenderer.zoomed(from: 8, steps: 10), 8)  // can't go past max
+    XCTAssertEqual(ZoomRenderer.zoomed(from: 1.25, steps: -10), 1.25)  // can't go past min
+  }
+
   func testCursorIsAFixedPointOfTheZoomTransform() {
     // Zooming "about" the cursor means the point under the cursor stays put —
     // the content there doesn't slide out from under the pointer.

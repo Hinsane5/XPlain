@@ -160,7 +160,7 @@ Goal: the core feature — freeze, magnify, pan.
   cursor. **Depends on:** M2.4
 - [x] **M3.2 — Pan on mouse move** — 1:1 cursor tracking. **Done when:** panning matches
   cursor movement exactly. **Depends on:** M3.1
-- [ ] **M3.3 — Zoom in/out** — scroll wheel + ↑/↓, clamped to **1.25×–8×**, configurable
+- [x] **M3.3 — Zoom in/out** — scroll wheel + ↑/↓, clamped to **1.25×–8×**, configurable
   step. **Done when:** level changes within range and never exceeds bounds (unit-tested).
   **Depends on:** M3.1
 - [ ] **M3.4 — Animated zoom-in** — smooth transition, not a hard jump. **Done when:**

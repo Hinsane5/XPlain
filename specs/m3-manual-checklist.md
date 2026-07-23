@@ -13,8 +13,8 @@ Recording permission (now persists via stable signing — see M2 checklist).
 ## M3.2 — Pan on mouse move  ✅ verified live 2026-07-23
 - [x] Moving the mouse pans the magnified view 1:1 (content tracks the cursor).
 
-## M3.3 — Zoom in/out  *(pending)*
-- [ ] Scroll wheel and ↑/↓ change the zoom level, clamped to 1.25×–8×.
+## M3.3 — Zoom in/out  ✅ verified live 2026-07-23
+- [x] Scroll wheel and ↑/↓ change the zoom level, clamped to 1.25×–8×.
 
 ## M3.4 — Animated zoom-in  *(pending)*
 - [ ] Entry animates smoothly (not a hard jump); can be disabled by a flag.
