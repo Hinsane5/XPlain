@@ -26,6 +26,11 @@ final class OverlayController {
     } else {
       let overlay = OverlayWindow(displayFrame: frame)
       overlay.onDismissRequested = { [weak self] in self?.onDismissRequested?() }
+      // XPlain is a menu-bar agent (LSUIElement), so it isn't the active app
+      // when a hotkey fires — makeKeyAndOrderFront alone won't make the overlay
+      // key, and a non-key window's cursor rects don't apply (the red-dot
+      // cursor wouldn't show until you clicked). Activate first.
+      NSApp.activate(ignoringOtherApps: true)
       overlay.makeKeyAndOrderFront(nil)
       window = overlay
     }
@@ -56,9 +61,13 @@ final class OverlayController {
   /// The `generation` guard drops the result if the user already dismissed or
   /// switched modes during the async capture, so a late frame never pops a stale
   /// overlay back onto the screen.
-  func showCapturedSnapshot(of display: Display) {
+  func showCapturedSnapshot(of display: Display, magnifiedBy scale: CGFloat = 1) {
     generation &+= 1
     let gen = generation
+    // Cursor in the window's (bottom-left) space: global mouse minus the
+    // display's origin. This is the zoom center handed to ZoomRenderer (M3.1).
+    let mouse = NSEvent.mouseLocation
+    let cursor = CGPoint(x: mouse.x - display.frame.minX, y: mouse.y - display.frame.minY)
     Task { @MainActor [weak self] in
       do {
         let image = try await CaptureService.snapshot(
@@ -67,7 +76,7 @@ final class OverlayController {
         )
         guard let self, self.generation == gen else { return }
         self.show(onDisplayFrame: display.frame)
-        self.window?.showImage(image)
+        self.window?.showImage(image, magnifiedBy: scale, about: cursor)
       } catch {
         NSLog("XPlain: capture failed - \(error)")
         guard let self, self.generation == gen else { return }

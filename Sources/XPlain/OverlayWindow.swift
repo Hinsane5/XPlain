@@ -104,17 +104,46 @@ final class OverlayWindow: NSWindow {
     NSWorkspace.shared.open(PermissionPromptContent.systemSettingsURL)
   }
 
-  /// Replaces the M1.3 placeholder color fill with the real captured desktop
-  /// image (M2.4), rendered at 1× — the image view's frame matches the
-  /// window's own size exactly, no scaling, so a pixel-accurate (native
-  /// resolution) capture looks identical to the live desktop it replaced.
-  func showImage(_ image: CGImage) {
-    let imageView = ZoomImageView(frame: NSRect(origin: .zero, size: frame.size))
+  /// Shows the captured desktop image magnified by `scale`, centered on
+  /// `cursor` (M2.4 render + M3.1 zoom). `scale = 1` reproduces the M2.4 1×
+  /// render (frame fills the window). The magnified image view is a subview of
+  /// a clipping container so the part that overflows the display is cropped by
+  /// the window; the container-fill keeps the red-dot cursor over the whole
+  /// overlay.
+  ///
+  /// - Parameters:
+  ///   - cursor: the zoom center in the window's (bottom-left origin) space —
+  ///     `NSEvent.mouseLocation` minus the display origin. See
+  ///     `OverlayController.showCapturedSnapshot`.
+  func showImage(_ image: CGImage, magnifiedBy scale: CGFloat = 1, about cursor: CGPoint = .zero) {
+    let container = ClippingView(frame: NSRect(origin: .zero, size: frame.size))
+
+    let base = NSRect(origin: .zero, size: frame.size)
+    let imageView = ZoomImageView(
+      frame: base.applying(ZoomRenderer.transform(scale: scale, about: cursor))
+    )
     imageView.image = NSImage(cgImage: image, size: frame.size)
     imageView.imageScaling = .scaleAxesIndependently
-    contentView = imageView
+    container.addSubview(imageView)
+
+    contentView = container
     invalidateCursorRects(for: imageView)
+    // Cursor rects only update on the next mouse move; set the red dot now so
+    // it's shown the instant the overlay appears, not after the first move.
+    Self.zoomCursor.set()
   }
+}
+
+/// Clips its subviews to its own bounds so the magnified image view (which
+/// extends past the display edges when zoomed) doesn't draw outside the overlay.
+private final class ClippingView: NSView {
+  override init(frame: NSRect) {
+    super.init(frame: frame)
+    clipsToBounds = true
+  }
+
+  @available(*, unavailable)
+  required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 }
 
 /// The frozen-snapshot content view. Its only extra job over `NSImageView` is to

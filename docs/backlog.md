@@ -155,7 +155,7 @@ Goal: overlays show a pixel-accurate frozen snapshot; missing permission is hand
 
 Goal: the core feature — freeze, magnify, pan.
 
-- [ ] **M3.1 — `ZoomRenderer`: initial magnified present** — scale (default 2×) centered
+- [x] **M3.1 — `ZoomRenderer`: initial magnified present** — scale (default 2×) centered
   on the cursor. **Done when:** activation shows the snapshot magnified around the
   cursor. **Depends on:** M2.4
 - [ ] **M3.2 — Pan on mouse move** — 1:1 cursor tracking. **Done when:** panning matches

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		010967C3E20D75FEF3CC8EF3 /* ZoomRendererTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940196E9F66C3520E925614D /* ZoomRendererTests.swift */; };
 		0E25469336758B42C431A7F9 /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = 84CF7173C5A869E6325AE0BF /* KeyboardShortcuts */; };
 		0F7EEB4EA53DF2F43ADFBEF6 /* KeyboardShortcuts+Names.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC2ABBEE510E67FE2BE3B81 /* KeyboardShortcuts+Names.swift */; };
 		1B039DF84F33E01994A6B778 /* Mode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A52A940C0E0BD00703CB03D /* Mode.swift */; };
@@ -23,6 +24,7 @@
 		A99B893E4E17E39F2AD40489 /* CaptureServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3211295A0EC9D89E431A3F6 /* CaptureServiceTests.swift */; };
 		B4A231B13F95C8BE9179E88D /* ModeControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1F3371A77584726FDC954F4 /* ModeControllerTests.swift */; };
 		B6F718B883F26DCC1CF0C03B /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = D8F7C74C29B70B72DDB8DE90 /* main.swift */; };
+		BE486D3FDEC169240F5CF3D2 /* ZoomRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A6F6272DA51E4149C8A881A7 /* ZoomRenderer.swift */; };
 		D771ECB0A667E6C253E8802F /* DisplayTargeting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92F2D3F6D57E8BE65A9E4D82 /* DisplayTargeting.swift */; };
 		E1D1708520AE3BDAEE40A8DE /* HotkeyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 53AE3F82BF1E64962D56F17D /* HotkeyService.swift */; };
 		E3622238D7375D2E918F01F7 /* XPlainTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D09F167839FABAE5225D701 /* XPlainTests.swift */; };
@@ -60,6 +62,8 @@
 		8B4A20C5A9AA497E1717BE97 /* ModeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeController.swift; sourceTree = "<group>"; };
 		92F2D3F6D57E8BE65A9E4D82 /* DisplayTargeting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayTargeting.swift; sourceTree = "<group>"; };
 		93187BEF54DBE980B162DF78 /* PermissionPromptContentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionPromptContentTests.swift; sourceTree = "<group>"; };
+		940196E9F66C3520E925614D /* ZoomRendererTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomRendererTests.swift; sourceTree = "<group>"; };
+		A6F6272DA51E4149C8A881A7 /* ZoomRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomRenderer.swift; sourceTree = "<group>"; };
 		C1F3371A77584726FDC954F4 /* ModeControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeControllerTests.swift; sourceTree = "<group>"; };
 		D3211295A0EC9D89E431A3F6 /* CaptureServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureServiceTests.swift; sourceTree = "<group>"; };
 		D8F7C74C29B70B72DDB8DE90 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
@@ -123,6 +127,7 @@
 				145FEFBC3C7A6A6BD746201B /* OverlayController.swift */,
 				2A99EAC64E53FCAE0750E23B /* OverlayWindow.swift */,
 				8698B1906602666644D86D7C /* PermissionPromptContent.swift */,
+				A6F6272DA51E4149C8A881A7 /* ZoomRenderer.swift */,
 			);
 			name = XPlain;
 			path = Sources/XPlain;
@@ -141,6 +146,7 @@
 				72B0F388BBC7FD2AC3D6FFA2 /* OverlayWindowTests.swift */,
 				93187BEF54DBE980B162DF78 /* PermissionPromptContentTests.swift */,
 				4D09F167839FABAE5225D701 /* XPlainTests.swift */,
+				940196E9F66C3520E925614D /* ZoomRendererTests.swift */,
 			);
 			name = XPlainTests;
 			path = Tests/XPlainTests;
@@ -245,6 +251,7 @@
 				244993B4B30F002EC555EE17 /* OverlayWindowTests.swift in Sources */,
 				81E766CD25517D06495D66D7 /* PermissionPromptContentTests.swift in Sources */,
 				E3622238D7375D2E918F01F7 /* XPlainTests.swift in Sources */,
+				010967C3E20D75FEF3CC8EF3 /* ZoomRendererTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -263,6 +270,7 @@
 				208C4A0293D43EF4ADF48951 /* OverlayController.swift in Sources */,
 				E54EA3CDBDC204A990EA9B60 /* OverlayWindow.swift in Sources */,
 				766DF61BE3B59E8DD815DDA6 /* PermissionPromptContent.swift in Sources */,
+				BE486D3FDEC169240F5CF3D2 /* ZoomRenderer.swift in Sources */,
 				B6F718B883F26DCC1CF0C03B /* main.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

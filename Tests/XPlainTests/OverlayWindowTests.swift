@@ -101,10 +101,10 @@ final class OverlayWindowTests: XCTestCase {
 
     window.showImage(image)
 
-    let imageView = window.contentView as? NSImageView
+    // The image view lives inside the clipping container (M3.1), so search the
+    // hierarchy rather than assuming contentView is the image view itself.
+    let imageView = window.contentView?.subviews.compactMap { $0 as? NSImageView }.first
     XCTAssertNotNil(imageView)
-    // The image's logical size matches the window frame exactly (1x fill, no
-    // scaling) regardless of the source CGImage's own pixel dimensions.
     XCTAssertEqual(imageView?.image?.size, window.frame.size)
 
     var proposedRect = NSRect(origin: .zero, size: imageView?.image?.size ?? .zero)
@@ -115,6 +115,30 @@ final class OverlayWindowTests: XCTestCase {
     )
     XCTAssertEqual(resolved?.width, 100)
     XCTAssertEqual(resolved?.height, 50)
+  }
+
+  func testShowImageAtOneXFillsTheWindow() {
+    // 1× (no magnification) → the image view fills the window exactly, matching
+    // the M2.4 render.
+    let window = OverlayWindow(displayFrame: NSRect(x: 0, y: 0, width: 800, height: 600))
+    window.showImage(Self.makeTestImage(width: 100, height: 50), magnifiedBy: 1, about: .zero)
+
+    let imageView = window.contentView?.subviews.compactMap { $0 as? NSImageView }.first
+    XCTAssertEqual(imageView?.frame, NSRect(x: 0, y: 0, width: 800, height: 600))
+  }
+
+  func testShowImageMagnifiedGrowsAndReanchorsOnTheCursor() {
+    // 2× about the window center → image view is 2× the window and re-anchored
+    // so the center stays fixed (origin = center · (1 − scale)).
+    let window = OverlayWindow(displayFrame: NSRect(x: 0, y: 0, width: 800, height: 600))
+    window.showImage(
+      Self.makeTestImage(width: 100, height: 50),
+      magnifiedBy: 2,
+      about: CGPoint(x: 400, y: 300)
+    )
+
+    let imageView = window.contentView?.subviews.compactMap { $0 as? NSImageView }.first
+    XCTAssertEqual(imageView?.frame, NSRect(x: -400, y: -300, width: 1600, height: 1200))
   }
 
   private static func makeTestImage(width: Int, height: Int) -> CGImage {

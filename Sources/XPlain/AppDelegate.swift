@@ -34,7 +34,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         overlay.hide()
       case .permissionPrompt:
         overlay.showPermissionPrompt(onDisplayFrame: NSScreen.frameUnderCursor())
+      case .zoom:
+        if let display = NSScreen.displayUnderCursor() {
+          overlay.showCapturedSnapshot(of: display, magnifiedBy: ZoomRenderer.defaultScale)
+        } else {
+          overlay.show(onDisplayFrame: NSScreen.frameUnderCursor())
+        }
       default:
+        // Draw / LiveZoom / Record show the frozen desktop at 1× for now (M4+).
         if let display = NSScreen.displayUnderCursor() {
           overlay.showCapturedSnapshot(of: display)
         } else {
