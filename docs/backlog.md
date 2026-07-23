@@ -188,7 +188,7 @@ Goal: full annotation toolset, over a zoom or standalone.
 - [x] **M4.4 — Colors, highlighter, width** — keys `r/g/b/o/y/p`, `h` highlighter toggle,
   `⌥+scroll` / `[` `]` width. **Done when:** every key changes the pen as specified.
   **Depends on:** M4.2
-- [ ] **M4.5 — Text tool** — `t` → click → type → Enter/Esc commits; `⌥+scroll` resizes
+- [x] **M4.5 — Text tool** — `t` → click → type → Enter/Esc commits; `⌥+scroll` resizes
   pre-commit. **Done when:** text places, edits, and commits correctly. **Depends on:** M4.2
 - [ ] **M4.6 — Whiteboard / blackboard** — `w` / `k` swap the backdrop; press again to
   restore. **Done when:** backdrop toggles without losing annotations. **Depends on:** M4.2

@@ -151,4 +151,65 @@ final class AnnotationCanvasTests: XCTestCase {
     for _ in 0..<1000 { canvas.apply(.widen) }
     XCTAssertLessThanOrEqual(canvas.pen.width, AnnotationCanvas.maxPenWidth)
   }
+
+  // MARK: Text (M4.5)
+
+  func testTypingBuildsTheDraftThenCommitsAsTextDrawable() {
+    let canvas = AnnotationCanvas()
+    canvas.pen.color = .blue
+
+    canvas.beginText(at: CGPoint(x: 30, y: 40))
+    XCTAssertTrue(canvas.isEditingText)
+    canvas.typeText("Hi")
+    canvas.typeText("!")
+    XCTAssertEqual(canvas.textDraft?.string, "Hi!")
+
+    canvas.commitText()
+    XCTAssertFalse(canvas.isEditingText)
+    XCTAssertEqual(
+      canvas.drawables,
+      [
+        .text(
+          "Hi!",
+          at: CGPoint(x: 30, y: 40),
+          size: AnnotationCanvas.defaultTextSize,
+          color: .blue
+        )
+      ]
+    )
+  }
+
+  func testBackspaceRemovesTheLastCharacter() {
+    let canvas = AnnotationCanvas()
+    canvas.beginText(at: .zero)
+    canvas.typeText("abc")
+    canvas.deleteBackwardText()
+    XCTAssertEqual(canvas.textDraft?.string, "ab")
+    canvas.deleteBackwardText()
+    canvas.deleteBackwardText()
+    canvas.deleteBackwardText()  // extra delete on empty is a no-op
+    XCTAssertEqual(canvas.textDraft?.string, "")
+  }
+
+  func testEmptyTextIsNotCommitted() {
+    let canvas = AnnotationCanvas()
+    canvas.beginText(at: .zero)
+    canvas.commitText()  // nothing typed
+    XCTAssertTrue(canvas.drawables.isEmpty)
+    XCTAssertFalse(canvas.isEditingText)
+  }
+
+  func testResizingTextClampsWithinBounds() {
+    let canvas = AnnotationCanvas()
+    canvas.beginText(at: .zero)
+    let start = canvas.textDraft?.size
+
+    canvas.resizeText(by: 1)
+    XCTAssertGreaterThan(canvas.textDraft?.size ?? 0, start ?? 0)
+
+    for _ in 0..<1000 { canvas.resizeText(by: 1) }
+    XCTAssertLessThanOrEqual(canvas.textDraft?.size ?? 0, AnnotationCanvas.maxTextSize)
+    for _ in 0..<1000 { canvas.resizeText(by: -1) }
+    XCTAssertGreaterThanOrEqual(canvas.textDraft?.size ?? 0, AnnotationCanvas.minTextSize)
+  }
 }

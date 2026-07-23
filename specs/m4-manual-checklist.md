@@ -15,8 +15,10 @@ Enter Draw mode with ⌘⌃D (freezes the screen as a backdrop).
 ## M4.4 — Colors / highlighter / width  ✅ verified live 2026-07-23
 - [x] r/g/b/o/y/p change color; h toggles highlighter; [ / ] and ⌥+scroll change width.
 
-## M4.5 — Text  *(pending)*
-- [ ] t → click → type → Enter/Esc commits; ⌥+scroll resizes before commit.
+## M4.5 — Text  ✅ verified live 2026-07-23
+- [x] t → click → type → Enter/Esc commits; ⌥+scroll resizes before commit.
+- [x] A centered vertical caret previews the insertion point + font size before
+      placing (⌥+scroll grows it up and down).
 
 ## M4.6 — Whiteboard / blackboard  *(pending)*
 - [ ] w = white backdrop, k = black; press again to restore; annotations survive.

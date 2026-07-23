@@ -23,6 +23,12 @@ final class AnnotationView: NSView {
   private var pointer: CGPoint?
   private var didHideCursor = false
 
+  // Text tool (M4.5): armed by `t`, placed by the next click, then typing.
+  private var textArmed = false
+  private static let returnKeyCode: UInt16 = 36
+  private static let escapeKeyCode: UInt16 = 53
+  private static let deleteKeyCode: UInt16 = 51
+
   override func viewDidMoveToWindow() {
     super.viewDidMoveToWindow()
     if let window {
@@ -60,7 +66,29 @@ final class AnnotationView: NSView {
     if let preview = canvas.inProgressShape {
       Self.render(preview, in: context)
     }
-    drawPenDot(in: context)
+    if let draft = canvas.textDraft {
+      // Trailing caret while typing.
+      Self.write(draft.string + "|", at: draft.location, size: draft.size, color: draft.color)
+    } else if textArmed {
+      drawTextCaret(in: context)  // show where/how big the text will land
+    } else {
+      drawPenDot(in: context)
+    }
+  }
+
+  /// A vertical caret at the pointer, as tall as the text, so you can see the
+  /// insertion point and font size before clicking to place text (M4.5).
+  private func drawTextCaret(in context: CGContext) {
+    guard let pointer else { return }
+    let halfHeight = canvas.pendingTextSize / 2
+    context.saveGState()
+    context.setStrokeColor(canvas.pen.color.nsColor.cgColor)
+    context.setLineWidth(2)
+    // Centered on the pointer, so growing the size extends it up *and* down.
+    context.move(to: CGPoint(x: pointer.x, y: pointer.y - halfHeight))
+    context.addLine(to: CGPoint(x: pointer.x, y: pointer.y + halfHeight))
+    context.strokePath()
+    context.restoreGState()
   }
 
   /// The pen preview dot at the pointer — pen color, sized to the brush.
@@ -89,14 +117,28 @@ final class AnnotationView: NSView {
   }
 
   override func mouseDown(with event: NSEvent) {
+    let point = convert(event.locationInWindow, from: nil)
+    pointer = point
+
+    if textArmed {
+      canvas.beginText(at: point)  // place the caret (M4.5)
+      textArmed = false
+      needsDisplay = true
+      return
+    }
+    if canvas.isEditingText {
+      canvas.commitText()  // clicking away commits the current text
+      needsDisplay = true
+      return
+    }
+
     let modifiers = event.modifierFlags
     let shape = AnnotationCanvas.shape(
       shift: modifiers.contains(.shift),
       command: modifiers.contains(.command),
       option: modifiers.contains(.option)
     )
-    pointer = convert(event.locationInWindow, from: nil)
-    canvas.beginStroke(at: convert(event.locationInWindow, from: nil), shape: shape)
+    canvas.beginStroke(at: point, shape: shape)
     needsDisplay = true
   }
 
@@ -112,6 +154,16 @@ final class AnnotationView: NSView {
   }
 
   override func keyDown(with event: NSEvent) {
+    // M4.5: while typing, all keys go to the text (Enter/Esc commit).
+    if canvas.isEditingText {
+      handleTextKey(event)
+      return
+    }
+    // `t` arms text placement for the next click (M4.5).
+    if !event.modifierFlags.contains(.command), event.charactersIgnoringModifiers == "t" {
+      textArmed = true
+      return
+    }
     // M4.4: pen keys (r/g/b/o/y/p, h, [ ]) mutate the pen; anything else (Esc,
     // ⌘C/⌘S) forwards up the responder chain to the window.
     if let command = Self.penCommand(for: event) {
@@ -120,6 +172,20 @@ final class AnnotationView: NSView {
       return
     }
     super.keyDown(with: event)
+  }
+
+  private func handleTextKey(_ event: NSEvent) {
+    switch event.keyCode {
+    case Self.returnKeyCode, Self.escapeKeyCode:
+      canvas.commitText()  // spec §4: Enter or Esc commits
+    case Self.deleteKeyCode:
+      canvas.deleteBackwardText()
+    default:
+      if let characters = event.characters, !characters.isEmpty {
+        canvas.typeText(characters)
+      }
+    }
+    needsDisplay = true
   }
 
   private static func penCommand(for event: NSEvent) -> PenCommand? {
@@ -135,8 +201,12 @@ final class AnnotationView: NSView {
       super.scrollWheel(with: event)
       return
     }
-    canvas.apply(event.scrollingDeltaY > 0 ? .widen : .narrow)
-    needsDisplay = true  // redraws the dot at the new width
+    if canvas.isEditingText || textArmed {
+      canvas.resizeText(by: event.scrollingDeltaY > 0 ? 1 : -1)  // M4.5
+    } else {
+      canvas.apply(event.scrollingDeltaY > 0 ? .widen : .narrow)  // M4.4
+    }
+    needsDisplay = true
   }
 
   // MARK: Rendering
@@ -164,9 +234,19 @@ final class AnnotationView: NSView {
       context.restoreGState()
     case .arrow(let from, let to, let pen):
       strokeArrow(from: from, to: to, pen: pen, in: context)
-    case .text:
-      break  // M4.5
+    case .text(let string, let point, let size, let color):
+      write(string, at: point, size: size, color: color)
     }
+  }
+
+  private static func write(_ string: String, at point: CGPoint, size: CGFloat, color: PenColor) {
+    (string as NSString).draw(
+      at: point,
+      withAttributes: [
+        .font: NSFont.systemFont(ofSize: size),
+        .foregroundColor: color.nsColor,
+      ]
+    )
   }
 
   private static func strokeArrow(

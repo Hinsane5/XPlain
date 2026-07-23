@@ -17,6 +17,28 @@ final class AnnotationCanvas {
   static let maxPenWidth: CGFloat = 60
   static let penWidthStep: CGFloat = 2
 
+  /// Text point-size bounds and default for the text tool (M4.5).
+  static let minTextSize: CGFloat = 10
+  static let maxTextSize: CGFloat = 200
+  static let defaultTextSize: CGFloat = 24
+
+  /// The text being typed before it's committed (M4.5). nil when not editing.
+  struct TextDraft: Equatable {
+    var string: String
+    var location: CGPoint
+    var size: CGFloat
+    var color: PenColor
+  }
+  private(set) var textDraft: TextDraft?
+
+  /// The size the *next* text will use, adjustable before placing (⌥+scroll
+  /// while the caret is armed) so the caret can preview it. Kept in sync with
+  /// the draft while editing.
+  private(set) var pendingTextSize = AnnotationCanvas.defaultTextSize
+
+  /// Whether a text draft is open (typing in progress).
+  var isEditingText: Bool { textDraft != nil }
+
   /// The kind of thing the current drag draws (spec §4). Chosen from the held
   /// modifiers at mouse-down (see `shape(shift:command:option:)`).
   enum Shape: Equatable {
@@ -91,6 +113,50 @@ final class AnnotationCanvas {
     case .narrow:
       pen.width = max(pen.width - Self.penWidthStep, Self.minPenWidth)
     }
+  }
+
+  // MARK: Text (M4.5)
+
+  /// Places a caret and starts a text draft in the current pen color at the
+  /// default size (`t` then click).
+  func beginText(at point: CGPoint) {
+    textDraft = TextDraft(
+      string: "",
+      location: point,
+      size: pendingTextSize,
+      color: pen.color
+    )
+  }
+
+  /// Appends typed characters to the draft.
+  func typeText(_ string: String) {
+    textDraft?.string.append(string)
+  }
+
+  /// Deletes the last character (Backspace); a no-op on an empty draft.
+  func deleteBackwardText() {
+    guard textDraft?.string.isEmpty == false else { return }
+    textDraft?.string.removeLast()
+  }
+
+  /// Resizes the text by `steps` notches (⌥+scroll), clamped to bounds. Works
+  /// both while armed (adjusts `pendingTextSize`, previewed by the caret) and
+  /// while editing (also updates the open draft).
+  func resizeText(by steps: Int) {
+    pendingTextSize = min(
+      max(pendingTextSize + CGFloat(steps) * 2, Self.minTextSize),
+      Self.maxTextSize
+    )
+    textDraft?.size = pendingTextSize
+  }
+
+  /// Commits the draft as a `.text` drawable (Enter/Esc). Empty text is dropped.
+  func commitText() {
+    defer { textDraft = nil }
+    guard let draft = textDraft, !draft.string.isEmpty else { return }
+    drawables.append(
+      .text(draft.string, at: draft.location, size: draft.size, color: draft.color)
+    )
   }
 
   // MARK: Shape geometry (pure — M4.3)
