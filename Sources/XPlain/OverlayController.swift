@@ -76,7 +76,7 @@ final class OverlayController {
         )
         guard let self, self.generation == gen else { return }
         self.show(onDisplayFrame: display.frame)
-        self.window?.showImage(image, magnifiedBy: scale, about: cursor)
+        self.window?.showImage(image, magnifiedBy: scale, about: cursor, animated: scale != 1)
       } catch {
         NSLog("XPlain: capture failed - \(error)")
         guard let self, self.generation == gen else { return }

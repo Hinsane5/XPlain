@@ -154,13 +154,19 @@ final class OverlayWindow: NSWindow {
   ///   - cursor: the zoom center in the window's (bottom-left origin) space —
   ///     `NSEvent.mouseLocation` minus the display origin. See
   ///     `OverlayController.showCapturedSnapshot`.
-  func showImage(_ image: CGImage, magnifiedBy scale: CGFloat = 1, about cursor: CGPoint = .zero) {
+  ///   - animated: when true and magnified, the zoom-in animates from 1× to
+  ///     `scale` (M3.4); false is a hard cut (the frame lands final immediately).
+  func showImage(
+    _ image: CGImage,
+    magnifiedBy scale: CGFloat = 1,
+    about cursor: CGPoint = .zero,
+    animated: Bool = false
+  ) {
     let container = ClippingView(frame: NSRect(origin: .zero, size: frame.size))
 
     let base = NSRect(origin: .zero, size: frame.size)
-    let imageView = ZoomImageView(
-      frame: base.applying(ZoomRenderer.transform(scale: scale, about: cursor))
-    )
+    let target = base.applying(ZoomRenderer.transform(scale: scale, about: cursor))
+    let imageView = ZoomImageView(frame: target)
     imageView.image = NSImage(cgImage: image, size: frame.size)
     imageView.imageScaling = .scaleAxesIndependently
     container.addSubview(imageView)
@@ -174,6 +180,18 @@ final class OverlayWindow: NSWindow {
     // Cursor rects only update on the next mouse move; set the red dot now so
     // it's shown the instant the overlay appears, not after the first move.
     Self.zoomCursor.set()
+
+    // M3.4: animate from the 1× fill up to the magnified target. The frame is
+    // already at target above (so a disabled/hard-cut lands correct); when
+    // animating, start at 1× and let the animator drive it to target.
+    let duration = ZoomRenderer.entryAnimationDuration(animated: animated)
+    if duration > 0, scale != 1 {
+      imageView.frame = base
+      NSAnimationContext.runAnimationGroup { context in
+        context.duration = duration
+        imageView.animator().frame = target
+      }
+    }
   }
 
   /// M3.2: while magnified, moving the mouse re-anchors the frozen image on the

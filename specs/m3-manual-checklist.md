@@ -16,8 +16,8 @@ Recording permission (now persists via stable signing — see M2 checklist).
 ## M3.3 — Zoom in/out  ✅ verified live 2026-07-23
 - [x] Scroll wheel and ↑/↓ change the zoom level, clamped to 1.25×–8×.
 
-## M3.4 — Animated zoom-in  *(pending)*
-- [ ] Entry animates smoothly (not a hard jump); can be disabled by a flag.
+## M3.4 — Animated zoom-in  ✅ verified live 2026-07-23
+- [x] Entry animates smoothly (not a hard jump); can be disabled by a flag.
 
 ## M3.5 — Copy / Save  *(pending)*
 - [ ] ⌘C copies the visible region; ⌘S writes a PNG to ~/Pictures/XPlain.

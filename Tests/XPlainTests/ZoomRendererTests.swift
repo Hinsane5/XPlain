@@ -15,6 +15,13 @@ final class ZoomRendererTests: XCTestCase {
     XCTAssertEqual(ZoomRenderer.defaultStep, 0.25)
   }
 
+  func testEntryAnimationDurationTogglesWithTheFlag() {
+    // M3.4: the animate flag turns the zoom-in animation on/off. Disabled → 0
+    // duration (hard cut); enabled → a positive, brief duration.
+    XCTAssertEqual(ZoomRenderer.entryAnimationDuration(animated: false), 0)
+    XCTAssertGreaterThan(ZoomRenderer.entryAnimationDuration(animated: true), 0)
+  }
+
   func testClampedKeepsScaleWithinRange() {
     XCTAssertEqual(ZoomRenderer.clamped(0.5), 1.25)  // below min
     XCTAssertEqual(ZoomRenderer.clamped(100), 8)  // above max

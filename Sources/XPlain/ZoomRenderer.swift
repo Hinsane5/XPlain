@@ -1,4 +1,5 @@
 import CoreGraphics
+import Foundation
 
 /// Pure zoom math (M3.1). Given a scale and the point to zoom about (the
 /// cursor), produces the affine transform that magnifies content while keeping
@@ -14,6 +15,12 @@ enum ZoomRenderer {
   static let minScale: CGFloat = 1.25
   static let maxScale: CGFloat = 8
   static let defaultStep: CGFloat = 0.25
+
+  /// How long the zoom-in animates on entry (M3.4). `animated == false` (the
+  /// Settings toggle, spec §7) gives 0 — a hard cut, no animation.
+  static func entryAnimationDuration(animated: Bool) -> TimeInterval {
+    animated ? 0.15 : 0
+  }
 
   /// Clamps a scale into `[minScale, maxScale]`.
   static func clamped(_ scale: CGFloat) -> CGFloat {
