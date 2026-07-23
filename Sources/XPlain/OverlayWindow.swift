@@ -94,7 +94,7 @@ final class OverlayWindow: NSWindow {
   /// `AnnotationView` filling the window, left-drag drawing freehand strokes.
   func showAnnotationCanvas(backdrop: CGImage) {
     zoomScale = 1
-    acceptsMouseMovedEvents = false
+    acceptsMouseMovedEvents = true  // track hover to draw the pen dot (M4.4)
     let view = AnnotationView(frame: NSRect(origin: .zero, size: frame.size))
     view.backdrop = backdrop
     contentView = view

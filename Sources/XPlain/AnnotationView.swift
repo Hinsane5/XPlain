@@ -16,6 +16,36 @@ final class AnnotationView: NSView {
   // through to the window via the responder chain (M4.4).
   override var acceptsFirstResponder: Bool { true }
 
+  // The pen preview is drawn by us (a dot at `pointer`) with the system cursor
+  // hidden — cursor rects / cursorUpdate proved unreliable at keeping a custom
+  // cursor showing while both hovering and drawing. This is fully in our control
+  // and always matches the pen's color/size.
+  private var pointer: CGPoint?
+  private var didHideCursor = false
+
+  override func viewDidMoveToWindow() {
+    super.viewDidMoveToWindow()
+    if let window {
+      pointer = convert(window.mouseLocationOutsideOfEventStream, from: nil)
+      if !didHideCursor {
+        NSCursor.hide()
+        didHideCursor = true
+      }
+      needsDisplay = true
+    } else {
+      restoreCursor()
+    }
+  }
+
+  deinit { restoreCursor() }
+
+  private func restoreCursor() {
+    if didHideCursor {
+      NSCursor.unhide()
+      didHideCursor = false
+    }
+  }
+
   override func draw(_ dirtyRect: NSRect) {
     if let backdrop {
       NSImage(cgImage: backdrop, size: bounds.size).draw(in: bounds)
@@ -30,6 +60,32 @@ final class AnnotationView: NSView {
     if let preview = canvas.inProgressShape {
       Self.render(preview, in: context)
     }
+    drawPenDot(in: context)
+  }
+
+  /// The pen preview dot at the pointer — pen color, sized to the brush.
+  private func drawPenDot(in context: CGContext) {
+    guard let pointer else { return }
+    let pen = canvas.pen
+    let effectiveWidth = pen.isHighlighter ? pen.width * 4 : pen.width
+    let diameter = min(max(effectiveWidth, 6), 48)
+    let alpha: CGFloat = pen.isHighlighter ? 0.5 : 1
+    context.saveGState()
+    context.setFillColor(pen.color.nsColor.withAlphaComponent(alpha).cgColor)
+    context.fillEllipse(
+      in: CGRect(
+        x: pointer.x - diameter / 2,
+        y: pointer.y - diameter / 2,
+        width: diameter,
+        height: diameter
+      )
+    )
+    context.restoreGState()
+  }
+
+  override func mouseMoved(with event: NSEvent) {
+    pointer = convert(event.locationInWindow, from: nil)
+    needsDisplay = true
   }
 
   override func mouseDown(with event: NSEvent) {
@@ -39,11 +95,13 @@ final class AnnotationView: NSView {
       command: modifiers.contains(.command),
       option: modifiers.contains(.option)
     )
+    pointer = convert(event.locationInWindow, from: nil)
     canvas.beginStroke(at: convert(event.locationInWindow, from: nil), shape: shape)
     needsDisplay = true
   }
 
   override func mouseDragged(with event: NSEvent) {
+    pointer = convert(event.locationInWindow, from: nil)
     canvas.appendPoint(convert(event.locationInWindow, from: nil))
     needsDisplay = true
   }
@@ -58,7 +116,7 @@ final class AnnotationView: NSView {
     // ⌘C/⌘S) forwards up the responder chain to the window.
     if let command = Self.penCommand(for: event) {
       canvas.apply(command)
-      needsDisplay = true
+      needsDisplay = true  // redraws the dot in the new color/width
       return
     }
     super.keyDown(with: event)
@@ -78,7 +136,7 @@ final class AnnotationView: NSView {
       return
     }
     canvas.apply(event.scrollingDeltaY > 0 ? .widen : .narrow)
-    needsDisplay = true
+    needsDisplay = true  // redraws the dot at the new width
   }
 
   // MARK: Rendering
