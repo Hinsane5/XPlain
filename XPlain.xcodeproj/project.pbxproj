@@ -13,12 +13,14 @@
 		0E25469336758B42C431A7F9 /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = 84CF7173C5A869E6325AE0BF /* KeyboardShortcuts */; };
 		0F37123C0B00F650D3A10CB4 /* SnapshotExporterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F05975A4FBC4D4387E7C45A /* SnapshotExporterTests.swift */; };
 		0F7EEB4EA53DF2F43ADFBEF6 /* KeyboardShortcuts+Names.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC2ABBEE510E67FE2BE3B81 /* KeyboardShortcuts+Names.swift */; };
+		111704CCD15F1A7F3FD107B1 /* LiveCaptureSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1082E31326A2E0D963216EC4 /* LiveCaptureSession.swift */; };
 		1B039DF84F33E01994A6B778 /* Mode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A52A940C0E0BD00703CB03D /* Mode.swift */; };
 		208C4A0293D43EF4ADF48951 /* OverlayController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145FEFBC3C7A6A6BD746201B /* OverlayController.swift */; };
 		244993B4B30F002EC555EE17 /* OverlayWindowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72B0F388BBC7FD2AC3D6FFA2 /* OverlayWindowTests.swift */; };
 		26679305EAD249E77A138B8D /* DrawableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39FC97B7F0CB94F5B9431130 /* DrawableTests.swift */; };
 		38C7E70A0289D00BFAB9D1E7 /* DisplayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3A83500C45B80164C5F8E7 /* DisplayTests.swift */; };
 		45ADAFF482C870AA0E25B8EF /* Drawable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79266B2514B5AB7AAEB47AA /* Drawable.swift */; };
+		462E8E8B8A9EA53D68EDED7F /* LiveCaptureSessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB33561B94B77997B61A5FB /* LiveCaptureSessionTests.swift */; };
 		5299E28D89D008D00AFF8AB4 /* ModeActivationGate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD484AD67A8DE0FFAB5BE70 /* ModeActivationGate.swift */; };
 		54A2314C646EDD079DDC583B /* DisplayTargetingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FC22988150A79781CCE30D /* DisplayTargetingTests.swift */; };
 		6F31F42976F6C05F368E76A3 /* HotkeyServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ACB92481DB5B32344B15C0C /* HotkeyServiceTests.swift */; };
@@ -60,6 +62,7 @@
 /* Begin PBXFileReference section */
 		02ACA590DA9BA5EB8E87BFDE /* SnapshotExporter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapshotExporter.swift; sourceTree = "<group>"; };
 		0BC2ABBEE510E67FE2BE3B81 /* KeyboardShortcuts+Names.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KeyboardShortcuts+Names.swift"; sourceTree = "<group>"; };
+		1082E31326A2E0D963216EC4 /* LiveCaptureSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveCaptureSession.swift; sourceTree = "<group>"; };
 		145FEFBC3C7A6A6BD746201B /* OverlayController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayController.swift; sourceTree = "<group>"; };
 		1B5E32342319E90FD1EC081A /* AnnotationExportTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationExportTests.swift; sourceTree = "<group>"; };
 		2A99EAC64E53FCAE0750E23B /* OverlayWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayWindow.swift; sourceTree = "<group>"; };
@@ -75,6 +78,7 @@
 		6044724AAE9FC763652A82C2 /* XPlainTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = XPlainTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		72B0F388BBC7FD2AC3D6FFA2 /* OverlayWindowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayWindowTests.swift; sourceTree = "<group>"; };
 		7883E60FCAA109BCC28572EE /* DrawableRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawableRenderer.swift; sourceTree = "<group>"; };
+		7EB33561B94B77997B61A5FB /* LiveCaptureSessionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveCaptureSessionTests.swift; sourceTree = "<group>"; };
 		813E7D75A6547579579A7704 /* ModeActivationGateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeActivationGateTests.swift; sourceTree = "<group>"; };
 		8698B1906602666644D86D7C /* PermissionPromptContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionPromptContent.swift; sourceTree = "<group>"; };
 		8B4A20C5A9AA497E1717BE97 /* ModeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeController.swift; sourceTree = "<group>"; };
@@ -149,6 +153,7 @@
 				53AE3F82BF1E64962D56F17D /* HotkeyService.swift */,
 				A47192C5703C456B51A71270 /* InputRouter.swift */,
 				0BC2ABBEE510E67FE2BE3B81 /* KeyboardShortcuts+Names.swift */,
+				1082E31326A2E0D963216EC4 /* LiveCaptureSession.swift */,
 				D8F7C74C29B70B72DDB8DE90 /* main.swift */,
 				5A52A940C0E0BD00703CB03D /* Mode.swift */,
 				ECD484AD67A8DE0FFAB5BE70 /* ModeActivationGate.swift */,
@@ -176,6 +181,7 @@
 				39FC97B7F0CB94F5B9431130 /* DrawableTests.swift */,
 				5ACB92481DB5B32344B15C0C /* HotkeyServiceTests.swift */,
 				B51F335EB9B843CC490F08C8 /* InputRouterTests.swift */,
+				7EB33561B94B77997B61A5FB /* LiveCaptureSessionTests.swift */,
 				813E7D75A6547579579A7704 /* ModeActivationGateTests.swift */,
 				C1F3371A77584726FDC954F4 /* ModeControllerTests.swift */,
 				72B0F388BBC7FD2AC3D6FFA2 /* OverlayWindowTests.swift */,
@@ -287,6 +293,7 @@
 				26679305EAD249E77A138B8D /* DrawableTests.swift in Sources */,
 				6F31F42976F6C05F368E76A3 /* HotkeyServiceTests.swift in Sources */,
 				8EB5A95EFD8022479875271A /* InputRouterTests.swift in Sources */,
+				462E8E8B8A9EA53D68EDED7F /* LiveCaptureSessionTests.swift in Sources */,
 				FD52B995BBE95AD7B6035C6B /* ModeActivationGateTests.swift in Sources */,
 				B4A231B13F95C8BE9179E88D /* ModeControllerTests.swift in Sources */,
 				244993B4B30F002EC555EE17 /* OverlayWindowTests.swift in Sources */,
@@ -311,6 +318,7 @@
 				E1D1708520AE3BDAEE40A8DE /* HotkeyService.swift in Sources */,
 				7C1EF9806C23A167351024CA /* InputRouter.swift in Sources */,
 				0F7EEB4EA53DF2F43ADFBEF6 /* KeyboardShortcuts+Names.swift in Sources */,
+				111704CCD15F1A7F3FD107B1 /* LiveCaptureSession.swift in Sources */,
 				1B039DF84F33E01994A6B778 /* Mode.swift in Sources */,
 				5299E28D89D008D00AFF8AB4 /* ModeActivationGate.swift in Sources */,
 				A5D7FBD17863C5B3303D6936 /* ModeController.swift in Sources */,
