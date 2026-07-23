@@ -8,8 +8,8 @@ Enter Draw mode with ⌘⌃D (freezes the screen as a backdrop).
 - [x] ⌘⌃D freezes the screen; left-drag paints a freehand stroke that renders
       live; Esc / right-click exits.
 
-## M4.3 — Shape modifiers  *(pending)*
-- [ ] Shift = straight line, ⌘ = rectangle, ⌥ = ellipse, Shift+⌘ = arrow, each
+## M4.3 — Shape modifiers  ✅ verified live 2026-07-23
+- [x] Shift = straight line, ⌘ = rectangle, ⌥ = ellipse, Shift+⌘ = arrow, each
       as a rubber-band preview committed on mouse-up.
 
 ## M4.4 — Colors / highlighter / width  *(pending)*

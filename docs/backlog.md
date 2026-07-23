@@ -182,7 +182,7 @@ Goal: full annotation toolset, over a zoom or standalone.
   **Done when:** each case constructs and round-trips in a test. **Depends on:** M2.4
 - [x] **M4.2 — Freehand drawing** — left-drag paints with the current pen. **Done when:**
   a dragged stroke renders live. **Depends on:** M4.1
-- [ ] **M4.3 — Shape modifiers** — Shift = line, ⌘ = rect, ⌥ = ellipse, Shift+⌘ = arrow
+- [x] **M4.3 — Shape modifiers** — Shift = line, ⌘ = rect, ⌥ = ellipse, Shift+⌘ = arrow
   (drawn as a rubber-band preview, committed on mouse-up). **Done when:** each modifier
   yields the correct shape. **Depends on:** M4.2
 - [ ] **M4.4 — Colors, highlighter, width** — keys `r/g/b/o/y/p`, `h` highlighter toggle,

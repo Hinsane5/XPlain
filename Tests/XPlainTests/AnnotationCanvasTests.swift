@@ -51,4 +51,70 @@ final class AnnotationCanvasTests: XCTestCase {
     canvas.endStroke()
     XCTAssertTrue(canvas.drawables.isEmpty)
   }
+
+  // MARK: Shapes (M4.3)
+
+  func testModifierToShapeMapping() {
+    // spec §4: none=freehand, Shift=line, ⌘=rect, ⌥=ellipse, Shift+⌘=arrow.
+    typealias Shape = AnnotationCanvas.Shape
+    XCTAssertEqual(AnnotationCanvas.shape(shift: false, command: false, option: false), .freehand)
+    XCTAssertEqual(AnnotationCanvas.shape(shift: true, command: false, option: false), .line)
+    XCTAssertEqual(AnnotationCanvas.shape(shift: false, command: true, option: false), .rectangle)
+    XCTAssertEqual(AnnotationCanvas.shape(shift: false, command: false, option: true), .ellipse)
+    XCTAssertEqual(AnnotationCanvas.shape(shift: true, command: true, option: false), .arrow)
+  }
+
+  func testShapeGeometryFromDragStartAndEnd() {
+    let pen = Pen(color: .blue, width: 2, isHighlighter: false)
+    let start = CGPoint(x: 10, y: 100)
+    let end = CGPoint(x: 40, y: 60)
+
+    XCTAssertEqual(
+      AnnotationCanvas.drawable(shape: .line, from: start, to: end, pen: pen),
+      .line(from: start, to: end, pen: pen)
+    )
+    XCTAssertEqual(
+      AnnotationCanvas.drawable(shape: .arrow, from: start, to: end, pen: pen),
+      .arrow(from: start, to: end, pen: pen)
+    )
+    // rect / ellipse normalize the drag into a positive-size rect regardless of
+    // direction: here (10,60)–(40,100), 30×40.
+    let normalized = CGRect(x: 10, y: 60, width: 30, height: 40)
+    XCTAssertEqual(
+      AnnotationCanvas.drawable(shape: .rectangle, from: start, to: end, pen: pen),
+      .rect(normalized, pen: pen)
+    )
+    XCTAssertEqual(
+      AnnotationCanvas.drawable(shape: .ellipse, from: start, to: end, pen: pen),
+      .ellipse(normalized, pen: pen)
+    )
+  }
+
+  func testDraggingAShapeCommitsThatShapeOnEnd() {
+    let canvas = AnnotationCanvas()
+    canvas.pen = Pen(color: .orange, width: 3, isHighlighter: false)
+
+    canvas.beginStroke(at: CGPoint(x: 0, y: 0), shape: .rectangle)
+    canvas.appendPoint(CGPoint(x: 50, y: 30))
+    XCTAssertNotNil(canvas.inProgressShape)  // rubber-band preview available
+    canvas.endStroke()
+
+    XCTAssertEqual(
+      canvas.drawables,
+      [
+        .rect(
+          CGRect(x: 0, y: 0, width: 50, height: 30),
+          pen: Pen(color: .orange, width: 3, isHighlighter: false)
+        )
+      ]
+    )
+    XCTAssertNil(canvas.inProgressShape)  // cleared after commit
+  }
+
+  func testShapeWithNoDragIsNotCommitted() {
+    let canvas = AnnotationCanvas()
+    canvas.beginStroke(at: CGPoint(x: 5, y: 5), shape: .ellipse)
+    canvas.endStroke()  // no drag → start == end
+    XCTAssertTrue(canvas.drawables.isEmpty)
+  }
 }

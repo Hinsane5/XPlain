@@ -23,10 +23,19 @@ final class AnnotationView: NSView {
     if canvas.inProgressStroke.count > 1 {
       Self.strokeFreehand(canvas.inProgressStroke, pen: canvas.pen, in: context)
     }
+    if let preview = canvas.inProgressShape {
+      Self.render(preview, in: context)
+    }
   }
 
   override func mouseDown(with event: NSEvent) {
-    canvas.beginStroke(at: convert(event.locationInWindow, from: nil))
+    let modifiers = event.modifierFlags
+    let shape = AnnotationCanvas.shape(
+      shift: modifiers.contains(.shift),
+      command: modifiers.contains(.command),
+      option: modifiers.contains(.option)
+    )
+    canvas.beginStroke(at: convert(event.locationInWindow, from: nil), shape: shape)
     needsDisplay = true
   }
 
@@ -46,9 +55,53 @@ final class AnnotationView: NSView {
     switch drawable {
     case .freehand(let points, let pen):
       strokeFreehand(points, pen: pen, in: context)
-    default:
-      break  // shapes / text land in M4.3 / M4.5
+    case .line(let from, let to, let pen):
+      apply(pen, to: context)
+      context.saveGState()
+      context.move(to: from)
+      context.addLine(to: to)
+      context.strokePath()
+      context.restoreGState()
+    case .rect(let rect, let pen):
+      apply(pen, to: context)
+      context.saveGState()
+      context.stroke(rect)
+      context.restoreGState()
+    case .ellipse(let rect, let pen):
+      apply(pen, to: context)
+      context.saveGState()
+      context.strokeEllipse(in: rect)
+      context.restoreGState()
+    case .arrow(let from, let to, let pen):
+      strokeArrow(from: from, to: to, pen: pen, in: context)
+    case .text:
+      break  // M4.5
     }
+  }
+
+  private static func strokeArrow(
+    from start: CGPoint,
+    to end: CGPoint,
+    pen: Pen,
+    in context: CGContext
+  ) {
+    context.saveGState()
+    apply(pen, to: context)
+    // Shaft.
+    context.move(to: start)
+    context.addLine(to: end)
+    // Two barbs at the tip, angled back along the shaft.
+    let angle = atan2(end.y - start.y, end.x - start.x)
+    let headLength = max(12, pen.width * 4)
+    let spread = CGFloat.pi / 7
+    for side in [angle + .pi - spread, angle + .pi + spread] {
+      context.move(to: end)
+      context.addLine(
+        to: CGPoint(x: end.x + cos(side) * headLength, y: end.y + sin(side) * headLength)
+      )
+    }
+    context.strokePath()
+    context.restoreGState()
   }
 
   private static func strokeFreehand(_ points: [CGPoint], pen: Pen, in context: CGContext) {
