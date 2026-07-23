@@ -6,6 +6,20 @@ import Cocoa
 final class OverlayWindow: NSWindow {
   private static let escKeyCode: UInt16 = 53
 
+  /// A red-dot pointer shown while a frozen snapshot is up, so it's obvious the
+  /// overlay is active — otherwise the 1× capture is pixel-identical to the live
+  /// desktop and there's no cue you've entered the mode (ZoomIt does the same).
+  /// The real magnification lands in M3; this is the interim "you're in" cue.
+  static let zoomCursor: NSCursor = {
+    let diameter: CGFloat = 12
+    let image = NSImage(size: NSSize(width: diameter, height: diameter))
+    image.lockFocus()
+    NSColor.systemRed.setFill()
+    NSBezierPath(ovalIn: NSRect(x: 0, y: 0, width: diameter, height: diameter)).fill()
+    image.unlockFocus()
+    return NSCursor(image: image, hotSpot: NSPoint(x: diameter / 2, y: diameter / 2))
+  }()
+
   /// Called when Esc or a right-click asks to leave the active mode (M1.5). The
   /// window itself doesn't tear down — it just reports the request; the caller
   /// (see `AppDelegate`) routes it through `ModeController.exit()`.
@@ -95,10 +109,19 @@ final class OverlayWindow: NSWindow {
   /// window's own size exactly, no scaling, so a pixel-accurate (native
   /// resolution) capture looks identical to the live desktop it replaced.
   func showImage(_ image: CGImage) {
-    let imageView = NSImageView(frame: NSRect(origin: .zero, size: frame.size))
+    let imageView = ZoomImageView(frame: NSRect(origin: .zero, size: frame.size))
     imageView.image = NSImage(cgImage: image, size: frame.size)
     imageView.imageScaling = .scaleAxesIndependently
     contentView = imageView
+    invalidateCursorRects(for: imageView)
+  }
+}
+
+/// The frozen-snapshot content view. Its only extra job over `NSImageView` is to
+/// paint the red-dot `zoomCursor` over the whole overlay (see that cursor's note).
+private final class ZoomImageView: NSImageView {
+  override func resetCursorRects() {
+    addCursorRect(bounds, cursor: OverlayWindow.zoomCursor)
   }
 }
 
