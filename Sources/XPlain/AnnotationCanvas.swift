@@ -12,6 +12,11 @@ final class AnnotationCanvas {
   /// The active pen. Default red, medium width, per spec §4.
   var pen = Pen(color: .red, width: 3, isHighlighter: false)
 
+  /// Pen-width bounds and step for the `[` / `]` and ⌥+scroll controls (M4.4).
+  static let minPenWidth: CGFloat = 1
+  static let maxPenWidth: CGFloat = 60
+  static let penWidthStep: CGFloat = 2
+
   /// The kind of thing the current drag draws (spec §4). Chosen from the held
   /// modifiers at mouse-down (see `shape(shift:command:option:)`).
   enum Shape: Equatable {
@@ -70,6 +75,21 @@ final class AnnotationCanvas {
       drawables.append(.freehand(points: inProgressStroke, pen: pen))
     } else if start != end {
       drawables.append(Self.drawable(shape: gestureShape, from: start, to: end, pen: pen))
+    }
+  }
+
+  /// Applies a pen command (M4.4): color, highlighter toggle, or width step
+  /// clamped to `[minPenWidth, maxPenWidth]`.
+  func apply(_ command: PenCommand) {
+    switch command {
+    case .setColor(let color):
+      pen.color = color
+    case .toggleHighlighter:
+      pen.isHighlighter.toggle()
+    case .widen:
+      pen.width = min(pen.width + Self.penWidthStep, Self.maxPenWidth)
+    case .narrow:
+      pen.width = max(pen.width - Self.penWidthStep, Self.minPenWidth)
     }
   }
 

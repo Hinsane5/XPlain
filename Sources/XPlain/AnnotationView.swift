@@ -12,6 +12,10 @@ final class AnnotationView: NSView {
 
   override var isFlipped: Bool { false }
 
+  // Draw mode routes color/width/highlighter keys here; Esc / ⌘C / ⌘S fall
+  // through to the window via the responder chain (M4.4).
+  override var acceptsFirstResponder: Bool { true }
+
   override func draw(_ dirtyRect: NSRect) {
     if let backdrop {
       NSImage(cgImage: backdrop, size: bounds.size).draw(in: bounds)
@@ -46,6 +50,34 @@ final class AnnotationView: NSView {
 
   override func mouseUp(with event: NSEvent) {
     canvas.endStroke()
+    needsDisplay = true
+  }
+
+  override func keyDown(with event: NSEvent) {
+    // M4.4: pen keys (r/g/b/o/y/p, h, [ ]) mutate the pen; anything else (Esc,
+    // ⌘C/⌘S) forwards up the responder chain to the window.
+    if let command = Self.penCommand(for: event) {
+      canvas.apply(command)
+      needsDisplay = true
+      return
+    }
+    super.keyDown(with: event)
+  }
+
+  private static func penCommand(for event: NSEvent) -> PenCommand? {
+    guard !event.modifierFlags.contains(.command),
+      let key = event.charactersIgnoringModifiers
+    else { return nil }
+    return InputRouter.penCommand(forKey: key)
+  }
+
+  override func scrollWheel(with event: NSEvent) {
+    // M4.4: ⌥+scroll changes pen width (up = widen).
+    guard event.modifierFlags.contains(.option), event.scrollingDeltaY != 0 else {
+      super.scrollWheel(with: event)
+      return
+    }
+    canvas.apply(event.scrollingDeltaY > 0 ? .widen : .narrow)
     needsDisplay = true
   }
 
@@ -117,9 +149,11 @@ final class AnnotationView: NSView {
   }
 
   private static func apply(_ pen: Pen, to context: CGContext) {
+    // The highlighter draws semi-transparent and wide (spec §4).
     let alpha: CGFloat = pen.isHighlighter ? 0.4 : 1
+    let width = pen.isHighlighter ? pen.width * 4 : pen.width
     context.setStrokeColor(pen.color.nsColor.withAlphaComponent(alpha).cgColor)
-    context.setLineWidth(pen.width)
+    context.setLineWidth(width)
     context.setLineCap(.round)
     context.setLineJoin(.round)
   }

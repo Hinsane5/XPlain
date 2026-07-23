@@ -99,6 +99,7 @@ final class OverlayWindow: NSWindow {
     view.backdrop = backdrop
     contentView = view
     annotationView = view
+    makeFirstResponder(view)  // so the pen keys reach the view (M4.4)
   }
 
   /// The currently visible overlay content (magnified + panned) as an image —

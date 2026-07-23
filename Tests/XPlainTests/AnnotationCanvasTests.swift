@@ -117,4 +117,38 @@ final class AnnotationCanvasTests: XCTestCase {
     canvas.endStroke()  // no drag → start == end
     XCTAssertTrue(canvas.drawables.isEmpty)
   }
+
+  // MARK: Pen commands (M4.4)
+
+  func testSetColorCommandChangesThePenColor() {
+    let canvas = AnnotationCanvas()
+    canvas.apply(.setColor(.green))
+    XCTAssertEqual(canvas.pen.color, .green)
+  }
+
+  func testToggleHighlighterFlipsTheFlag() {
+    let canvas = AnnotationCanvas()
+    XCTAssertFalse(canvas.pen.isHighlighter)
+    canvas.apply(.toggleHighlighter)
+    XCTAssertTrue(canvas.pen.isHighlighter)
+    canvas.apply(.toggleHighlighter)
+    XCTAssertFalse(canvas.pen.isHighlighter)
+  }
+
+  func testWidenAndNarrowAdjustWidthWithinBounds() {
+    let canvas = AnnotationCanvas()
+    let start = canvas.pen.width
+
+    canvas.apply(.widen)
+    XCTAssertGreaterThan(canvas.pen.width, start)
+    canvas.apply(.narrow)
+    XCTAssertEqual(canvas.pen.width, start, accuracy: 0.0001)
+
+    // Never goes below the minimum, however many times you narrow.
+    for _ in 0..<100 { canvas.apply(.narrow) }
+    XCTAssertGreaterThanOrEqual(canvas.pen.width, AnnotationCanvas.minPenWidth)
+    // …or above the maximum.
+    for _ in 0..<1000 { canvas.apply(.widen) }
+    XCTAssertLessThanOrEqual(canvas.pen.width, AnnotationCanvas.maxPenWidth)
+  }
 }

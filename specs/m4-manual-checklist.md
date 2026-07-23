@@ -12,8 +12,8 @@ Enter Draw mode with ⌘⌃D (freezes the screen as a backdrop).
 - [x] Shift = straight line, ⌘ = rectangle, ⌥ = ellipse, Shift+⌘ = arrow, each
       as a rubber-band preview committed on mouse-up.
 
-## M4.4 — Colors / highlighter / width  *(pending)*
-- [ ] r/g/b/o/y/p change color; h toggles highlighter; [ / ] and ⌥+scroll change width.
+## M4.4 — Colors / highlighter / width  ✅ verified live 2026-07-23
+- [x] r/g/b/o/y/p change color; h toggles highlighter; [ / ] and ⌥+scroll change width.
 
 ## M4.5 — Text  *(pending)*
 - [ ] t → click → type → Enter/Esc commits; ⌥+scroll resizes before commit.
