@@ -168,7 +168,7 @@ Goal: the core feature — freeze, magnify, pan.
 - [x] **M3.5 — Copy / Save** — `⌘C` copies visible region to clipboard; `⌘S` writes PNG to
   `~/Pictures/XPlain`. **Done when:** both produce correct output for the visible region.
   **Depends on:** M3.1
-- [ ] **M3.6 — Zoom-math unit tests** — clamping, step, pan transform, cursor-centering.
+- [x] **M3.6 — Zoom-math unit tests** — clamping, step, pan transform, cursor-centering.
   **Done when:** tests cover the range/step/transform edge cases. **Depends on:** M3.3
 
 ---

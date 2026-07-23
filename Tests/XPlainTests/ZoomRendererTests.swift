@@ -100,4 +100,35 @@ final class ZoomRendererTests: XCTestCase {
     XCTAssertEqual(framed.origin.x, -500, accuracy: 0.0001)
     XCTAssertEqual(framed.origin.y, -400, accuracy: 0.0001)
   }
+
+  // M3.6 — remaining edge cases that round out the dedicated zoom-math suite.
+
+  func testClampedLeavesTheExactBoundariesUnchanged() {
+    XCTAssertEqual(ZoomRenderer.clamped(ZoomRenderer.minScale), 1.25)
+    XCTAssertEqual(ZoomRenderer.clamped(ZoomRenderer.maxScale), 8)
+  }
+
+  func testZoomedHonorsACustomStep() {
+    XCTAssertEqual(ZoomRenderer.zoomed(from: 2, steps: 2, step: 0.5), 3, accuracy: 0.0001)
+    XCTAssertEqual(ZoomRenderer.zoomed(from: 2, steps: 0, step: 0.5), 2, accuracy: 0.0001)
+  }
+
+  func testTransformAboutTheOriginIsPureScale() {
+    // Anchoring at (0,0) means no translation — just a scale (tx = ty = 0).
+    let transform = ZoomRenderer.transform(scale: 3, about: .zero)
+    XCTAssertEqual(transform.tx, 0, accuracy: 0.0001)
+    XCTAssertEqual(transform.ty, 0, accuracy: 0.0001)
+    XCTAssertEqual(transform.a, 3, accuracy: 0.0001)
+    XCTAssertEqual(transform.d, 3, accuracy: 0.0001)
+  }
+
+  func testTransformIsInvertibleBackToTheOriginalPoint() {
+    // Applying the transform then its inverse returns the original point —
+    // guards against a bad anchor/translation that isn't cleanly reversible.
+    let transform = ZoomRenderer.transform(scale: 2.5, about: CGPoint(x: 320, y: 240))
+    let point = CGPoint(x: 512, y: 128)
+    let roundTripped = point.applying(transform).applying(transform.inverted())
+    XCTAssertEqual(roundTripped.x, point.x, accuracy: 0.0001)
+    XCTAssertEqual(roundTripped.y, point.y, accuracy: 0.0001)
+  }
 }
