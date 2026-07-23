@@ -52,10 +52,10 @@ final class OverlayController {
           of: display.displayID,
           pixelSize: display.pixelSize
         )
-        self?.window?.showImage(image)
+        await self?.window?.showImage(image)
       } catch {
         NSLog("XPlain: capture failed - \(error)")
-        self?.window?.showPermissionPrompt()
+        await self?.window?.showPermissionPrompt()
       }
     }
   }
