@@ -168,8 +168,21 @@ Mac.
   intentionally left unchecked: multi-display placement, untested on a
   single-display setup — revisit if this ever runs on a multi-monitor Mac.
   21 tests total, all green.
-- **Next up:** M2.1 (`CaptureService.snapshot(of:)`) — first real capture code,
-  needs Screen Recording permission on the machine it runs on.
+- **M2.1** `CaptureService.snapshot(of:)` — `[~]` code + guarded integration
+  test done; real-capture verification pending Screen Recording permission
+  (`specs/m2-manual-checklist.md`). Tests skip cleanly without it.
+- **M2.2** Permission preflight + `PermissionPrompt` state — ✅ done (fully
+  unit-testable per the matrix, no manual row — 8 real, non-skipped tests).
+- **M2.3** Coordinate Y-flip — ✅ done (fully unit-testable, no manual row).
+- **M2.4** Render snapshot into overlay — not started. STOP condition (per §5):
+  pure manual/visual per the matrix (no unit-test row at all) *and* needs real
+  Screen Recording permission, same as M2.1 — nothing here can be meaningfully
+  written or verified test-first without both. Decided 2026-07-23: stop rather
+  than write unverifiable async capture-rendering code.
+- **Next up:** grant Screen Recording permission to a built `XPlain.app`, then
+  resume with M2.4 (and finish M2.1's real-capture verification in
+  `specs/m2-manual-checklist.md` at the same time — same permission gate).
+  37 tests total (2 skipped), all green, CI green on every push through M2.3.
 
 Keep this section honest; it's the fastest way for the next loop session to know
 where to resume.
