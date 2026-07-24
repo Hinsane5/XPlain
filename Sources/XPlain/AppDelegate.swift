@@ -41,7 +41,15 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
     // M2.2: gate activation on Screen Recording permission — denied requests
     // resolve to .permissionPrompt instead of a blank/failed capture.
-    let service = HotkeyService { [modeController] mode in
+    let service = HotkeyService { [weak self, modeController] mode in
+      // M5.8: recording is a background activity, not an exclusive mode — ⌘⌃R
+      // toggles it independently so you can Zoom/Draw *while* recording and
+      // those overlays are composited into the file (SCStream captures the whole
+      // display). All the other hotkeys drive the exclusive mode machine.
+      if mode == .record {
+        self?.toggleRecording()
+        return
+      }
       let resolved = ModeActivationGate.resolve(
         requested: mode,
         permissionGranted: Self.requestScreenRecordingAccessIfNeeded()
@@ -164,10 +172,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
   /// paths (M4.9): from Zoom it annotates the current magnified image
   /// (`drawOverCurrent`); standalone it freezes a fresh 1× capture.
   private func transition(from: Mode, to next: Mode) {
-    // M5.5: leaving Record stops and saves the file, whatever we move to next.
-    if from == .record, next != .record {
-      stopRecording()
-    }
     if next == .draw, from == .zoom {
       overlay.drawOverCurrent()
       return
@@ -188,10 +192,26 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
       // M5.2: continuously-updating magnified view of the live screen.
       withDisplayUnderCursor { overlay.showLiveZoom(of: $0) }
     case .record:
-      // M5.5: record the live screen to an mp4 — no blocking overlay, so you
-      // keep working while it captures (the HUD indicator lands in M5.9).
-      startRecording()
+      // M5.8: Record is no longer an exclusive mode — ⌘⌃R drives recording
+      // directly (see `toggleRecording`), never routing through the mode
+      // machine, so this case is unreachable.
+      break
     }
+  }
+
+  /// M5.8: toggles background recording, independent of the exclusive mode
+  /// machine. Gates on Screen Recording permission on start (routing a denial to
+  /// the permission prompt), and stops+saves if already recording.
+  private func toggleRecording() {
+    if recorder.isRecording {
+      stopRecording()
+      return
+    }
+    guard Self.requestScreenRecordingAccessIfNeeded() else {
+      modeController.request(.permissionPrompt)
+      return
+    }
+    startRecording()
   }
 
   /// M5.5/M5.6: begins recording the display under the cursor to a timestamped
@@ -209,8 +229,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         guard let region = rect.map({ RecordingRegion.clamped($0, to: display.frame.size) }),
           RecordingRegion.isUsable(region)
         else {
-          // Cancelled or too small — leave Record rather than record nothing.
-          self.modeController.exit()
+          // Cancelled or too small — just don't record (recording isn't a mode).
           return
         }
         self.beginRecording(

@@ -243,8 +243,12 @@ Goal: live magnification and screen recording. Highest technical risk — see co
   *(both toggles done + verified live. System audio = AAC track (no extra prompt);
   microphone = AAC track via SCStream `.microphone` (macOS 15+, lazy TCC prompt).
   Both-on writes two separate audio tracks — single-track mixing is iceboxed.)*
-- [ ] **M5.8 — Composite overlay into recording** — Zoom/Draw annotations appear in the
+- [x] **M5.8 — Composite overlay into recording** — Zoom/Draw annotations appear in the
   output. **Done when:** a recorded session shows the annotations. **Depends on:** M5.5, M4.2
+  *(recording decoupled from the exclusive mode machine — ⌘⌃R records in the
+  background, so Zoom/Draw overlays are captured by the whole-display SCStream with
+  no extra compositing code. Verified live: extracted a frame showing a red pen
+  stroke baked in. Note: Draw's backdrop is frozen; live-screen annotation is M9.)*
 - [ ] **M5.9 — Recording HUD / indicator** — menu-bar state + elapsed time. **Done when:**
   recording state and time are visible and accurate. **Depends on:** M5.5
 

@@ -46,8 +46,11 @@ screen, so they're verified here. CI skips the capture-bound integration tests.
 - [ ] Known limitation: both-on = two separate audio tracks (players play one);
       single-track mixing is iceboxed.
 
-## M5.8 — Composite overlay  *(pending)*
-- [ ] Zoom/Draw annotations appear in the recording.
+## M5.8 — Composite overlay  ✅ verified live 2026-07-24
+- [x] Recording is a background activity (⌘⌃R), independent of the mode machine.
+- [x] Zooming/drawing while recording composites those overlays into the file.
+      Verified: extracted a frame from a recording showing a red pen stroke baked
+      into the live screen. (Draw's backdrop is frozen — live+draw is M9.)
 
 ## M5.9 — Recording HUD  *(pending)*
 - [ ] Menu-bar state + elapsed time are visible and accurate while recording.
