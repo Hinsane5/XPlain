@@ -40,6 +40,10 @@ targets:
         CODE_SIGN_STYLE: Automatic
         ENABLE_TESTABILITY: YES
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon  # M6.6
+        # M6.7: hardened runtime (required for Developer ID notarization) + the
+        # minimal entitlement the mic needs under it. Screen capture needs none.
+        ENABLE_HARDENED_RUNTIME: YES
+        CODE_SIGN_ENTITLEMENTS: XPlain/XPlain.entitlements
     dependencies:
       - package: KeyboardShortcuts
 

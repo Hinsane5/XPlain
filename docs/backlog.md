@@ -301,9 +301,14 @@ Goal: configurable, signed, notarized, releasable.
   template `MenuBarIcon` (auto-tinted glyph, replaces the "X" text); the recording
   HUD swaps the glyph for the red-dot clock. Icons are code-generated + reproducible
   via `scripts/generate-icons.swift`. Verified live: menu glyph + app icon render.)*
-- [ ] **M6.7 — Signing + hardened runtime + entitlements** — Developer ID, minimal
+- [x] **M6.7 — Signing + hardened runtime + entitlements** — Developer ID, minimal
   entitlements (screen capture; device-audio only if mic offered). **Done when:** a signed
   build passes `codesign --verify`. **Depends on:** M0.1
+  *(hardened runtime enabled (`flags=0x10000(runtime)`); `XPlain.entitlements` adds
+  only `com.apple.security.device.audio-input` (mic; screen capture needs none; not
+  sandboxed). Debug + Release both pass `codesign --verify --strict --deep`. NOTE:
+  currently the Apple Development cert — Developer ID + dropping `get-task-allow`
+  come with M6.8, which needs the paid membership.)*
 - [ ] **M6.8 — Notarize + staple + `.dmg`** — `notarytool` submit, `stapler`, dmg build
   script. **Done when:** `spctl -a -vv` accepts the app on a clean machine. **Depends
   on:** M6.7

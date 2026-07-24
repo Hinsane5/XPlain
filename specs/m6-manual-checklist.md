@@ -34,8 +34,9 @@ login item, and Gatekeeper acceptance are verified here.
 - [x] App icon (blue magnifier) renders in Finder.
 - [x] Recording HUD still swaps glyph → red-dot clock → glyph.
 
-## M6.7 — Signing + hardened runtime  *(pending)*
-- [ ] A signed build passes `codesign --verify`.
+## M6.7 — Signing + hardened runtime  ✅ verified 2026-07-24
+- [x] Debug + Release builds pass `codesign --verify --strict --deep` with the
+      hardened-runtime flag and the `audio-input` entitlement.
 
 ## M6.8 — Notarize + staple + .dmg  *(pending)*
 - [ ] `spctl -a -vv` accepts the app on a clean machine.
