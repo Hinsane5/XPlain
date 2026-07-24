@@ -13,12 +13,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
   /// refreshes the menu-bar elapsed clock. Both nil when not recording.
   private var recordingStartDate: Date?
   private var recordingTimer: Timer?
-  /// The idle menu-bar title, restored when recording stops.
-  private static let idleStatusTitle = "X"
 
   func applicationDidFinishLaunching(_ notification: Notification) {
     let item = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
-    item.button?.title = Self.idleStatusTitle
+    // M6.6: a template menu-bar glyph (macOS tints it for light/dark) in place of
+    // the "X" text placeholder. The recording HUD swaps in a red-dot + clock.
+    let icon = NSImage(named: "MenuBarIcon")
+    icon?.isTemplate = true
+    item.button?.image = icon
 
     // M6.4: rebuild the menu each time it opens (delegate `menuNeedsUpdate`) so
     // its quick-toggle checkmarks stay in sync with changes made in Settings.
@@ -197,6 +199,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
   /// that ticks once a second.
   private func startRecordingHUD() {
     recordingStartDate = Date()
+    statusItem?.button?.image = nil  // M6.6: swap the glyph for the red-dot clock
     updateRecordingHUD()
     let timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
       self?.updateRecordingHUD()
@@ -205,12 +208,15 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     recordingTimer = timer
   }
 
-  /// Stops the indicator and restores the idle menu-bar title.
+  /// Stops the indicator and restores the idle menu-bar glyph.
   private func stopRecordingHUD() {
     recordingTimer?.invalidate()
     recordingTimer = nil
     recordingStartDate = nil
-    statusItem?.button?.attributedTitle = NSAttributedString(string: Self.idleStatusTitle)
+    statusItem?.button?.attributedTitle = NSAttributedString(string: "")
+    let icon = NSImage(named: "MenuBarIcon")
+    icon?.isTemplate = true
+    statusItem?.button?.image = icon
   }
 
   private func updateRecordingHUD() {

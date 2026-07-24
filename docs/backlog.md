@@ -295,8 +295,12 @@ Goal: configurable, signed, notarized, releasable.
   toggle reads the live service status as its source of truth (replacing the
   redundant `SettingsStore.launchAtLogin`). Verified live: toggling adds/removes
   XPlain in System Settings ▸ Login Items and the toggle reflects real state.)*
-- [ ] **M6.6 — Icons** — app icon + menu-bar template icon. **Done when:** both render at
+- [x] **M6.6 — Icons** — app icon + menu-bar template icon. **Done when:** both render at
   all required sizes. **Depends on:** M0.2
+  *(`Assets.xcassets` with an `AppIcon` set (16→1024, blue-gradient magnifier) and a
+  template `MenuBarIcon` (auto-tinted glyph, replaces the "X" text); the recording
+  HUD swaps the glyph for the red-dot clock. Icons are code-generated + reproducible
+  via `scripts/generate-icons.swift`. Verified live: menu glyph + app icon render.)*
 - [ ] **M6.7 — Signing + hardened runtime + entitlements** — Developer ID, minimal
   entitlements (screen capture; device-audio only if mic offered). **Done when:** a signed
   build passes `codesign --verify`. **Depends on:** M0.1

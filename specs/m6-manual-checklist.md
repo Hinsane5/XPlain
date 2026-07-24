@@ -29,8 +29,10 @@ login item, and Gatekeeper acceptance are verified here.
 - [x] The General toggle adds/removes XPlain in System Settings ▸ Login Items.
 - [x] The toggle reflects the real login-item state when Settings reopens.
 
-## M6.6 — Icons  *(pending)*
-- [ ] App icon + menu-bar template icon render at all required sizes.
+## M6.6 — Icons  ✅ verified live 2026-07-24
+- [x] Menu-bar shows the template magnifier glyph (auto-tinted), not "X".
+- [x] App icon (blue magnifier) renders in Finder.
+- [x] Recording HUD still swaps glyph → red-dot clock → glyph.
 
 ## M6.7 — Signing + hardened runtime  *(pending)*
 - [ ] A signed build passes `codesign --verify`.

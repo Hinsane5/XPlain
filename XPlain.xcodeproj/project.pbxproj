@@ -18,6 +18,7 @@
 		0F7EEB4EA53DF2F43ADFBEF6 /* KeyboardShortcuts+Names.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BC2ABBEE510E67FE2BE3B81 /* KeyboardShortcuts+Names.swift */; };
 		111704CCD15F1A7F3FD107B1 /* LiveCaptureSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1082E31326A2E0D963216EC4 /* LiveCaptureSession.swift */; };
 		15966C0F5A0137784B30D614 /* RegionSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0788126842D1DC0D346AEAD6 /* RegionSelectionView.swift */; };
+		1890DC52335D98A62308F657 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E674004A228B10F91E2A36CF /* Assets.xcassets */; };
 		1B039DF84F33E01994A6B778 /* Mode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A52A940C0E0BD00703CB03D /* Mode.swift */; };
 		1C0DC22C9006A861F1555922 /* SettingsPanes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C421477489949D2A89FC32C /* SettingsPanes.swift */; };
 		208C4A0293D43EF4ADF48951 /* OverlayController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145FEFBC3C7A6A6BD746201B /* OverlayController.swift */; };
@@ -135,6 +136,7 @@
 		DD2B5DDBAFC698E5957E1E37 /* CaptureServiceYFlipTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureServiceYFlipTests.swift; sourceTree = "<group>"; };
 		DF3A89F832079CFB0EBC1B90 /* RecordingRegion.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingRegion.swift; sourceTree = "<group>"; };
 		E5FC22988150A79781CCE30D /* DisplayTargetingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayTargetingTests.swift; sourceTree = "<group>"; };
+		E674004A228B10F91E2A36CF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E79266B2514B5AB7AAEB47AA /* Drawable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Drawable.swift; sourceTree = "<group>"; };
 		ECD484AD67A8DE0FFAB5BE70 /* ModeActivationGate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeActivationGate.swift; sourceTree = "<group>"; };
 		EE4710EB08FD2C9B0E4BE4AF /* CaptureService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureService.swift; sourceTree = "<group>"; };
@@ -187,6 +189,7 @@
 				38C642F36F18B03B343ED8F0 /* AnnotationView.swift */,
 				3AA5FDD7E196925C46DDDFCA /* AppDelegate.swift */,
 				9C0FA901AE94393AD371161A /* AppDelegate+Menu.swift */,
+				E674004A228B10F91E2A36CF /* Assets.xcassets */,
 				EE4710EB08FD2C9B0E4BE4AF /* CaptureService.swift */,
 				92F2D3F6D57E8BE65A9E4D82 /* DisplayTargeting.swift */,
 				E79266B2514B5AB7AAEB47AA /* Drawable.swift */,
@@ -282,6 +285,7 @@
 			buildConfigurationList = CF4B1F528380AB144BDB8863 /* Build configuration list for PBXNativeTarget "XPlain" */;
 			buildPhases = (
 				ED09987CCD9B37384613DB4D /* Sources */,
+				78E9C0754A0D1539C826853F /* Resources */,
 				DAE1D923CC3667E0A88D001E /* Frameworks */,
 			);
 			buildRules = (
@@ -337,6 +341,17 @@
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		78E9C0754A0D1539C826853F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1890DC52335D98A62308F657 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		53A8282839E433BB38E50850 /* Sources */ = {
