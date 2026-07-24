@@ -199,6 +199,21 @@ Mac.
   `DrawableRenderer` (drawing), `InputRouter` (key→command). Plus a UX extra: a
   pen-colored dot cursor sized to the brush (system cursor hidden, dot drawn by us).
 - **M0–M4 all done.** 118 tests, CI green.
+- **M5 — LiveZoom + Record — done (verified live 2026-07-23…24), one caveat.**
+  LiveZoom: live `SCStream` frame feed (M5.1) → layer-backed magnifier following
+  the cursor (M5.2, `LiveZoomView` — not Metal; updates fine), click-through so
+  you work under it (M5.3, `ModeController.toggle` is the exit), and cursor-follow
+  modes (M5.4, `LiveZoomFollow` + status-menu toggle). Record: `Recorder` writes
+  H.264 mp4 to `~/Movies/XPlain` (M5.5), region-vs-full via a drag-select overlay
+  and `SCStreamConfiguration.sourceRect` (M5.6), optional system-audio + mic AAC
+  tracks (M5.7/M5.7b, mic is macOS 15+ SCStream `.microphone`), Zoom/Draw
+  annotations composited in because **recording is now decoupled from the mode
+  machine** — ⌘⌃R records in the background so overlays are captured for free
+  (M5.8), and a menu-bar red-dot + elapsed clock HUD (M5.9). **Caveat:** M5.4 is
+  still `[~]` — code + unit tests landed and pushed, but the two follow *feels*
+  (cursor-centered vs edge-push) were never live-verified. Also iceboxed: mixing
+  system+mic into a single track (currently two separate audio tracks); live-screen
+  annotation while recording is M9 LiveDraw (Draw's backdrop is frozen today).
 
 **Signing (important — read before building locally):** local builds are now
 signed with a stable Apple Development identity (Personal Team `37784HMFS9`,
@@ -221,11 +236,12 @@ dismiss (NSButton swallows right-click) → `RightClickForwardingButton`.
   launcher). Use `xcodebuild build-for-testing` to compile-check tests (confirms
   RED/GREEN compiles), and rely on **CI** or a **fresh Terminal.app window** to
   actually run them. `swiftlint`/`swift-format`/plain `build` work fine here.
-- **Next up:** M5 — LiveZoom + Record (spec §5–§6). Highest technical risk:
-  live `SCStream` frame feed (M5.1), Metal/live magnification (M5.2), AVAssetWriter
-  recording (M5.5). Many M5 tasks are integration/manual — need real capture, a
-  GPU, and live verification (and CI skips the capture-bound ones). 118 tests,
-  CI green through M4.
+- **Next up:** M6 — Settings, polish & distribution (spec §7). SwiftUI
+  preferences window (`SettingsStore`, hotkey recorders, wire the panes),
+  launch-at-login, icons, then signing → notarize → `.dmg` → GitHub Release =
+  v0.1 ships. Loose ends to fold in: live-verify M5.4's follow feels, and decide
+  if single-track audio mixing is worth pulling out of the icebox. Post-MVP: M7
+  Break Timer, M8 Demo Type, M9 LiveDraw, M10 loupe/PiP.
 
 Keep this section honest; it's the fastest way for the next loop session to know
 where to resume.
