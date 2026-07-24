@@ -316,9 +316,15 @@ Goal: configurable, signed, notarized, releasable.
   sandboxed). Debug + Release both pass `codesign --verify --strict --deep`. NOTE:
   currently the Apple Development cert — Developer ID + dropping `get-task-allow`
   come with M6.8, which needs the paid membership.)*
-- [ ] **M6.8 — Notarize + staple + `.dmg`** — `notarytool` submit, `stapler`, dmg build
+- [~] **M6.8 — Notarize + staple + `.dmg`** — `notarytool` submit, `stapler`, dmg build
   script. **Done when:** `spctl -a -vv` accepts the app on a clean machine. **Depends
   on:** M6.7
+  *(`scripts/build-dmg.sh` builds a drag-to-install `.dmg` (verified: mounts,
+  contains the app + /Applications, passes `codesign --verify`); `scripts/notarize.sh`
+  is the ready-to-run Developer-ID sign + notarytool + staple pipeline. BLOCKED on
+  the notarization/`spctl` half: the user won't buy the $99/yr membership, so no
+  Developer ID — the local `.dmg` is un-notarized (opens on the build Mac; Gatekeeper
+  warns elsewhere). See memory `no-paid-apple-developer`.)*
 - [ ] **M6.9 — First-run onboarding** — guided Screen-Recording permission + hotkey cheat
   sheet. **Done when:** a fresh install walks a new user to a working state. **Depends
   on:** M2.2

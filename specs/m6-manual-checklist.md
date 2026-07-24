@@ -38,8 +38,12 @@ login item, and Gatekeeper acceptance are verified here.
 - [x] Debug + Release builds pass `codesign --verify --strict --deep` with the
       hardened-runtime flag and the `audio-input` entitlement.
 
-## M6.8 — Notarize + staple + .dmg  *(pending)*
-- [ ] `spctl -a -vv` accepts the app on a clean machine.
+## M6.8 — Notarize + staple + .dmg  *(dmg done; notarization blocked)*
+- [x] `scripts/build-dmg.sh` builds build/XPlain.dmg (mounts, app + /Applications,
+      passes codesign --verify).
+- [ ] BLOCKED: Developer ID signing + notarize + staple + `spctl -a -vv` acceptance
+      need a paid Apple Developer membership (user opted out). `scripts/notarize.sh`
+      is ready for if that ever changes.
 
 ## M6.9 — First-run onboarding  *(pending)*
 - [ ] A fresh install walks a new user to a working state.
