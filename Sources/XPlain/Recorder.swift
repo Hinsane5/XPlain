@@ -62,6 +62,7 @@ final class Recorder: NSObject, SCStreamOutput {
     sourceRect: CGRect? = nil,
     capturesSystemAudio: Bool = false,
     capturesMicrophone: Bool = false,
+    quality: RecordingQuality = .high,
     excludingWindow windowID: CGWindowID? = nil
   ) async throws {
     let content = try await SCShareableContent.current
@@ -80,7 +81,8 @@ final class Recorder: NSObject, SCStreamOutput {
     let (writer, input) = try Self.makeWriter(
       to: outputURL,
       width: Int(pixelSize.width),
-      height: Int(pixelSize.height)
+      height: Int(pixelSize.height),
+      quality: quality
     )
     self.writer = writer
     videoInput = input
@@ -230,12 +232,19 @@ final class Recorder: NSObject, SCStreamOutput {
     return "XPlain \(formatter.string(from: date)).mp4"
   }
 
-  /// The H.264 writer-input settings for the given native pixel size.
-  static func videoSettings(width: Int, height: Int) -> [String: Any] {
-    [
+  /// The H.264 writer-input settings for the given native pixel size and quality
+  /// (M6.4). Quality sets the average bitrate as bits-per-pixel × pixels × 60fps.
+  static func videoSettings(
+    width: Int,
+    height: Int,
+    quality: RecordingQuality = .high
+  ) -> [String: Any] {
+    let bitrate = Int(Double(width * height) * 60 * quality.bitsPerPixel)
+    return [
       AVVideoCodecKey: AVVideoCodecType.h264,
       AVVideoWidthKey: width,
       AVVideoHeightKey: height,
+      AVVideoCompressionPropertiesKey: [AVVideoAverageBitRateKey: bitrate],
     ]
   }
 
@@ -283,14 +292,15 @@ final class Recorder: NSObject, SCStreamOutput {
   private static func makeWriter(
     to url: URL,
     width: Int,
-    height: Int
+    height: Int,
+    quality: RecordingQuality
   ) throws -> (AVAssetWriter, AVAssetWriterInput) {
     guard let writer = try? AVAssetWriter(outputURL: url, fileType: .mp4) else {
       throw RecorderError.writerSetupFailed
     }
     let input = AVAssetWriterInput(
       mediaType: .video,
-      outputSettings: videoSettings(width: width, height: height)
+      outputSettings: videoSettings(width: width, height: height, quality: quality)
     )
     input.expectsMediaDataInRealTime = true
     guard writer.canAdd(input) else { throw RecorderError.writerSetupFailed }

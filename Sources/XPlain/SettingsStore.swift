@@ -90,6 +90,18 @@ final class SettingsStore {
     set { defaults.set(Double(newValue), forKey: Key.textFontSize.rawValue) }
   }
 
+  /// The highlighter's stroke opacity (spec §7), default 0.4.
+  var highlighterOpacity: CGFloat {
+    get { cgFloat(.highlighterOpacity, default: 0.4) }
+    set { defaults.set(Double(newValue), forKey: Key.highlighterOpacity.rawValue) }
+  }
+
+  /// The recording video quality (spec §7), default high.
+  var recordingQuality: RecordingQuality {
+    get { enumValue(.recordingQuality, default: .high) }
+    set { setEnum(.recordingQuality, newValue) }
+  }
+
   // MARK: General (spec §7)
 
   /// Whether XPlain launches at login (M6.5), off by default.
@@ -106,18 +118,22 @@ final class SettingsStore {
 
   // MARK: Backing helpers
 
-  private enum Key: String {
+  /// The `UserDefaults` keys, exposed so the SwiftUI panes' `@AppStorage`
+  /// bindings (M6.4) write the exact same keys this store reads.
+  enum Key: String {
     case liveZoomFollowMode
     case recordingScope
     case capturesSystemAudio
     case capturesMicrophone
     case recordingFolder
+    case recordingQuality
     case initialZoomLevel
     case zoomStep
     case animateZoomIn
     case defaultPenColor
     case defaultPenWidth
     case textFontSize
+    case highlighterOpacity
     case launchAtLogin
     case activeDisplayTarget
   }
@@ -170,6 +186,33 @@ enum ActiveDisplayTarget: String, CaseIterable {
     switch self {
     case .underCursor: return "Display under cursor"
     case .mainDisplay: return "Main display"
+    }
+  }
+}
+
+/// Recording video quality (spec §7), mapped to a bits-per-pixel target that
+/// scales the H.264 average bitrate with the captured resolution.
+enum RecordingQuality: String, CaseIterable {
+  case high
+  case medium
+  case low
+
+  /// Human-readable label for the settings UI.
+  var title: String {
+    switch self {
+    case .high: return "High"
+    case .medium: return "Medium"
+    case .low: return "Low"
+    }
+  }
+
+  /// Target bits per pixel per frame — multiplied by pixel count and frame rate
+  /// to get the average bitrate.
+  var bitsPerPixel: Double {
+    switch self {
+    case .high: return 0.20
+    case .medium: return 0.11
+    case .low: return 0.06
     }
   }
 }

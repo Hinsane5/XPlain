@@ -32,6 +32,12 @@ final class AnnotationView: NSView {
   override func viewDidMoveToWindow() {
     super.viewDidMoveToWindow()
     if let window {
+      // M6.4: start each Draw session from the user's pen/text Settings defaults.
+      canvas.configureDefaults(
+        color: SettingsStore.shared.defaultPenColor,
+        width: SettingsStore.shared.defaultPenWidth,
+        textSize: SettingsStore.shared.textFontSize
+      )
       pointer = convert(window.mouseLocationOutsideOfEventStream, from: nil)
       if !didHideCursor {
         NSCursor.hide()

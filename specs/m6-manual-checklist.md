@@ -17,9 +17,13 @@ login item, and Gatekeeper acceptance are verified here.
       restart (the new chord triggers the mode, the old one doesn't).
 - [x] A known-conflict chord (⌃1) shows the orange conflict warning.
 
-## M6.4 — Wire the settings panes  *(pending)*
-- [ ] Zoom (level/step/animate), Pen (color/width/opacity/font), Recording
-      (folder/scope/audio/quality), General (display target) each change behavior live.
+## M6.4 — Wire the settings panes  ✅ verified live 2026-07-24
+- [x] Zoom level/step/animate change zoom behavior live (verified 5× + no-animate).
+- [x] Pen color/width/opacity/text-size change Draw defaults live (verified green pen).
+- [x] Recording folder/quality (+ scope/audio mirroring the menu) apply live
+      (verified custom output folder).
+- [x] General active-display target selects the display a mode uses.
+- [ ] Multi-display "Main display" targeting (needs a second monitor to verify).
 
 ## M6.5 — Launch at login  *(pending)*
 - [ ] The General toggle registers/unregisters the login item (survives logout).

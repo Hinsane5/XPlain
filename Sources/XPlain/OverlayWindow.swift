@@ -203,7 +203,11 @@ final class OverlayWindow: NSWindow {
   /// Both scroll and ↑/↓ route here so they behave identically.
   func zoomBy(steps: Int) {
     guard zoomScale != 1 else { return }
-    zoomScale = ZoomRenderer.zoomed(from: zoomScale, steps: steps)
+    zoomScale = ZoomRenderer.zoomed(
+      from: zoomScale,
+      steps: steps,
+      step: SettingsStore.shared.zoomStep
+    )
     reanchorMagnifiedFrame()
   }
 

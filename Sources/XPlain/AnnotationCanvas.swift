@@ -12,6 +12,14 @@ final class AnnotationCanvas {
   /// The active pen. Default red, medium width, per spec §4.
   var pen = Pen(color: .red, width: 3, isHighlighter: false)
 
+  /// Applies the user's Settings defaults (M6.4) to a fresh canvas: the starting
+  /// pen color/width and the initial text size. Kept a plain injectable method so
+  /// the model stays free of `UserDefaults`; the view layer supplies the values.
+  func configureDefaults(color: PenColor, width: CGFloat, textSize: CGFloat) {
+    pen = Pen(color: color, width: width, isHighlighter: false)
+    pendingTextSize = textSize
+  }
+
   /// Pen-width bounds and step for the `[` / `]` and ⌥+scroll controls (M4.4).
   static let minPenWidth: CGFloat = 1
   static let maxPenWidth: CGFloat = 60

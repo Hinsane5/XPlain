@@ -37,6 +37,15 @@ final class SettingsStoreTests: XCTestCase {
     XCTAssertFalse(store.launchAtLogin)
     XCTAssertEqual(store.activeDisplayTarget, .underCursor)
     XCTAssertEqual(store.recordingFolder, Recorder.defaultSaveDirectory)
+    XCTAssertEqual(store.highlighterOpacity, 0.4)
+    XCTAssertEqual(store.recordingQuality, .high)
+  }
+
+  func testNewPaneSettingsRoundTrip() {
+    store.highlighterOpacity = 0.7
+    store.recordingQuality = .low
+    XCTAssertEqual(store.highlighterOpacity, 0.7)
+    XCTAssertEqual(store.recordingQuality, .low)
   }
 
   func testEnumRoundTrips() {

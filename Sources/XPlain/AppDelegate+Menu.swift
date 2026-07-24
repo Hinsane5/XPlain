@@ -6,7 +6,38 @@ import Cocoa
 /// `make…MenuItem` builders are `internal` so `applicationDidFinishLaunching` can
 /// assemble the menu; the `@objc` actions stay file-private (selector dispatch
 /// finds them by name regardless).
-extension AppDelegate {
+extension AppDelegate: NSMenuDelegate {
+  /// Rebuilds the status menu each time it opens so its quick-toggle checkmarks
+  /// reflect changes made in the Settings window (M6.4) — both write the same
+  /// `SettingsStore` keys, but the menu items are otherwise built once.
+  func menuNeedsUpdate(_ menu: NSMenu) {
+    populate(menu)
+  }
+
+  /// Fills `menu` with XPlain's items, reading current settings for checkmarks.
+  func populate(_ menu: NSMenu) {
+    menu.removeAllItems()
+    menu.addItem(makeLiveZoomFollowMenuItem())  // M5.4
+    menu.addItem(makeRecordingScopeMenuItem())  // M5.6
+    menu.addItem(makeSystemAudioMenuItem())  // M5.7
+    menu.addItem(makeMicrophoneMenuItem())  // M5.7b
+    menu.addItem(.separator())
+    let settings = NSMenuItem(
+      title: "Settings…",
+      action: #selector(openSettings),
+      keyEquivalent: ","
+    )
+    settings.target = self  // M6.2
+    menu.addItem(settings)
+    menu.addItem(
+      NSMenuItem(
+        title: "Quit",
+        action: #selector(NSApplication.terminate(_:)),
+        keyEquivalent: "q"
+      )
+    )
+  }
+
   /// The "LiveZoom Follow" submenu (M5.4): one item per follow mode with a
   /// checkmark on the active one, letting the user switch cursor-centered vs.
   /// edge-push. Selection persists via `SettingsStore`.

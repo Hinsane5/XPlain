@@ -19,6 +19,7 @@
 		111704CCD15F1A7F3FD107B1 /* LiveCaptureSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1082E31326A2E0D963216EC4 /* LiveCaptureSession.swift */; };
 		15966C0F5A0137784B30D614 /* RegionSelectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0788126842D1DC0D346AEAD6 /* RegionSelectionView.swift */; };
 		1B039DF84F33E01994A6B778 /* Mode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A52A940C0E0BD00703CB03D /* Mode.swift */; };
+		1C0DC22C9006A861F1555922 /* SettingsPanes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4C421477489949D2A89FC32C /* SettingsPanes.swift */; };
 		208C4A0293D43EF4ADF48951 /* OverlayController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 145FEFBC3C7A6A6BD746201B /* OverlayController.swift */; };
 		244993B4B30F002EC555EE17 /* OverlayWindowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 72B0F388BBC7FD2AC3D6FFA2 /* OverlayWindowTests.swift */; };
 		26679305EAD249E77A138B8D /* DrawableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39FC97B7F0CB94F5B9431130 /* DrawableTests.swift */; };
@@ -89,6 +90,7 @@
 		39FC97B7F0CB94F5B9431130 /* DrawableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawableTests.swift; sourceTree = "<group>"; };
 		3AA5FDD7E196925C46DDDFCA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3DED5F3AE20552CB547C8681 /* XPlain.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XPlain.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4C421477489949D2A89FC32C /* SettingsPanes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsPanes.swift; sourceTree = "<group>"; };
 		4D09F167839FABAE5225D701 /* XPlainTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XPlainTests.swift; sourceTree = "<group>"; };
 		53AE3F82BF1E64962D56F17D /* HotkeyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotkeyService.swift; sourceTree = "<group>"; };
 		56AA86C8966704A2AE009000 /* HotkeyConflict.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotkeyConflict.swift; sourceTree = "<group>"; };
@@ -206,6 +208,7 @@
 				5CA8F29DDB742E9A5E38C7A6 /* Recorder.swift */,
 				DF3A89F832079CFB0EBC1B90 /* RecordingRegion.swift */,
 				0788126842D1DC0D346AEAD6 /* RegionSelectionView.swift */,
+				4C421477489949D2A89FC32C /* SettingsPanes.swift */,
 				7A426B8CB8161BB13D976B2A /* SettingsStore.swift */,
 				C6F88219B0B587F8350667DC /* SettingsView.swift */,
 				A54A2456A601E6D8C941E205 /* SettingsWindowController.swift */,
@@ -394,6 +397,7 @@
 				A9370C6E1943AAAF4D9F6E00 /* Recorder.swift in Sources */,
 				B94BA2D86707690E706F5CAD /* RecordingRegion.swift in Sources */,
 				15966C0F5A0137784B30D614 /* RegionSelectionView.swift in Sources */,
+				1C0DC22C9006A861F1555922 /* SettingsPanes.swift in Sources */,
 				0B06B7E0BE55005D13D12E33 /* SettingsStore.swift in Sources */,
 				0A07291B4429282B95BB64AF /* SettingsView.swift in Sources */,
 				47C5AA6DF485F35F51403FB8 /* SettingsWindowController.swift in Sources */,

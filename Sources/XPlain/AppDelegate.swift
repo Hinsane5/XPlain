@@ -20,26 +20,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     let item = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
     item.button?.title = Self.idleStatusTitle
 
+    // M6.4: rebuild the menu each time it opens (delegate `menuNeedsUpdate`) so
+    // its quick-toggle checkmarks stay in sync with changes made in Settings.
     let menu = NSMenu()
-    menu.addItem(makeLiveZoomFollowMenuItem())  // M5.4
-    menu.addItem(makeRecordingScopeMenuItem())  // M5.6
-    menu.addItem(makeSystemAudioMenuItem())  // M5.7
-    menu.addItem(makeMicrophoneMenuItem())  // M5.7b
-    menu.addItem(.separator())
-    let settingsItem = NSMenuItem(
-      title: "Settings…",
-      action: #selector(openSettings),
-      keyEquivalent: ","
-    )
-    settingsItem.target = self  // M6.2
-    menu.addItem(settingsItem)
-    menu.addItem(
-      NSMenuItem(
-        title: "Quit",
-        action: #selector(NSApplication.terminate(_:)),
-        keyEquivalent: "q"
-      )
-    )
+    menu.delegate = self
+    populate(menu)
     item.menu = menu
 
     statusItem = item
@@ -78,8 +63,9 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     hotkeys = service
   }
 
-  /// M6.2: opens the SwiftUI Settings window from the menu (⌘,).
-  @objc private func openSettings() {
+  /// M6.2: opens the SwiftUI Settings window from the menu (⌘,). Internal so the
+  /// menu extension's `#selector` can reference it.
+  @objc func openSettings() {
     settingsWindow.show()
   }
 
@@ -95,17 +81,19 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     case .idle:
       overlay.hide()
     case .permissionPrompt:
-      overlay.showPermissionPrompt(onDisplayFrame: NSScreen.frameUnderCursor())
+      let frame = NSScreen.activeFrame(for: SettingsStore.shared.activeDisplayTarget)
+      overlay.showPermissionPrompt(onDisplayFrame: frame)
     case .zoom:
-      withDisplayUnderCursor {
-        overlay.showCapturedSnapshot(of: $0, magnifiedBy: ZoomRenderer.defaultScale)
+      let level = SettingsStore.shared.initialZoomLevel  // M6.4
+      withActiveDisplay {
+        overlay.showCapturedSnapshot(of: $0, magnifiedBy: level)
       }
     case .draw:
       // M4.2: freeze the screen as a backdrop and draw annotations over it.
-      withDisplayUnderCursor { overlay.showDrawing(of: $0) }
+      withActiveDisplay { overlay.showDrawing(of: $0) }
     case .liveZoom:
       // M5.2: continuously-updating magnified view of the live screen.
-      withDisplayUnderCursor { overlay.showLiveZoom(of: $0) }
+      withActiveDisplay { overlay.showLiveZoom(of: $0) }
     case .record:
       // M5.8: Record is no longer an exclusive mode — ⌘⌃R drives recording
       // directly (see `toggleRecording`), never routing through the mode
@@ -134,7 +122,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
   /// overlay (you keep using the screen); region scope first shows a drag-select
   /// overlay, then records just that rectangle. Stopped by leaving Record.
   private func startRecording() {
-    guard let display = NSScreen.displayUnderCursor() else { return }
+    guard let display = NSScreen.activeDisplay(for: SettingsStore.shared.activeDisplayTarget)
+    else { return }
     switch SettingsStore.shared.recordingScope {
     case .fullDisplay:
       beginRecording(display: display, pixelSize: display.pixelSize, sourceRect: nil)
@@ -163,10 +152,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
   }
 
   private func beginRecording(display: Display, pixelSize: CGSize, sourceRect: CGRect?) {
-    let url = Recorder.defaultSaveDirectory
+    // M6.4: honor the configured output folder and video quality.
+    let url = SettingsStore.shared.recordingFolder
       .appendingPathComponent(Recorder.timestampedFilename())
     let systemAudio = SettingsStore.shared.capturesSystemAudio  // M5.7
     let microphone = SettingsStore.shared.capturesMicrophone  // M5.7b
+    let quality = SettingsStore.shared.recordingQuality  // M6.4
     Task { [recorder, weak self] in
       do {
         try await recorder.start(
@@ -175,7 +166,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
           to: url,
           sourceRect: sourceRect,
           capturesSystemAudio: systemAudio,
-          capturesMicrophone: microphone
+          capturesMicrophone: microphone,
+          quality: quality
         )
         await MainActor.run { self?.startRecordingHUD() }  // M5.9
       } catch {
@@ -232,11 +224,14 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     statusItem?.button?.attributedTitle = title
   }
 
-  private func withDisplayUnderCursor(_ present: (Display) -> Void) {
-    if let display = NSScreen.displayUnderCursor() {
+  /// Presents on the configured target display (M6.4: cursor's display or main),
+  /// falling back to a bare overlay if no capture-able display resolves.
+  private func withActiveDisplay(_ present: (Display) -> Void) {
+    let target = SettingsStore.shared.activeDisplayTarget
+    if let display = NSScreen.activeDisplay(for: target) {
       present(display)
     } else {
-      overlay.show(onDisplayFrame: NSScreen.frameUnderCursor())
+      overlay.show(onDisplayFrame: NSScreen.activeFrame(for: target))
     }
   }
 

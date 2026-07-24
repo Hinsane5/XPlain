@@ -8,24 +8,15 @@ struct SettingsView: View {
     TabView {
       HotkeysSettingsView()
         .tabItem { Label("Hotkeys", systemImage: "keyboard") }
-      placeholder("Zoom", "Initial level, step, and zoom-in animation. (M6.4)")
+      ZoomSettingsView()
         .tabItem { Label("Zoom", systemImage: "plus.magnifyingglass") }
-      placeholder("Pen", "Default color, width, highlighter opacity, text size. (M6.4)")
+      PenSettingsView()
         .tabItem { Label("Pen", systemImage: "pencil.tip") }
-      placeholder("Recording", "Output folder, scope, audio, quality. (M6.4)")
+      RecordingSettingsView()
         .tabItem { Label("Recording", systemImage: "record.circle") }
-      placeholder("General", "Launch at login, menu-bar icon, active display. (M6.4)")
+      GeneralSettingsView()
         .tabItem { Label("General", systemImage: "gearshape") }
     }
     .frame(width: 520, height: 360)
-  }
-
-  private func placeholder(_ title: String, _ subtitle: String) -> some View {
-    VStack(spacing: 8) {
-      Text(title).font(.title2).bold()
-      Text(subtitle).foregroundStyle(.secondary)
-    }
-    .frame(maxWidth: .infinity, maxHeight: .infinity)
-    .padding()
   }
 }

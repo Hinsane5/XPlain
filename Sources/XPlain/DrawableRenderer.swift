@@ -79,8 +79,9 @@ enum DrawableRenderer {
   }
 
   private static func apply(_ pen: Pen, to context: CGContext) {
-    // The highlighter draws semi-transparent and wide (spec §4).
-    let alpha: CGFloat = pen.isHighlighter ? 0.4 : 1
+    // The highlighter draws semi-transparent and wide (spec §4); its opacity is
+    // a live setting (M6.4).
+    let alpha: CGFloat = pen.isHighlighter ? SettingsStore.shared.highlighterOpacity : 1
     let width = pen.isHighlighter ? pen.width * 4 : pen.width
     context.setStrokeColor(pen.color.nsColor.withAlphaComponent(alpha).cgColor)
     context.setLineWidth(width)

@@ -280,10 +280,15 @@ Goal: configurable, signed, notarized, releasable.
   `KeyboardShortcuts` registration `HotkeyService` uses); `HotkeyConflict` flags
   known system chords (⌃1–⌃4 Spaces, Spotlight…) unit-tested + shown as an orange
   warning. Verified live: rebind works no-restart, ⌃1 warns.)*
-- [ ] **M6.4 — Wire the settings panes** — zoom (level/step/animate), pen
+- [x] **M6.4 — Wire the settings panes** — zoom (level/step/animate), pen
   (color/width/opacity/font), recording (folder/scope/audio/quality), general
   (display target). **Done when:** each setting changes the corresponding behavior live.
   **Depends on:** M6.2, M3.3, M4.4, M5.6
+  *(4 SwiftUI panes bound via `@AppStorage` to the same keys `SettingsStore` reads.
+  Wired to behavior: zoom level/step/animate, pen color/width + highlighter opacity
+  + text size, recording folder/quality (+scope/audio mirror the menu), active
+  display. Status menu now rebuilds on open (`menuNeedsUpdate`) to stay in sync.
+  Verified live: zoom 5×, green pen, custom folder.)*
 - [ ] **M6.5 — Launch at login** — `SMAppService` toggle in General. **Done when:** the
   toggle registers/unregisters the login item. **Depends on:** M6.2
 - [ ] **M6.6 — Icons** — app icon + menu-bar template icon. **Done when:** both render at

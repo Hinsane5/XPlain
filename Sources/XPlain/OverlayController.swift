@@ -56,7 +56,7 @@ final class OverlayController {
     show(onDisplayFrame: display.frame)
     guard let window else { return }
     let view = window.showLiveZoom()
-    view.scale = ZoomRenderer.defaultScale
+    view.scale = SettingsStore.shared.initialZoomLevel  // M6.4
     view.followMode = SettingsStore.shared.liveZoomFollowMode  // M5.4
     let excludedWindow = CGWindowID(window.windowNumber)
 
@@ -166,7 +166,9 @@ final class OverlayController {
         )
         guard let self, self.generation == gen else { return }
         self.show(onDisplayFrame: display.frame)
-        self.window?.showImage(image, magnifiedBy: scale, about: cursor, animated: scale != 1)
+        // M6.4: the zoom-in animation is a live setting.
+        let animated = scale != 1 && SettingsStore.shared.animateZoomIn
+        self.window?.showImage(image, magnifiedBy: scale, about: cursor, animated: animated)
       } catch {
         NSLog("XPlain: capture failed - \(error)")
         guard let self, self.generation == gen else { return }
@@ -208,5 +210,23 @@ extension NSScreen {
 
   private var asDisplay: Display? {
     displayID.map { Display(frame: frame, displayID: $0, backingScaleFactor: backingScaleFactor) }
+  }
+
+  /// The display a mode should target for the configured `ActiveDisplayTarget`
+  /// (M6.4): the one under the cursor, or the main display.
+  static func activeDisplay(for target: ActiveDisplayTarget) -> Display? {
+    switch target {
+    case .underCursor: return displayUnderCursor()
+    case .mainDisplay: return main?.asDisplay
+    }
+  }
+
+  /// The frame counterpart of `activeDisplay(for:)`, for the no-`Display`
+  /// fallback path (e.g. the permission prompt).
+  static func activeFrame(for target: ActiveDisplayTarget) -> NSRect {
+    switch target {
+    case .underCursor: return frameUnderCursor()
+    case .mainDisplay: return main?.frame ?? .zero
+    }
   }
 }
