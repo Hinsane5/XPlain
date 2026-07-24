@@ -34,7 +34,6 @@ final class SettingsStoreTests: XCTestCase {
     XCTAssertEqual(store.defaultPenColor, .red)
     XCTAssertEqual(store.defaultPenWidth, 3)
     XCTAssertEqual(store.textFontSize, AnnotationCanvas.defaultTextSize)
-    XCTAssertFalse(store.launchAtLogin)
     XCTAssertEqual(store.activeDisplayTarget, .underCursor)
     XCTAssertEqual(store.recordingFolder, Recorder.defaultSaveDirectory)
     XCTAssertEqual(store.highlighterOpacity, 0.4)
@@ -63,11 +62,9 @@ final class SettingsStoreTests: XCTestCase {
     store.capturesSystemAudio = true
     store.capturesMicrophone = true
     store.animateZoomIn = false  // flip the default-true one
-    store.launchAtLogin = true
     XCTAssertTrue(store.capturesSystemAudio)
     XCTAssertTrue(store.capturesMicrophone)
     XCTAssertFalse(store.animateZoomIn)
-    XCTAssertTrue(store.launchAtLogin)
   }
 
   func testNumericRoundTrips() {

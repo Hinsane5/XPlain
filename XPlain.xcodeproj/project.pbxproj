@@ -40,6 +40,7 @@
 		81795FDFEE773056FC12B307 /* ElapsedTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D77C179EE42E4572642C3D /* ElapsedTime.swift */; };
 		81E766CD25517D06495D66D7 /* PermissionPromptContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93187BEF54DBE980B162DF78 /* PermissionPromptContentTests.swift */; };
 		81F970233B2B5301A95C9E2D /* RecorderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 896E8F95D190A6A2C91AA570 /* RecorderTests.swift */; };
+		8484F73995D194A33ABD6DF3 /* LoginItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129E01EE76D4505AEA16CD01 /* LoginItem.swift */; };
 		8B522B048AAA644CC79C7A59 /* CaptureService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE4710EB08FD2C9B0E4BE4AF /* CaptureService.swift */; };
 		8EB5A95EFD8022479875271A /* InputRouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51F335EB9B843CC490F08C8 /* InputRouterTests.swift */; };
 		9949ABF3D8B48D1821B39F71 /* LiveZoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D614287D373DBC8212D13D0A /* LiveZoomView.swift */; };
@@ -83,6 +84,7 @@
 		0788126842D1DC0D346AEAD6 /* RegionSelectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionSelectionView.swift; sourceTree = "<group>"; };
 		0BC2ABBEE510E67FE2BE3B81 /* KeyboardShortcuts+Names.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "KeyboardShortcuts+Names.swift"; sourceTree = "<group>"; };
 		1082E31326A2E0D963216EC4 /* LiveCaptureSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveCaptureSession.swift; sourceTree = "<group>"; };
+		129E01EE76D4505AEA16CD01 /* LoginItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginItem.swift; sourceTree = "<group>"; };
 		145FEFBC3C7A6A6BD746201B /* OverlayController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayController.swift; sourceTree = "<group>"; };
 		1B5E32342319E90FD1EC081A /* AnnotationExportTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationExportTests.swift; sourceTree = "<group>"; };
 		2A99EAC64E53FCAE0750E23B /* OverlayWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayWindow.swift; sourceTree = "<group>"; };
@@ -198,6 +200,7 @@
 				1082E31326A2E0D963216EC4 /* LiveCaptureSession.swift */,
 				BE602F1114020BC321D44831 /* LiveZoomFollow.swift */,
 				D614287D373DBC8212D13D0A /* LiveZoomView.swift */,
+				129E01EE76D4505AEA16CD01 /* LoginItem.swift */,
 				D8F7C74C29B70B72DDB8DE90 /* main.swift */,
 				5A52A940C0E0BD00703CB03D /* Mode.swift */,
 				ECD484AD67A8DE0FFAB5BE70 /* ModeActivationGate.swift */,
@@ -388,6 +391,7 @@
 				111704CCD15F1A7F3FD107B1 /* LiveCaptureSession.swift in Sources */,
 				706751E0321F71198044B23C /* LiveZoomFollow.swift in Sources */,
 				9949ABF3D8B48D1821B39F71 /* LiveZoomView.swift in Sources */,
+				8484F73995D194A33ABD6DF3 /* LoginItem.swift in Sources */,
 				1B039DF84F33E01994A6B778 /* Mode.swift in Sources */,
 				5299E28D89D008D00AFF8AB4 /* ModeActivationGate.swift in Sources */,
 				A5D7FBD17863C5B3303D6936 /* ModeController.swift in Sources */,

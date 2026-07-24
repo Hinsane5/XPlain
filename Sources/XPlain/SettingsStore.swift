@@ -104,12 +104,6 @@ final class SettingsStore {
 
   // MARK: General (spec §7)
 
-  /// Whether XPlain launches at login (M6.5), off by default.
-  var launchAtLogin: Bool {
-    get { bool(.launchAtLogin, default: false) }
-    set { defaults.set(newValue, forKey: Key.launchAtLogin.rawValue) }
-  }
-
   /// Which display a mode targets, default the one under the cursor.
   var activeDisplayTarget: ActiveDisplayTarget {
     get { enumValue(.activeDisplayTarget, default: .underCursor) }
@@ -134,7 +128,6 @@ final class SettingsStore {
     case defaultPenWidth
     case textFontSize
     case highlighterOpacity
-    case launchAtLogin
     case activeDisplayTarget
   }
 

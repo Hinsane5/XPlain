@@ -110,9 +110,19 @@ struct RecordingSettingsView: View {
 struct GeneralSettingsView: View {
   @AppStorage(SettingsStore.Key.activeDisplayTarget.rawValue)
   private var target = ActiveDisplayTarget.underCursor
+  @State private var launchAtLogin = LoginItem.isEnabled
 
   var body: some View {
     Form {
+      Toggle("Launch at login", isOn: $launchAtLogin)
+        .onChange(of: launchAtLogin) { _, enabled in
+          do {
+            try LoginItem.setEnabled(enabled)
+          } catch {
+            NSLog("XPlain: login item toggle failed - \(error)")
+            launchAtLogin = LoginItem.isEnabled  // revert to the real state
+          }
+        }
       Picker("Active display", selection: $target) {
         ForEach(ActiveDisplayTarget.allCases, id: \.self) { Text($0.title).tag($0) }
       }
@@ -120,6 +130,7 @@ struct GeneralSettingsView: View {
         .font(.caption).foregroundStyle(.secondary)
     }
     .padding()
+    .onAppear { launchAtLogin = LoginItem.isEnabled }
   }
 }
 

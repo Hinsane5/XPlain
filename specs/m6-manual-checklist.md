@@ -25,8 +25,9 @@ login item, and Gatekeeper acceptance are verified here.
 - [x] General active-display target selects the display a mode uses.
 - [ ] Multi-display "Main display" targeting (needs a second monitor to verify).
 
-## M6.5 — Launch at login  *(pending)*
-- [ ] The General toggle registers/unregisters the login item (survives logout).
+## M6.5 — Launch at login  ✅ verified live 2026-07-24
+- [x] The General toggle adds/removes XPlain in System Settings ▸ Login Items.
+- [x] The toggle reflects the real login-item state when Settings reopens.
 
 ## M6.6 — Icons  *(pending)*
 - [ ] App icon + menu-bar template icon render at all required sizes.

@@ -289,8 +289,12 @@ Goal: configurable, signed, notarized, releasable.
   + text size, recording folder/quality (+scope/audio mirror the menu), active
   display. Status menu now rebuilds on open (`menuNeedsUpdate`) to stay in sync.
   Verified live: zoom 5×, green pen, custom folder.)*
-- [ ] **M6.5 — Launch at login** — `SMAppService` toggle in General. **Done when:** the
+- [x] **M6.5 — Launch at login** — `SMAppService` toggle in General. **Done when:** the
   toggle registers/unregisters the login item. **Depends on:** M6.2
+  *(`LoginItem` wraps `SMAppService.mainApp` register/unregister; the General-pane
+  toggle reads the live service status as its source of truth (replacing the
+  redundant `SettingsStore.launchAtLogin`). Verified live: toggling adds/removes
+  XPlain in System Settings ▸ Login Items and the toggle reflects real state.)*
 - [ ] **M6.6 — Icons** — app icon + menu-bar template icon. **Done when:** both render at
   all required sizes. **Depends on:** M0.2
 - [ ] **M6.7 — Signing + hardened runtime + entitlements** — Developer ID, minimal
