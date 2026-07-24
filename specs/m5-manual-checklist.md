@@ -35,11 +35,16 @@ screen, so they're verified here. CI skips the capture-bound integration tests.
 - [x] Duration is wall-clock accurate even for a static region (stop() ends the
       writer session at the real stop time — SCStream only emits frames on change).
 
-## M5.7 — Optional audio  *(system audio done; mic pending)*
+## M5.7 — Optional audio  ✅ verified live 2026-07-24
 - [x] Menu ▸ "Record System Audio" toggles + persists; checkmark sticks.
 - [x] Enabling system audio puts an AAC 48kHz stereo track in the file.
       Verified live: video 1920×1080/5.15s + audio aac/5.08s.
-- [ ] Microphone toggle captures mic audio (M5.7b).
+- [x] Menu ▸ "Record Microphone" toggles + persists; first record prompts for
+      mic permission (macOS 15+).
+- [x] Enabling microphone puts a mic AAC track in the file. Verified live with
+      both on: 3 tracks (video + system aac + mic aac).
+- [ ] Known limitation: both-on = two separate audio tracks (players play one);
+      single-track mixing is iceboxed.
 
 ## M5.8 — Composite overlay  *(pending)*
 - [ ] Zoom/Draw annotations appear in the recording.

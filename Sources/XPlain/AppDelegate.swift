@@ -16,6 +16,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     menu.addItem(makeLiveZoomFollowMenuItem())  // M5.4
     menu.addItem(makeRecordingScopeMenuItem())  // M5.6
     menu.addItem(makeSystemAudioMenuItem())  // M5.7
+    menu.addItem(makeMicrophoneMenuItem())  // M5.7b
     menu.addItem(.separator())
     menu.addItem(
       NSMenuItem(
@@ -140,6 +141,25 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     sender.state = enabled ? .on : .off
   }
 
+  /// The "Record Microphone" toggle (M5.7b): a checkable item persisted in
+  /// `Preferences`. Off by default; prompts for mic permission on first record.
+  private func makeMicrophoneMenuItem() -> NSMenuItem {
+    let item = NSMenuItem(
+      title: "Record Microphone",
+      action: #selector(toggleMicrophone(_:)),
+      keyEquivalent: ""
+    )
+    item.target = self
+    item.state = Preferences.capturesMicrophone ? .on : .off
+    return item
+  }
+
+  @objc private func toggleMicrophone(_ sender: NSMenuItem) {
+    let enabled = !Preferences.capturesMicrophone
+    Preferences.capturesMicrophone = enabled
+    sender.state = enabled ? .on : .off
+  }
+
   /// Presents the overlay content for a mode transition. Draw has two entry
   /// paths (M4.9): from Zoom it annotates the current magnified image
   /// (`drawOverCurrent`); standalone it freezes a fresh 1× capture.
@@ -212,6 +232,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     let url = Recorder.defaultSaveDirectory
       .appendingPathComponent(Recorder.timestampedFilename())
     let systemAudio = Preferences.capturesSystemAudio  // M5.7
+    let microphone = Preferences.capturesMicrophone  // M5.7b
     Task { [recorder] in
       do {
         try await recorder.start(
@@ -219,7 +240,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
           pixelSize: pixelSize,
           to: url,
           sourceRect: sourceRect,
-          capturesSystemAudio: systemAudio
+          capturesSystemAudio: systemAudio,
+          capturesMicrophone: microphone
         )
       } catch {
         NSLog("XPlain: recording failed to start - \(error)")

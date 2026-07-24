@@ -22,6 +22,8 @@
 	<string>$(MACOSX_DEPLOYMENT_TARGET)</string>
 	<key>LSUIElement</key>
 	<true/>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>XPlain records your microphone into screen recordings when you enable the microphone option.</string>
 	<key>NSHumanReadableCopyright</key>
 	<string>Copyright © 2026 Howard Goh</string>
 	<key>NSPrincipalClass</key>

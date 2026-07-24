@@ -22,11 +22,14 @@ final class Recorder: NSObject, SCStreamOutput {
 
   private let frameQueue = DispatchQueue(label: "com.howardgoh.XPlain.recorder")
   private let audioQueue = DispatchQueue(label: "com.howardgoh.XPlain.recorder.audio")
+  private let micQueue = DispatchQueue(label: "com.howardgoh.XPlain.recorder.mic")
   private var stream: SCStream?
   private var writer: AVAssetWriter?
   private var videoInput: AVAssetWriterInput?
   /// The system-audio writer input, present only when audio capture is on (M5.7).
   private var audioInput: AVAssetWriterInput?
+  /// The microphone writer input, present only when mic capture is on (M5.7b).
+  private var micInput: AVAssetWriterInput?
   /// The writer session opens on the first frame's timestamp, not at start()
   /// — SCStream PTS are on the host clock, and `AVAssetWriter` wants the session
   /// origin to match the first appended buffer. Guarded so it happens once.
@@ -49,17 +52,28 @@ final class Recorder: NSObject, SCStreamOutput {
   ///   - capturesSystemAudio: when true, records the display's system audio into
   ///     an AAC track (M5.7). Covered by Screen Recording permission — no extra
   ///     prompt.
+  ///   - capturesMicrophone: when true (and macOS 15+), records the default
+  ///     microphone into its own AAC track (M5.7b). Prompts for mic permission
+  ///     the first time; if denied or unavailable, recording proceeds without it.
   func start(
     of displayID: CGDirectDisplayID,
     pixelSize: CGSize,
     to outputURL: URL,
     sourceRect: CGRect? = nil,
     capturesSystemAudio: Bool = false,
+    capturesMicrophone: Bool = false,
     excludingWindow windowID: CGWindowID? = nil
   ) async throws {
     let content = try await SCShareableContent.current
     guard let display = content.displays.first(where: { $0.displayID == displayID }) else {
       throw RecorderError.noMatchingDisplay
+    }
+
+    // Mic is macOS 15+ (SCStream microphone capture) and needs its own TCC grant,
+    // requested lazily here. A denial just drops the mic, not the recording.
+    var micEnabled = false
+    if capturesMicrophone {
+      micEnabled = await Self.microphoneAvailable()
     }
 
     try Self.prepareOutputDirectory(for: outputURL)
@@ -74,12 +88,10 @@ final class Recorder: NSObject, SCStreamOutput {
     startedSession = false
 
     if capturesSystemAudio {
-      audioInput = Self.makeAudioInput()
-      if let audioInput, writer.canAdd(audioInput) {
-        writer.add(audioInput)
-      } else {
-        audioInput = nil
-      }
+      audioInput = addedAudioInput(to: writer)
+    }
+    if micEnabled {
+      micInput = addedAudioInput(to: writer)
     }
 
     let excluded = content.windows.filter { $0.windowID == windowID }
@@ -93,15 +105,37 @@ final class Recorder: NSObject, SCStreamOutput {
     config.showsCursor = true
     config.minimumFrameInterval = CMTime(value: 1, timescale: 60)
     config.capturesAudio = capturesSystemAudio  // M5.7
+    if micEnabled, #available(macOS 15.0, *) {
+      config.captureMicrophone = true  // M5.7b
+    }
 
     let stream = SCStream(filter: filter, configuration: config, delegate: nil)
     try stream.addStreamOutput(self, type: .screen, sampleHandlerQueue: frameQueue)
     if capturesSystemAudio {
       try stream.addStreamOutput(self, type: .audio, sampleHandlerQueue: audioQueue)
     }
+    if micEnabled, #available(macOS 15.0, *) {
+      try stream.addStreamOutput(self, type: .microphone, sampleHandlerQueue: micQueue)
+    }
     try await stream.startCapture()
     self.stream = stream
     isRecording = true
+  }
+
+  /// Makes an AAC audio input and adds it to `writer`, returning it — or `nil` if
+  /// the writer rejects it. Shared by the system-audio and microphone tracks.
+  private func addedAudioInput(to writer: AVAssetWriter) -> AVAssetWriterInput? {
+    let input = Self.makeAudioInput()
+    guard writer.canAdd(input) else { return nil }
+    writer.add(input)
+    return input
+  }
+
+  /// Requests microphone access (lazy TCC prompt) and reports whether mic capture
+  /// is usable — macOS 15+ and access granted.
+  private static func microphoneAvailable() async -> Bool {
+    guard #available(macOS 15.0, *) else { return false }
+    return await AVCaptureDevice.requestAccess(for: .audio)
   }
 
   /// Stops capture, finalizes the file, and returns the written URL. Throws
@@ -123,6 +157,7 @@ final class Recorder: NSObject, SCStreamOutput {
     let endTime = CMClockGetTime(CMClockGetHostTimeClock())
     videoInput.markAsFinished()
     audioInput?.markAsFinished()
+    micInput?.markAsFinished()
     if writer.status == .writing {
       writer.endSession(atSourceTime: endTime)
     }
@@ -130,6 +165,7 @@ final class Recorder: NSObject, SCStreamOutput {
     self.writer = nil
     self.videoInput = nil
     self.audioInput = nil
+    self.micInput = nil
     self.outputURL = nil
     return outputURL
   }
@@ -142,15 +178,15 @@ final class Recorder: NSObject, SCStreamOutput {
     of type: SCStreamOutputType
   ) {
     guard isRecording, sampleBuffer.isValid, let writer else { return }
-    switch type {
-    case .screen:
+    if type == .screen {
       guard Self.isCompleteFrame(sampleBuffer), let videoInput else { return }
       appendFrame(sampleBuffer, to: videoInput, writer: writer)
-    case .audio:
+    } else if type == .audio {
       guard let audioInput else { return }
       appendFrame(sampleBuffer, to: audioInput, writer: writer)
-    default:
-      return
+    } else if #available(macOS 15.0, *), type == .microphone {
+      guard let micInput else { return }
+      appendFrame(sampleBuffer, to: micInput, writer: writer)
     }
   }
 

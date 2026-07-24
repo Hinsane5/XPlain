@@ -6,6 +6,7 @@ enum Preferences {
   private static let liveZoomFollowModeKey = "liveZoomFollowMode"
   private static let recordingScopeKey = "recordingScope"
   private static let capturesSystemAudioKey = "capturesSystemAudio"
+  private static let capturesMicrophoneKey = "capturesMicrophone"
 
   /// The LiveZoom cursor-follow mode (M5.4), defaulting to cursor-centered — the
   /// same behavior as static Zoom, and what M5.2/M5.3 shipped with.
@@ -36,6 +37,13 @@ enum Preferences {
   static var capturesSystemAudio: Bool {
     get { UserDefaults.standard.bool(forKey: capturesSystemAudioKey) }
     set { UserDefaults.standard.set(newValue, forKey: capturesSystemAudioKey) }
+  }
+
+  /// Whether Record captures the microphone (M5.7b), off by default. Prompts for
+  /// mic permission on first use; needs macOS 15+.
+  static var capturesMicrophone: Bool {
+    get { UserDefaults.standard.bool(forKey: capturesMicrophoneKey) }
+    set { UserDefaults.standard.set(newValue, forKey: capturesMicrophoneKey) }
   }
 }
 
