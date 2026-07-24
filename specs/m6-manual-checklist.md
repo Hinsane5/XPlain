@@ -1,0 +1,40 @@
+# M6 — Manual verification checklist (Settings, polish & distribution)
+
+UI / integration checks for the Settings window (spec §7) and the
+signing/notarization/release steps. The pure pieces (`SettingsStore`
+round-trips, conflict detection) are unit-tested; the window, live rebinding,
+login item, and Gatekeeper acceptance are verified here.
+
+## M6.1 — SettingsStore  ✅ (unit-tested)
+- [x] Round-trips + unset defaults covered in `SettingsStoreTests` (no manual step).
+
+## M6.2 — Settings window shell  ✅ verified live 2026-07-24
+- [x] Menu ▸ "Settings…" (⌘,) opens the "XPlain Settings" window with 5 tabs.
+- [x] Tabs switch; window closes and reopens cleanly.
+
+## M6.3 — Hotkey recorders + conflict warnings  *(pending)*
+- [ ] The Hotkeys tab shows a recorder per mode; rebinding takes effect with no
+      restart (the new chord triggers the mode, the old one doesn't).
+- [ ] A known-conflict chord (e.g. ⌃1–⌃4 Mission Control) shows a warning.
+
+## M6.4 — Wire the settings panes  *(pending)*
+- [ ] Zoom (level/step/animate), Pen (color/width/opacity/font), Recording
+      (folder/scope/audio/quality), General (display target) each change behavior live.
+
+## M6.5 — Launch at login  *(pending)*
+- [ ] The General toggle registers/unregisters the login item (survives logout).
+
+## M6.6 — Icons  *(pending)*
+- [ ] App icon + menu-bar template icon render at all required sizes.
+
+## M6.7 — Signing + hardened runtime  *(pending)*
+- [ ] A signed build passes `codesign --verify`.
+
+## M6.8 — Notarize + staple + .dmg  *(pending)*
+- [ ] `spctl -a -vv` accepts the app on a clean machine.
+
+## M6.9 — First-run onboarding  *(pending)*
+- [ ] A fresh install walks a new user to a working state.
+
+## M6.10 — GitHub Release  *(pending)*
+- [ ] The release is downloadable and runs.

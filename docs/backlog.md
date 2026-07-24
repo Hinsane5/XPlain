@@ -268,8 +268,11 @@ Goal: configurable, signed, notarized, releasable.
   covers LiveZoom/Record settings + zoom/pen/general (spec §7). Round-trips + unset
   defaults unit-tested in `SettingsStoreTests`. Replaced the old `Preferences` enum,
   same keys so persisted values carry over.)*
-- [ ] **M6.2 — Settings window shell** — SwiftUI preferences window from the menu. **Done
+- [x] **M6.2 — Settings window shell** — SwiftUI preferences window from the menu. **Done
   when:** the window opens and closes. **Depends on:** M6.1
+  *(menu "Settings…" (⌘,) opens a titled `NSWindow` hosting SwiftUI `SettingsView`
+  — a 5-tab shell (Hotkeys/Zoom/Pen/Recording/General), reused across opens.
+  Verified live: opens, tabs switch, closes and reopens.)*
 - [ ] **M6.3 — Hotkey recorders + conflict warnings** — `KeyboardShortcuts.Recorder` per
   mode; warn on known-conflict chords. **Done when:** rebinding a mode takes effect with
   no restart. **Depends on:** M6.2, M1.1

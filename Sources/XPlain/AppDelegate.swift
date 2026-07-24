@@ -7,6 +7,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
   private let modeController = ModeController()
   private let overlay = OverlayController()
   private let recorder = Recorder()  // M5.5
+  private let settingsWindow = SettingsWindowController()  // M6.2
 
   /// Recording HUD state (M5.9): the start time and the once-a-second timer that
   /// refreshes the menu-bar elapsed clock. Both nil when not recording.
@@ -25,6 +26,13 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     menu.addItem(makeSystemAudioMenuItem())  // M5.7
     menu.addItem(makeMicrophoneMenuItem())  // M5.7b
     menu.addItem(.separator())
+    let settingsItem = NSMenuItem(
+      title: "Settings…",
+      action: #selector(openSettings),
+      keyEquivalent: ","
+    )
+    settingsItem.target = self  // M6.2
+    menu.addItem(settingsItem)
     menu.addItem(
       NSMenuItem(
         title: "Quit",
@@ -68,6 +76,11 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
     service.start()
     hotkeys = service
+  }
+
+  /// M6.2: opens the SwiftUI Settings window from the menu (⌘,).
+  @objc private func openSettings() {
+    settingsWindow.show()
   }
 
   /// Presents the overlay content for a mode transition. Draw has two entry
