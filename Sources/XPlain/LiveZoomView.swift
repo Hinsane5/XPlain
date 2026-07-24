@@ -8,7 +8,7 @@ final class LiveZoomView: NSView {
   /// The magnification level (default 2×, spec §5 shares Zoom's range).
   var scale: CGFloat = ZoomRenderer.defaultScale
 
-  /// How the magnified region tracks the cursor (M5.4). Read from `Preferences`
+  /// How the magnified region tracks the cursor (M5.4). Read from `SettingsStore`
   /// at show time; cursor-centered re-centers on the pointer every frame,
   /// edge-push holds still until the cursor nears the edge.
   var followMode: LiveZoomFollow.Mode = .cursorCentered

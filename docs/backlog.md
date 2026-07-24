@@ -262,8 +262,12 @@ Goal: live magnification and screen recording. Highest technical risk — see co
 
 Goal: configurable, signed, notarized, releasable.
 
-- [ ] **M6.1 — `SettingsStore`** — typed `UserDefaults` wrapper with defaults. **Done
+- [x] **M6.1 — `SettingsStore`** — typed `UserDefaults` wrapper with defaults. **Done
   when:** encode/decode round-trips are unit-tested. **Depends on:** M0.1
+  *(injectable `SettingsStore` (class over `UserDefaults`, `.shared` for the app);
+  covers LiveZoom/Record settings + zoom/pen/general (spec §7). Round-trips + unset
+  defaults unit-tested in `SettingsStoreTests`. Replaced the old `Preferences` enum,
+  same keys so persisted values carry over.)*
 - [ ] **M6.2 — Settings window shell** — SwiftUI preferences window from the menu. **Done
   when:** the window opens and closes. **Depends on:** M6.1
 - [ ] **M6.3 — Hotkey recorders + conflict warnings** — `KeyboardShortcuts.Recorder` per

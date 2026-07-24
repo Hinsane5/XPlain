@@ -7,7 +7,7 @@ import CoreGraphics
 /// it each frame and applies the transform.
 enum LiveZoomFollow {
   /// How the magnified region tracks the cursor (spec §5). User-selectable via
-  /// the status menu; persisted in `Preferences`.
+  /// the status menu; persisted in `SettingsStore`.
   enum Mode: String, CaseIterable {
     /// The anchor is the cursor every frame — the magnified content re-centers
     /// on the pointer continuously (the default, matches static Zoom).

@@ -57,7 +57,7 @@ final class OverlayController {
     guard let window else { return }
     let view = window.showLiveZoom()
     view.scale = ZoomRenderer.defaultScale
-    view.followMode = Preferences.liveZoomFollowMode  // M5.4
+    view.followMode = SettingsStore.shared.liveZoomFollowMode  // M5.4
     let excludedWindow = CGWindowID(window.windowNumber)
 
     stopLiveSession()

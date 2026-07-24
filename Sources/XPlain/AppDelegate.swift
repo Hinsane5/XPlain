@@ -122,7 +122,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
   /// overlay, then records just that rectangle. Stopped by leaving Record.
   private func startRecording() {
     guard let display = NSScreen.displayUnderCursor() else { return }
-    switch Preferences.recordingScope {
+    switch SettingsStore.shared.recordingScope {
     case .fullDisplay:
       beginRecording(display: display, pixelSize: display.pixelSize, sourceRect: nil)
     case .selectedRegion:
@@ -152,8 +152,8 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
   private func beginRecording(display: Display, pixelSize: CGSize, sourceRect: CGRect?) {
     let url = Recorder.defaultSaveDirectory
       .appendingPathComponent(Recorder.timestampedFilename())
-    let systemAudio = Preferences.capturesSystemAudio  // M5.7
-    let microphone = Preferences.capturesMicrophone  // M5.7b
+    let systemAudio = SettingsStore.shared.capturesSystemAudio  // M5.7
+    let microphone = SettingsStore.shared.capturesMicrophone  // M5.7b
     Task { [recorder, weak self] in
       do {
         try await recorder.start(
