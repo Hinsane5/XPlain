@@ -52,5 +52,6 @@ screen, so they're verified here. CI skips the capture-bound integration tests.
       Verified: extracted a frame from a recording showing a red pen stroke baked
       into the live screen. (Draw's backdrop is frozen — live+draw is M9.)
 
-## M5.9 — Recording HUD  *(pending)*
-- [ ] Menu-bar state + elapsed time are visible and accurate while recording.
+## M5.9 — Recording HUD  ✅ verified live 2026-07-24
+- [x] Menu-bar shows red ● + elapsed clock while recording; ticks ~1s accurately.
+- [x] Returns to "X" the instant recording stops.

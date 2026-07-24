@@ -249,8 +249,11 @@ Goal: live magnification and screen recording. Highest technical risk — see co
   background, so Zoom/Draw overlays are captured by the whole-display SCStream with
   no extra compositing code. Verified live: extracted a frame showing a red pen
   stroke baked in. Note: Draw's backdrop is frozen; live-screen annotation is M9.)*
-- [ ] **M5.9 — Recording HUD / indicator** — menu-bar state + elapsed time. **Done when:**
+- [x] **M5.9 — Recording HUD / indicator** — menu-bar state + elapsed time. **Done when:**
   recording state and time are visible and accurate. **Depends on:** M5.5
+  *(menu-bar icon shows a red ● + a once-a-second elapsed clock while recording,
+  back to "X" on stop. Time formatting is pure + unit-tested in `ElapsedTimeTests`.
+  Verified live.)*
 
 ---
 

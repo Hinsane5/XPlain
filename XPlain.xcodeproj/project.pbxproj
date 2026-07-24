@@ -24,13 +24,16 @@
 		3FB14ECC04DDAA78617D1458 /* RecordingRegionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABE1AE3ACE6ED61AE8E9B1A8 /* RecordingRegionTests.swift */; };
 		45ADAFF482C870AA0E25B8EF /* Drawable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79266B2514B5AB7AAEB47AA /* Drawable.swift */; };
 		462E8E8B8A9EA53D68EDED7F /* LiveCaptureSessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB33561B94B77997B61A5FB /* LiveCaptureSessionTests.swift */; };
+		49EFC08143661EEE05548208 /* AppDelegate+Menu.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C0FA901AE94393AD371161A /* AppDelegate+Menu.swift */; };
 		5299E28D89D008D00AFF8AB4 /* ModeActivationGate.swift in Sources */ = {isa = PBXBuildFile; fileRef = ECD484AD67A8DE0FFAB5BE70 /* ModeActivationGate.swift */; };
 		54A2314C646EDD079DDC583B /* DisplayTargetingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FC22988150A79781CCE30D /* DisplayTargetingTests.swift */; };
+		63BA96CC645441C50F1DE9EB /* ElapsedTimeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8D95FF600E9CB3FAA3175E5F /* ElapsedTimeTests.swift */; };
 		6F31F42976F6C05F368E76A3 /* HotkeyServiceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ACB92481DB5B32344B15C0C /* HotkeyServiceTests.swift */; };
 		706751E0321F71198044B23C /* LiveZoomFollow.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE602F1114020BC321D44831 /* LiveZoomFollow.swift */; };
 		718E54FFA1D64BDC4029EE02 /* AnnotationCanvas.swift in Sources */ = {isa = PBXBuildFile; fileRef = B959EFA0208B6641E364A355 /* AnnotationCanvas.swift */; };
 		766DF61BE3B59E8DD815DDA6 /* PermissionPromptContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8698B1906602666644D86D7C /* PermissionPromptContent.swift */; };
 		7C1EF9806C23A167351024CA /* InputRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = A47192C5703C456B51A71270 /* InputRouter.swift */; };
+		81795FDFEE773056FC12B307 /* ElapsedTime.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D77C179EE42E4572642C3D /* ElapsedTime.swift */; };
 		81E766CD25517D06495D66D7 /* PermissionPromptContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 93187BEF54DBE980B162DF78 /* PermissionPromptContentTests.swift */; };
 		81F970233B2B5301A95C9E2D /* RecorderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 896E8F95D190A6A2C91AA570 /* RecorderTests.swift */; };
 		8B522B048AAA644CC79C7A59 /* CaptureService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE4710EB08FD2C9B0E4BE4AF /* CaptureService.swift */; };
@@ -94,14 +97,17 @@
 		8698B1906602666644D86D7C /* PermissionPromptContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionPromptContent.swift; sourceTree = "<group>"; };
 		896E8F95D190A6A2C91AA570 /* RecorderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecorderTests.swift; sourceTree = "<group>"; };
 		8B4A20C5A9AA497E1717BE97 /* ModeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeController.swift; sourceTree = "<group>"; };
+		8D95FF600E9CB3FAA3175E5F /* ElapsedTimeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElapsedTimeTests.swift; sourceTree = "<group>"; };
 		92F2D3F6D57E8BE65A9E4D82 /* DisplayTargeting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayTargeting.swift; sourceTree = "<group>"; };
 		93187BEF54DBE980B162DF78 /* PermissionPromptContentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PermissionPromptContentTests.swift; sourceTree = "<group>"; };
 		940196E9F66C3520E925614D /* ZoomRendererTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomRendererTests.swift; sourceTree = "<group>"; };
+		9C0FA901AE94393AD371161A /* AppDelegate+Menu.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AppDelegate+Menu.swift"; sourceTree = "<group>"; };
 		A0ED1BC744AC41B7BC002707 /* AnnotationCanvasUndoTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationCanvasUndoTests.swift; sourceTree = "<group>"; };
 		A47192C5703C456B51A71270 /* InputRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputRouter.swift; sourceTree = "<group>"; };
 		A6F6272DA51E4149C8A881A7 /* ZoomRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomRenderer.swift; sourceTree = "<group>"; };
 		ABE1AE3ACE6ED61AE8E9B1A8 /* RecordingRegionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingRegionTests.swift; sourceTree = "<group>"; };
 		B51F335EB9B843CC490F08C8 /* InputRouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputRouterTests.swift; sourceTree = "<group>"; };
+		B5D77C179EE42E4572642C3D /* ElapsedTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElapsedTime.swift; sourceTree = "<group>"; };
 		B5F53AA0C566B291358E156B /* Preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Preferences.swift; sourceTree = "<group>"; };
 		B959EFA0208B6641E364A355 /* AnnotationCanvas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationCanvas.swift; sourceTree = "<group>"; };
 		BE602F1114020BC321D44831 /* LiveZoomFollow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveZoomFollow.swift; sourceTree = "<group>"; };
@@ -164,10 +170,12 @@
 				B959EFA0208B6641E364A355 /* AnnotationCanvas.swift */,
 				38C642F36F18B03B343ED8F0 /* AnnotationView.swift */,
 				3AA5FDD7E196925C46DDDFCA /* AppDelegate.swift */,
+				9C0FA901AE94393AD371161A /* AppDelegate+Menu.swift */,
 				EE4710EB08FD2C9B0E4BE4AF /* CaptureService.swift */,
 				92F2D3F6D57E8BE65A9E4D82 /* DisplayTargeting.swift */,
 				E79266B2514B5AB7AAEB47AA /* Drawable.swift */,
 				7883E60FCAA109BCC28572EE /* DrawableRenderer.swift */,
+				B5D77C179EE42E4572642C3D /* ElapsedTime.swift */,
 				53AE3F82BF1E64962D56F17D /* HotkeyService.swift */,
 				A47192C5703C456B51A71270 /* InputRouter.swift */,
 				0BC2ABBEE510E67FE2BE3B81 /* KeyboardShortcuts+Names.swift */,
@@ -203,6 +211,7 @@
 				E5FC22988150A79781CCE30D /* DisplayTargetingTests.swift */,
 				DC3A83500C45B80164C5F8E7 /* DisplayTests.swift */,
 				39FC97B7F0CB94F5B9431130 /* DrawableTests.swift */,
+				8D95FF600E9CB3FAA3175E5F /* ElapsedTimeTests.swift */,
 				5ACB92481DB5B32344B15C0C /* HotkeyServiceTests.swift */,
 				B51F335EB9B843CC490F08C8 /* InputRouterTests.swift */,
 				7EB33561B94B77997B61A5FB /* LiveCaptureSessionTests.swift */,
@@ -318,6 +327,7 @@
 				54A2314C646EDD079DDC583B /* DisplayTargetingTests.swift in Sources */,
 				38C7E70A0289D00BFAB9D1E7 /* DisplayTests.swift in Sources */,
 				26679305EAD249E77A138B8D /* DrawableTests.swift in Sources */,
+				63BA96CC645441C50F1DE9EB /* ElapsedTimeTests.swift in Sources */,
 				6F31F42976F6C05F368E76A3 /* HotkeyServiceTests.swift in Sources */,
 				8EB5A95EFD8022479875271A /* InputRouterTests.swift in Sources */,
 				462E8E8B8A9EA53D68EDED7F /* LiveCaptureSessionTests.swift in Sources */,
@@ -340,11 +350,13 @@
 			files = (
 				718E54FFA1D64BDC4029EE02 /* AnnotationCanvas.swift in Sources */,
 				07CA21936976B7A6CEF1ECB4 /* AnnotationView.swift in Sources */,
+				49EFC08143661EEE05548208 /* AppDelegate+Menu.swift in Sources */,
 				FD4CF7DE9759E3C12A08091A /* AppDelegate.swift in Sources */,
 				8B522B048AAA644CC79C7A59 /* CaptureService.swift in Sources */,
 				D771ECB0A667E6C253E8802F /* DisplayTargeting.swift in Sources */,
 				45ADAFF482C870AA0E25B8EF /* Drawable.swift in Sources */,
 				9B788D0599B00E3589DE4EE1 /* DrawableRenderer.swift in Sources */,
+				81795FDFEE773056FC12B307 /* ElapsedTime.swift in Sources */,
 				E1D1708520AE3BDAEE40A8DE /* HotkeyService.swift in Sources */,
 				7C1EF9806C23A167351024CA /* InputRouter.swift in Sources */,
 				0F7EEB4EA53DF2F43ADFBEF6 /* KeyboardShortcuts+Names.swift in Sources */,

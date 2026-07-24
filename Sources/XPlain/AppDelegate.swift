@@ -8,9 +8,16 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
   private let overlay = OverlayController()
   private let recorder = Recorder()  // M5.5
 
+  /// Recording HUD state (M5.9): the start time and the once-a-second timer that
+  /// refreshes the menu-bar elapsed clock. Both nil when not recording.
+  private var recordingStartDate: Date?
+  private var recordingTimer: Timer?
+  /// The idle menu-bar title, restored when recording stops.
+  private static let idleStatusTitle = "X"
+
   func applicationDidFinishLaunching(_ notification: Notification) {
-    let item = NSStatusBar.system.statusItem(withLength: NSStatusItem.squareLength)
-    item.button?.title = "X"
+    let item = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
+    item.button?.title = Self.idleStatusTitle
 
     let menu = NSMenu()
     menu.addItem(makeLiveZoomFollowMenuItem())  // M5.4
@@ -61,111 +68,6 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
     service.start()
     hotkeys = service
-  }
-
-  /// The "LiveZoom Follow" submenu (M5.4): one item per follow mode with a
-  /// checkmark on the active one, letting the user switch cursor-centered vs.
-  /// edge-push. Selection persists via `Preferences`.
-  private func makeLiveZoomFollowMenuItem() -> NSMenuItem {
-    let parent = NSMenuItem(title: "LiveZoom Follow", action: nil, keyEquivalent: "")
-    let submenu = NSMenu()
-    let active = Preferences.liveZoomFollowMode
-    for mode in LiveZoomFollow.Mode.allCases {
-      let item = NSMenuItem(
-        title: mode.title,
-        action: #selector(selectLiveZoomFollowMode(_:)),
-        keyEquivalent: ""
-      )
-      item.target = self
-      item.representedObject = mode.rawValue
-      item.state = (mode == active) ? .on : .off
-      submenu.addItem(item)
-    }
-    parent.submenu = submenu
-    return parent
-  }
-
-  @objc private func selectLiveZoomFollowMode(_ sender: NSMenuItem) {
-    guard let raw = sender.representedObject as? String,
-      let mode = LiveZoomFollow.Mode(rawValue: raw)
-    else { return }
-    Preferences.liveZoomFollowMode = mode
-    checkOnly(sender)
-  }
-
-  /// The "Recording Scope" submenu (M5.6): full display vs. selected region,
-  /// checkmark on the active one. Selection persists via `Preferences`.
-  private func makeRecordingScopeMenuItem() -> NSMenuItem {
-    let parent = NSMenuItem(title: "Recording Scope", action: nil, keyEquivalent: "")
-    let submenu = NSMenu()
-    let active = Preferences.recordingScope
-    for scope in RecordingScope.allCases {
-      let item = NSMenuItem(
-        title: scope.title,
-        action: #selector(selectRecordingScope(_:)),
-        keyEquivalent: ""
-      )
-      item.target = self
-      item.representedObject = scope.rawValue
-      item.state = (scope == active) ? .on : .off
-      submenu.addItem(item)
-    }
-    parent.submenu = submenu
-    return parent
-  }
-
-  @objc private func selectRecordingScope(_ sender: NSMenuItem) {
-    guard let raw = sender.representedObject as? String,
-      let scope = RecordingScope(rawValue: raw)
-    else { return }
-    Preferences.recordingScope = scope
-    checkOnly(sender)
-  }
-
-  /// Puts the checkmark on `sender` and clears its siblings, so a radio-style
-  /// submenu reflects the new selection.
-  private func checkOnly(_ sender: NSMenuItem) {
-    for item in sender.menu?.items ?? [] {
-      item.state = (item === sender) ? .on : .off
-    }
-  }
-
-  /// The "Record System Audio" toggle (M5.7): a checkable item persisted in
-  /// `Preferences`. Off by default; covered by Screen Recording permission.
-  private func makeSystemAudioMenuItem() -> NSMenuItem {
-    let item = NSMenuItem(
-      title: "Record System Audio",
-      action: #selector(toggleSystemAudio(_:)),
-      keyEquivalent: ""
-    )
-    item.target = self
-    item.state = Preferences.capturesSystemAudio ? .on : .off
-    return item
-  }
-
-  @objc private func toggleSystemAudio(_ sender: NSMenuItem) {
-    let enabled = !Preferences.capturesSystemAudio
-    Preferences.capturesSystemAudio = enabled
-    sender.state = enabled ? .on : .off
-  }
-
-  /// The "Record Microphone" toggle (M5.7b): a checkable item persisted in
-  /// `Preferences`. Off by default; prompts for mic permission on first record.
-  private func makeMicrophoneMenuItem() -> NSMenuItem {
-    let item = NSMenuItem(
-      title: "Record Microphone",
-      action: #selector(toggleMicrophone(_:)),
-      keyEquivalent: ""
-    )
-    item.target = self
-    item.state = Preferences.capturesMicrophone ? .on : .off
-    return item
-  }
-
-  @objc private func toggleMicrophone(_ sender: NSMenuItem) {
-    let enabled = !Preferences.capturesMicrophone
-    Preferences.capturesMicrophone = enabled
-    sender.state = enabled ? .on : .off
   }
 
   /// Presents the overlay content for a mode transition. Draw has two entry
@@ -252,7 +154,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
       .appendingPathComponent(Recorder.timestampedFilename())
     let systemAudio = Preferences.capturesSystemAudio  // M5.7
     let microphone = Preferences.capturesMicrophone  // M5.7b
-    Task { [recorder] in
+    Task { [recorder, weak self] in
       do {
         try await recorder.start(
           of: display.displayID,
@@ -262,14 +164,18 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
           capturesSystemAudio: systemAudio,
           capturesMicrophone: microphone
         )
+        await MainActor.run { self?.startRecordingHUD() }  // M5.9
       } catch {
         NSLog("XPlain: recording failed to start - \(error)")
       }
     }
   }
 
-  /// M5.5: stops the in-progress recording and logs the saved file path.
+  /// M5.5: stops the in-progress recording and logs the saved file path. Hides
+  /// the HUD immediately (we're on the main thread from the hotkey callback) so
+  /// the indicator disappears the moment you press stop, not after finalizing.
   private func stopRecording() {
+    stopRecordingHUD()  // M5.9
     Task { [recorder] in
       do {
         let url = try await recorder.stop()
@@ -278,6 +184,39 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         NSLog("XPlain: stop recording failed - \(error)")
       }
     }
+  }
+
+  // MARK: Recording HUD (M5.9)
+
+  /// Starts the menu-bar recording indicator: a red dot plus an elapsed clock
+  /// that ticks once a second.
+  private func startRecordingHUD() {
+    recordingStartDate = Date()
+    updateRecordingHUD()
+    let timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
+      self?.updateRecordingHUD()
+    }
+    RunLoop.main.add(timer, forMode: .common)  // keep ticking during menu tracking
+    recordingTimer = timer
+  }
+
+  /// Stops the indicator and restores the idle menu-bar title.
+  private func stopRecordingHUD() {
+    recordingTimer?.invalidate()
+    recordingTimer = nil
+    recordingStartDate = nil
+    statusItem?.button?.attributedTitle = NSAttributedString(string: Self.idleStatusTitle)
+  }
+
+  private func updateRecordingHUD() {
+    guard let recordingStartDate else { return }
+    let elapsed = Date().timeIntervalSince(recordingStartDate)
+    let title = NSMutableAttributedString(
+      string: "● ",
+      attributes: [.foregroundColor: NSColor.systemRed]
+    )
+    title.append(NSAttributedString(string: ElapsedTime.format(elapsed)))
+    statusItem?.button?.attributedTitle = title
   }
 
   private func withDisplayUnderCursor(_ present: (Display) -> Void) {
