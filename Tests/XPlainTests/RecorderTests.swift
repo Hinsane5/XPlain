@@ -29,4 +29,13 @@ final class RecorderTests: XCTestCase {
     XCTAssertEqual(settings[AVVideoWidthKey] as? Int, 2880)
     XCTAssertEqual(settings[AVVideoHeightKey] as? Int, 1800)
   }
+
+  func testAudioSettingsAreStereoAAC() {
+    // M5.7: the audio writer-input settings — AAC, 48 kHz stereo (SCStream
+    // delivers 48 kHz audio).
+    let settings = Recorder.audioSettings()
+    XCTAssertEqual(settings[AVFormatIDKey] as? UInt32, kAudioFormatMPEG4AAC)
+    XCTAssertEqual(settings[AVNumberOfChannelsKey] as? Int, 2)
+    XCTAssertEqual(settings[AVSampleRateKey] as? Int, 48_000)
+  }
 }

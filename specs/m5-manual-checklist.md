@@ -35,8 +35,11 @@ screen, so they're verified here. CI skips the capture-bound integration tests.
 - [x] Duration is wall-clock accurate even for a static region (stop() ends the
       writer session at the real stop time — SCStream only emits frames on change).
 
-## M5.7 — Optional audio  *(pending)*
-- [ ] Enabling system/mic audio puts an audio track in the file.
+## M5.7 — Optional audio  *(system audio done; mic pending)*
+- [x] Menu ▸ "Record System Audio" toggles + persists; checkmark sticks.
+- [x] Enabling system audio puts an AAC 48kHz stereo track in the file.
+      Verified live: video 1920×1080/5.15s + audio aac/5.08s.
+- [ ] Microphone toggle captures mic audio (M5.7b).
 
 ## M5.8 — Composite overlay  *(pending)*
 - [ ] Zoom/Draw annotations appear in the recording.

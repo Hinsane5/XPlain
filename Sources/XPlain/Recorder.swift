@@ -21,13 +21,18 @@ final class Recorder: NSObject, SCStreamOutput {
   }
 
   private let frameQueue = DispatchQueue(label: "com.howardgoh.XPlain.recorder")
+  private let audioQueue = DispatchQueue(label: "com.howardgoh.XPlain.recorder.audio")
   private var stream: SCStream?
   private var writer: AVAssetWriter?
   private var videoInput: AVAssetWriterInput?
+  /// The system-audio writer input, present only when audio capture is on (M5.7).
+  private var audioInput: AVAssetWriterInput?
   /// The writer session opens on the first frame's timestamp, not at start()
   /// — SCStream PTS are on the host clock, and `AVAssetWriter` wants the session
   /// origin to match the first appended buffer. Guarded so it happens once.
   private var startedSession = false
+  /// Serializes the one-time session start between the video and audio queues.
+  private let stateLock = NSLock()
   private var outputURL: URL?
 
   /// Whether a recording is currently in progress.
@@ -41,11 +46,15 @@ final class Recorder: NSObject, SCStreamOutput {
   ///     cropped recording, or the whole display's).
   ///   - sourceRect: the display region to capture (points, top-left origin) for
   ///     region recording (M5.6); `nil` records the full display.
+  ///   - capturesSystemAudio: when true, records the display's system audio into
+  ///     an AAC track (M5.7). Covered by Screen Recording permission — no extra
+  ///     prompt.
   func start(
     of displayID: CGDirectDisplayID,
     pixelSize: CGSize,
     to outputURL: URL,
     sourceRect: CGRect? = nil,
+    capturesSystemAudio: Bool = false,
     excludingWindow windowID: CGWindowID? = nil
   ) async throws {
     let content = try await SCShareableContent.current
@@ -64,6 +73,15 @@ final class Recorder: NSObject, SCStreamOutput {
     self.outputURL = outputURL
     startedSession = false
 
+    if capturesSystemAudio {
+      audioInput = Self.makeAudioInput()
+      if let audioInput, writer.canAdd(audioInput) {
+        writer.add(audioInput)
+      } else {
+        audioInput = nil
+      }
+    }
+
     let excluded = content.windows.filter { $0.windowID == windowID }
     let filter = SCContentFilter(display: display, excludingWindows: excluded)
     let config = SCStreamConfiguration()
@@ -74,9 +92,13 @@ final class Recorder: NSObject, SCStreamOutput {
     config.height = Int(pixelSize.height)
     config.showsCursor = true
     config.minimumFrameInterval = CMTime(value: 1, timescale: 60)
+    config.capturesAudio = capturesSystemAudio  // M5.7
 
     let stream = SCStream(filter: filter, configuration: config, delegate: nil)
     try stream.addStreamOutput(self, type: .screen, sampleHandlerQueue: frameQueue)
+    if capturesSystemAudio {
+      try stream.addStreamOutput(self, type: .audio, sampleHandlerQueue: audioQueue)
+    }
     try await stream.startCapture()
     self.stream = stream
     isRecording = true
@@ -100,12 +122,14 @@ final class Recorder: NSObject, SCStreamOutput {
     // recording length. `endSession` extends the timeline to `endTime`.
     let endTime = CMClockGetTime(CMClockGetHostTimeClock())
     videoInput.markAsFinished()
+    audioInput?.markAsFinished()
     if writer.status == .writing {
       writer.endSession(atSourceTime: endTime)
     }
     await writer.finishWriting()
     self.writer = nil
     self.videoInput = nil
+    self.audioInput = nil
     self.outputURL = nil
     return outputURL
   }
@@ -117,19 +141,40 @@ final class Recorder: NSObject, SCStreamOutput {
     didOutputSampleBuffer sampleBuffer: CMSampleBuffer,
     of type: SCStreamOutputType
   ) {
-    guard isRecording else { return }  // drop late frames after stop()
-    guard type == .screen, sampleBuffer.isValid, Self.isCompleteFrame(sampleBuffer) else { return }
-    guard let writer, let videoInput else { return }
+    guard isRecording, sampleBuffer.isValid, let writer else { return }
+    switch type {
+    case .screen:
+      guard Self.isCompleteFrame(sampleBuffer), let videoInput else { return }
+      appendFrame(sampleBuffer, to: videoInput, writer: writer)
+    case .audio:
+      guard let audioInput else { return }
+      appendFrame(sampleBuffer, to: audioInput, writer: writer)
+    default:
+      return
+    }
+  }
 
+  /// Appends one sample buffer, opening the writer session on the first buffer of
+  /// any type (video or audio may arrive first). Serialized under `stateLock` so
+  /// the video and audio queues don't race to start the session.
+  private func appendFrame(
+    _ sampleBuffer: CMSampleBuffer,
+    to input: AVAssetWriterInput,
+    writer: AVAssetWriter
+  ) {
+    stateLock.lock()
     if !startedSession {
-      let start = CMSampleBufferGetPresentationTimeStamp(sampleBuffer)
-      guard writer.status == .unknown, writer.startWriting() else { return }
-      writer.startSession(atSourceTime: start)
+      guard writer.status == .unknown, writer.startWriting() else {
+        stateLock.unlock()
+        return
+      }
+      writer.startSession(atSourceTime: CMSampleBufferGetPresentationTimeStamp(sampleBuffer))
       startedSession = true
     }
+    stateLock.unlock()
 
-    guard writer.status == .writing, videoInput.isReadyForMoreMediaData else { return }
-    videoInput.append(sampleBuffer)
+    guard writer.status == .writing, input.isReadyForMoreMediaData else { return }
+    input.append(sampleBuffer)
   }
 
   // MARK: Pure helpers (unit-tested)
@@ -156,6 +201,24 @@ final class Recorder: NSObject, SCStreamOutput {
       AVVideoWidthKey: width,
       AVVideoHeightKey: height,
     ]
+  }
+
+  /// The AAC audio writer-input settings (M5.7). 48 kHz stereo matches what
+  /// `SCStream` delivers for system audio.
+  static func audioSettings() -> [String: Any] {
+    [
+      AVFormatIDKey: kAudioFormatMPEG4AAC,
+      AVSampleRateKey: 48_000,
+      AVNumberOfChannelsKey: 2,
+      AVEncoderBitRateKey: 128_000,
+    ]
+  }
+
+  /// A real-time AAC audio writer input for the system-audio track (M5.7).
+  private static func makeAudioInput() -> AVAssetWriterInput {
+    let input = AVAssetWriterInput(mediaType: .audio, outputSettings: audioSettings())
+    input.expectsMediaDataInRealTime = true
+    return input
   }
 
   /// Whether an `SCStream` sample buffer carries a real, complete frame (status

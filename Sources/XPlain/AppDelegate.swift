@@ -15,6 +15,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     let menu = NSMenu()
     menu.addItem(makeLiveZoomFollowMenuItem())  // M5.4
     menu.addItem(makeRecordingScopeMenuItem())  // M5.6
+    menu.addItem(makeSystemAudioMenuItem())  // M5.7
     menu.addItem(.separator())
     menu.addItem(
       NSMenuItem(
@@ -120,6 +121,25 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
   }
 
+  /// The "Record System Audio" toggle (M5.7): a checkable item persisted in
+  /// `Preferences`. Off by default; covered by Screen Recording permission.
+  private func makeSystemAudioMenuItem() -> NSMenuItem {
+    let item = NSMenuItem(
+      title: "Record System Audio",
+      action: #selector(toggleSystemAudio(_:)),
+      keyEquivalent: ""
+    )
+    item.target = self
+    item.state = Preferences.capturesSystemAudio ? .on : .off
+    return item
+  }
+
+  @objc private func toggleSystemAudio(_ sender: NSMenuItem) {
+    let enabled = !Preferences.capturesSystemAudio
+    Preferences.capturesSystemAudio = enabled
+    sender.state = enabled ? .on : .off
+  }
+
   /// Presents the overlay content for a mode transition. Draw has two entry
   /// paths (M4.9): from Zoom it annotates the current magnified image
   /// (`drawOverCurrent`); standalone it freezes a fresh 1× capture.
@@ -191,13 +211,15 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
   private func beginRecording(display: Display, pixelSize: CGSize, sourceRect: CGRect?) {
     let url = Recorder.defaultSaveDirectory
       .appendingPathComponent(Recorder.timestampedFilename())
+    let systemAudio = Preferences.capturesSystemAudio  // M5.7
     Task { [recorder] in
       do {
         try await recorder.start(
           of: display.displayID,
           pixelSize: pixelSize,
           to: url,
-          sourceRect: sourceRect
+          sourceRect: sourceRect,
+          capturesSystemAudio: systemAudio
         )
       } catch {
         NSLog("XPlain: recording failed to start - \(error)")

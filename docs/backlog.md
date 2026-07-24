@@ -237,9 +237,11 @@ Goal: live magnification and screen recording. Highest technical risk — see co
   crops via `SCStreamConfiguration.sourceRect` (pure math in `RecordingRegion`).
   Verified live: full 1920×1080/5.12s, region 146×90/4.96s. Fixed a duration bug —
   SCStream only emits on change, so `stop()` now `endSession`s at wall-clock time.)*
-- [ ] **M5.7 — Optional audio** — system + mic toggles (off by default; mic permission
+- [~] **M5.7 — Optional audio** — system + mic toggles (off by default; mic permission
   requested lazily). **Done when:** enabling either captures audio in the file.
   **Depends on:** M5.5
+  *(system audio done + verified live: menu toggle → AAC 48kHz stereo track in the
+  file. Microphone toggle still pending — M5.7b.)*
 - [ ] **M5.8 — Composite overlay into recording** — Zoom/Draw annotations appear in the
   output. **Done when:** a recorded session shows the annotations. **Depends on:** M5.5, M4.2
 - [ ] **M5.9 — Recording HUD / indicator** — menu-bar state + elapsed time. **Done when:**
