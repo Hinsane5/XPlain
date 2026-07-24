@@ -31,6 +31,12 @@ final class LiveZoomView: NSView {
   @available(*, unavailable)
   required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
 
+  /// Steps the live magnification (scroll / ↑↓ in LiveZoom), clamped to the zoom
+  /// range. Takes effect on the next delivered frame.
+  func zoom(steps: Int) {
+    scale = ZoomRenderer.zoomed(from: scale, steps: steps, step: SettingsStore.shared.zoomStep)
+  }
+
   /// Displays the next captured frame, magnified about the follow anchor (M5.4:
   /// cursor-centered tracks the pointer; edge-push holds still until it nears
   /// the edge).

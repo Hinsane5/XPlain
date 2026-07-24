@@ -15,9 +15,19 @@ final class OverlayController {
   /// request (M1.5). Set this before calling `show`.
   var onDismissRequested: (() -> Void)?
 
+  /// Called when a left-drag over a magnified view asks to enter Draw-over-zoom
+  /// (ZoomIt-style). The caller routes it through `ModeController.request(.draw)`.
+  var onDrawGestureRequested: (() -> Void)?
+
   /// The live capture feed while in LiveZoom, retained so it can be stopped on
   /// exit (M5.2). nil otherwise.
   private var liveSession: LiveCaptureSession?
+
+  /// The live magnification view + the scroll monitors that let scroll change its
+  /// zoom level while LiveZoom is up (kept click-through, so the monitors only
+  /// *observe*). Cleared on exit.
+  private weak var liveZoomView: LiveZoomView?
+  private var liveZoomScrollMonitors: [Any] = []
 
   /// Whether an overlay is currently on screen.
   var isShowing: Bool { window != nil }
@@ -30,6 +40,7 @@ final class OverlayController {
     } else {
       let overlay = OverlayWindow(displayFrame: frame)
       overlay.onDismissRequested = { [weak self] in self?.onDismissRequested?() }
+      overlay.onDrawGestureRequested = { [weak self] in self?.onDrawGestureRequested?() }
       // XPlain is a menu-bar agent (LSUIElement), so it isn't the active app
       // when a hotkey fires — makeKeyAndOrderFront alone won't make the overlay
       // key, and a non-key window's cursor rects don't apply (the red-dot
@@ -58,6 +69,8 @@ final class OverlayController {
     let view = window.showLiveZoom()
     view.scale = SettingsStore.shared.initialZoomLevel  // M6.4
     view.followMode = SettingsStore.shared.liveZoomFollowMode  // M5.4
+    liveZoomView = view
+    startLiveZoomScrollMonitor()
     let excludedWindow = CGWindowID(window.windowNumber)
 
     stopLiveSession()
@@ -97,9 +110,39 @@ final class OverlayController {
   }
 
   private func stopLiveSession() {
+    stopLiveZoomScrollMonitor()
+    liveZoomView = nil
     guard let session = liveSession else { return }
     liveSession = nil
     Task { await session.stop() }
+  }
+
+  /// Installs global + local scroll monitors that step the LiveZoom magnification
+  /// while LiveZoom is up. The overlay is click-through, so the global monitor can
+  /// only observe (the scroll also reaches the app underneath); consuming it would
+  /// need Accessibility, which XPlain avoids.
+  private func startLiveZoomScrollMonitor() {
+    stopLiveZoomScrollMonitor()
+    let global = NSEvent.addGlobalMonitorForEvents(matching: .scrollWheel) { [weak self] event in
+      self?.handleLiveZoomScroll(event)
+    }
+    let local = NSEvent.addLocalMonitorForEvents(matching: .scrollWheel) { [weak self] event in
+      self?.handleLiveZoomScroll(event)
+      return event
+    }
+    liveZoomScrollMonitors = [global, local].compactMap { $0 }
+  }
+
+  private func stopLiveZoomScrollMonitor() {
+    for monitor in liveZoomScrollMonitors {
+      NSEvent.removeMonitor(monitor)
+    }
+    liveZoomScrollMonitors.removeAll()
+  }
+
+  private func handleLiveZoomScroll(_ event: NSEvent) {
+    guard let liveZoomView, event.scrollingDeltaY != 0 else { return }
+    liveZoomView.zoom(steps: event.scrollingDeltaY > 0 ? 1 : -1)  // scroll up = zoom in
   }
 
   /// Shows the overlay with the Screen Recording permission prompt (M2.2)

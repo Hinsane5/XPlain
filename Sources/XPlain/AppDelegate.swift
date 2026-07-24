@@ -41,6 +41,10 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     overlay.onDismissRequested = { [modeController] in
       modeController.exit()
     }
+    // Left-drag while zoomed enters Draw-over-zoom (ZoomIt-style seamless draw).
+    overlay.onDrawGestureRequested = { [modeController] in
+      modeController.request(.draw)
+    }
     // M2.2: gate activation on Screen Recording permission — denied requests
     // resolve to .permissionPrompt instead of a blank/failed capture.
     let service = HotkeyService { [weak self, modeController] mode in

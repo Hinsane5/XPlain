@@ -199,6 +199,9 @@ Goal: full annotation toolset, over a zoom or standalone.
 - [x] **M4.9 — Standalone draw + draw-over-zoom** — `⌘⌃D` from Idle freezes the live
   screen; from Zoom it draws on the magnified image. **Done when:** both entry paths work
   and exit cleanly. **Depends on:** M4.2, M3.1
+  *(later: also enter draw-over-zoom by simply **left-dragging** while zoomed —
+  the ZoomIt behavior core.md's diagram intended; the window forwards the in-flight
+  drag into the annotation view. Verified live.)*
 - [x] **M4.10 — Model + input-mapping unit tests** — `InputRouter` key/modifier → action
   coverage. **Done when:** the mapping table from spec §4 is fully asserted. **Depends
   on:** M4.3, M4.4
@@ -222,6 +225,10 @@ Goal: live magnification and screen recording. Highest technical risk — see co
   **Depends on:** M5.2
   *(click-through removes Esc / right-click as exits, so the activation hotkey now
   toggles — `ModeController.toggle` — and ⌘⌃L again exits LiveZoom)*
+  *(later: **scroll changes the LiveZoom magnification** while it stays
+  click-through — a global `NSEvent` scroll monitor that only observes (so the
+  scroll also reaches the app underneath; consuming it would need Accessibility).
+  Verified live. Drawing on the live screen is still M9 LiveDraw.)*
 - [~] **M5.4 — Cursor-follow modes** — cursor-centered vs. edge-push (configurable).
   **Done when:** both follow modes track the cursor as specified. **Depends on:** M5.2
   *(pure follow math in `LiveZoomFollow` unit-tested; persisted in `Preferences`;

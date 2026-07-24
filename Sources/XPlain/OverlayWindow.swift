@@ -27,6 +27,16 @@ final class OverlayWindow: NSWindow {
   /// (see `AppDelegate`) routes it through `ModeController.exit()`.
   var onDismissRequested: (() -> Void)?
 
+  /// Called when a left-drag begins over a magnified (Zoom) view, so the caller
+  /// enters Draw-over-zoom (ZoomIt-style: start drawing without a keypress). The
+  /// caller routes this through `ModeController.request(.draw)`; the window then
+  /// forwards the in-flight drag into the new annotation view.
+  var onDrawGestureRequested: (() -> Void)?
+
+  /// True while a drag that started in Zoom is being forwarded into the
+  /// annotation view it spawned (so its `mouseDragged`/`mouseUp` land there).
+  private var forwardingDragToAnnotation = false
+
   // The magnified image view, its zoom scale, and the last cursor position (in
   // window space), retained so mouse-move panning (M3.2) and scroll/arrow zoom
   // (M3.3) can re-anchor the frame. nil / 1 when not zoomed.
@@ -197,6 +207,40 @@ final class OverlayWindow: NSWindow {
 
   override func rightMouseDown(with event: NSEvent) {
     onDismissRequested?()
+  }
+
+  /// Left-drag while magnified enters Draw-over-zoom and begins the stroke — the
+  /// ZoomIt behavior (spec §3: "simply starting to drag"). Once drawing, the
+  /// annotation view is the content view and receives events directly; this only
+  /// bridges the drag that *starts* the transition.
+  override func mouseDown(with event: NSEvent) {
+    guard zoomScale != 1 else {
+      super.mouseDown(with: event)
+      return
+    }
+    lastCursor = event.locationInWindow
+    onDrawGestureRequested?()  // enters Draw; swaps in the annotation view
+    if let annotationView {
+      forwardingDragToAnnotation = true
+      annotationView.mouseDown(with: event)
+    }
+  }
+
+  override func mouseDragged(with event: NSEvent) {
+    if forwardingDragToAnnotation, let annotationView {
+      annotationView.mouseDragged(with: event)
+    } else {
+      super.mouseDragged(with: event)
+    }
+  }
+
+  override func mouseUp(with event: NSEvent) {
+    if forwardingDragToAnnotation, let annotationView {
+      annotationView.mouseUp(with: event)
+      forwardingDragToAnnotation = false
+    } else {
+      super.mouseUp(with: event)
+    }
   }
 
   /// Steps the zoom level (M3.3), keeping the point under the cursor fixed.
