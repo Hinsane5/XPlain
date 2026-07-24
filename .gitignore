@@ -45,3 +45,6 @@ fastlane/screenshots/**/*.png
 # Editor / OS noise
 *.swp
 *~
+
+# gstack scheduled-tasks lock (transient)
+.claude/scheduled_tasks.lock
