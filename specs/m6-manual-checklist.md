@@ -50,5 +50,7 @@ login item, and Gatekeeper acceptance are verified here.
       hotkey cheat sheet); "Get Started" dismisses it.
 - [x] `hasCompletedOnboarding` persists so it doesn't reappear on relaunch.
 
-## M6.10 — GitHub Release  *(pending)*
-- [ ] The release is downloadable and runs.
+## M6.10 — GitHub Release  ✅ shipped 2026-07-25
+- [x] Public release v0.1.0 with XPlain.dmg attached + downloadable
+      (github.com/Hinsane5/XPlain/releases/tag/v0.1.0).
+- [x] Runs from the dmg (right-click ▸ Open first launch, since un-notarized).

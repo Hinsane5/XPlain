@@ -236,12 +236,23 @@ dismiss (NSButton swallows right-click) → `RightClickForwardingButton`.
   launcher). Use `xcodebuild build-for-testing` to compile-check tests (confirms
   RED/GREEN compiles), and rely on **CI** or a **fresh Terminal.app window** to
   actually run them. `swiftlint`/`swift-format`/plain `build` work fine here.
-- **Next up:** M6 — Settings, polish & distribution (spec §7). SwiftUI
-  preferences window (`SettingsStore`, hotkey recorders, wire the panes),
-  launch-at-login, icons, then signing → notarize → `.dmg` → GitHub Release =
-  v0.1 ships. Loose ends to fold in: live-verify M5.4's follow feels, and decide
-  if single-track audio mixing is worth pulling out of the icebox. Post-MVP: M7
-  Break Timer, M8 Demo Type, M9 LiveDraw, M10 loupe/PiP.
+- **M6 — Settings, polish & distribution — done (v0.1.0 shipped 2026-07-25).**
+  `SettingsStore` (injectable, round-trip tested) + a 5-tab SwiftUI Settings window
+  (M6.1/6.2), hotkey recorders with conflict warnings (M6.3), all panes wired live
+  (M6.4), launch-at-login via `SMAppService` (M6.5), code-generated app + menu-bar
+  icons (M6.6), hardened runtime + mic entitlement passing `codesign --verify`
+  (M6.7), `scripts/build-dmg.sh` + first-run onboarding (M6.8 dmg / M6.9), and a
+  **public GitHub release v0.1.0** with an un-notarized `.dmg` (M6.10). Also landed
+  two ZoomIt-parity extras the user asked for: **left-drag-to-draw in Zoom** and
+  **scroll-to-zoom in LiveZoom**.
+  **BLOCKED (user opted out of the $99/yr Apple Developer Program):** Developer ID
+  signing + notarization (`spctl` acceptance) — the shipped dmg is un-notarized
+  (right-click ▸ Open). `scripts/notarize.sh` is ready if that ever changes.
+- **Next up:** MVP is shipped. Open loose ends: live-verify M5.4's follow feels;
+  decide if single-track audio mixing leaves the icebox. Post-MVP milestones (write
+  a `specs/` doc first): **M7** Break Timer, **M8** Demo Type, **M9** LiveDraw
+  (draw on the live screen — the natural next step after LiveZoom scroll-zoom),
+  **M10** region loupe / picture-in-picture.
 
 Keep this section honest; it's the fastest way for the next loop session to know
 where to resume.

@@ -332,8 +332,12 @@ Goal: configurable, signed, notarized, releasable.
   + "Open Settings" deep-link, and the hotkey cheat sheet — dismissed via "Get
   Started"; `SettingsStore.hasCompletedOnboarding` shows it once. Verified live: shows,
   dismisses, flag persists so it doesn't reappear.)*
-- [ ] **M6.10 — GitHub Release** — tag `v0.1.0`, attach the notarized `.dmg`, write notes.
+- [x] **M6.10 — GitHub Release** — tag `v0.1.0`, attach the notarized `.dmg`, write notes.
   **Done when:** the release is downloadable and runs. **Depends on:** M6.8
+  *(public release **v0.1.0** shipped: github.com/Hinsane5/XPlain/releases/tag/v0.1.0,
+  `XPlain.dmg` attached + downloadable. CAVEAT: **un-notarized** (no paid membership) —
+  notes tell users to right-click ▸ Open on first launch. Swap in a notarized dmg via
+  `scripts/notarize.sh` if a Developer ID ever exists.)*
 
 **M6 exit = v0.1 ships.** All boxes in [`success-criteria.md`](success-criteria.md)
 "MVP acceptance" are checked.
