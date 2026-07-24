@@ -38,6 +38,13 @@ final class SettingsStoreTests: XCTestCase {
     XCTAssertEqual(store.recordingFolder, Recorder.defaultSaveDirectory)
     XCTAssertEqual(store.highlighterOpacity, 0.4)
     XCTAssertEqual(store.recordingQuality, .high)
+    XCTAssertFalse(store.hasCompletedOnboarding)
+  }
+
+  func testOnboardingFlagRoundTrips() {
+    XCTAssertFalse(store.hasCompletedOnboarding)
+    store.hasCompletedOnboarding = true
+    XCTAssertTrue(store.hasCompletedOnboarding)
   }
 
   func testNewPaneSettingsRoundTrip() {

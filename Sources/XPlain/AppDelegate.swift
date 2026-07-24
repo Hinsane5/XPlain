@@ -8,6 +8,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
   private let overlay = OverlayController()
   private let recorder = Recorder()  // M5.5
   private let settingsWindow = SettingsWindowController()  // M6.2
+  private let onboardingWindow = OnboardingWindowController()  // M6.9
 
   /// Recording HUD state (M5.9): the start time and the once-a-second timer that
   /// refreshes the menu-bar elapsed clock. Both nil when not recording.
@@ -67,6 +68,12 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     }
     service.start()
     hotkeys = service
+
+    // M6.9: first-run onboarding — guide a new user to a working state, once.
+    if !SettingsStore.shared.hasCompletedOnboarding {
+      onboardingWindow.onFinished = { SettingsStore.shared.hasCompletedOnboarding = true }
+      onboardingWindow.show()
+    }
   }
 
   /// M6.2: opens the SwiftUI Settings window from the menu (⌘,). Internal so the

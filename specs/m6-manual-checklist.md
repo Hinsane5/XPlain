@@ -45,8 +45,10 @@ login item, and Gatekeeper acceptance are verified here.
       need a paid Apple Developer membership (user opted out). `scripts/notarize.sh`
       is ready for if that ever changes.
 
-## M6.9 — First-run onboarding  *(pending)*
-- [ ] A fresh install walks a new user to a working state.
+## M6.9 — First-run onboarding  ✅ verified live 2026-07-25
+- [x] First launch shows the "Welcome to XPlain" window (permission status +
+      hotkey cheat sheet); "Get Started" dismisses it.
+- [x] `hasCompletedOnboarding` persists so it doesn't reappear on relaunch.
 
 ## M6.10 — GitHub Release  *(pending)*
 - [ ] The release is downloadable and runs.

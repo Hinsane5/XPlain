@@ -325,9 +325,13 @@ Goal: configurable, signed, notarized, releasable.
   the notarization/`spctl` half: the user won't buy the $99/yr membership, so no
   Developer ID — the local `.dmg` is un-notarized (opens on the build Mac; Gatekeeper
   warns elsewhere). See memory `no-paid-apple-developer`.)*
-- [ ] **M6.9 — First-run onboarding** — guided Screen-Recording permission + hotkey cheat
+- [x] **M6.9 — First-run onboarding** — guided Screen-Recording permission + hotkey cheat
   sheet. **Done when:** a fresh install walks a new user to a working state. **Depends
   on:** M2.2
+  *(first launch shows a SwiftUI "Welcome to XPlain" window — Screen Recording status
+  + "Open Settings" deep-link, and the hotkey cheat sheet — dismissed via "Get
+  Started"; `SettingsStore.hasCompletedOnboarding` shows it once. Verified live: shows,
+  dismisses, flag persists so it doesn't reappear.)*
 - [ ] **M6.10 — GitHub Release** — tag `v0.1.0`, attach the notarized `.dmg`, write notes.
   **Done when:** the release is downloadable and runs. **Depends on:** M6.8
 

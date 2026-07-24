@@ -26,6 +26,7 @@
 		26679305EAD249E77A138B8D /* DrawableTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39FC97B7F0CB94F5B9431130 /* DrawableTests.swift */; };
 		38C7E70A0289D00BFAB9D1E7 /* DisplayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC3A83500C45B80164C5F8E7 /* DisplayTests.swift */; };
 		3FB14ECC04DDAA78617D1458 /* RecordingRegionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABE1AE3ACE6ED61AE8E9B1A8 /* RecordingRegionTests.swift */; };
+		454EFCBB6D066555B7D23B5A /* OnboardingWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78CDCBADE0953FC6A8627476 /* OnboardingWindowController.swift */; };
 		45ADAFF482C870AA0E25B8EF /* Drawable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79266B2514B5AB7AAEB47AA /* Drawable.swift */; };
 		462E8E8B8A9EA53D68EDED7F /* LiveCaptureSessionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EB33561B94B77997B61A5FB /* LiveCaptureSessionTests.swift */; };
 		47C5AA6DF485F35F51403FB8 /* SettingsWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A54A2456A601E6D8C941E205 /* SettingsWindowController.swift */; };
@@ -44,6 +45,7 @@
 		8484F73995D194A33ABD6DF3 /* LoginItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 129E01EE76D4505AEA16CD01 /* LoginItem.swift */; };
 		8B522B048AAA644CC79C7A59 /* CaptureService.swift in Sources */ = {isa = PBXBuildFile; fileRef = EE4710EB08FD2C9B0E4BE4AF /* CaptureService.swift */; };
 		8EB5A95EFD8022479875271A /* InputRouterTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B51F335EB9B843CC490F08C8 /* InputRouterTests.swift */; };
+		8FC709DD782E535D86854215 /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 29442E213C8DD2D9B3DF25CF /* OnboardingView.swift */; };
 		9949ABF3D8B48D1821B39F71 /* LiveZoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D614287D373DBC8212D13D0A /* LiveZoomView.swift */; };
 		9B788D0599B00E3589DE4EE1 /* DrawableRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7883E60FCAA109BCC28572EE /* DrawableRenderer.swift */; };
 		A5D7FBD17863C5B3303D6936 /* ModeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8B4A20C5A9AA497E1717BE97 /* ModeController.swift */; };
@@ -88,6 +90,7 @@
 		129E01EE76D4505AEA16CD01 /* LoginItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginItem.swift; sourceTree = "<group>"; };
 		145FEFBC3C7A6A6BD746201B /* OverlayController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayController.swift; sourceTree = "<group>"; };
 		1B5E32342319E90FD1EC081A /* AnnotationExportTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationExportTests.swift; sourceTree = "<group>"; };
+		29442E213C8DD2D9B3DF25CF /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		2A99EAC64E53FCAE0750E23B /* OverlayWindow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayWindow.swift; sourceTree = "<group>"; };
 		38C642F36F18B03B343ED8F0 /* AnnotationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationView.swift; sourceTree = "<group>"; };
 		39FC97B7F0CB94F5B9431130 /* DrawableTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawableTests.swift; sourceTree = "<group>"; };
@@ -104,6 +107,7 @@
 		6044724AAE9FC763652A82C2 /* XPlainTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = XPlainTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		72B0F388BBC7FD2AC3D6FFA2 /* OverlayWindowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverlayWindowTests.swift; sourceTree = "<group>"; };
 		7883E60FCAA109BCC28572EE /* DrawableRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawableRenderer.swift; sourceTree = "<group>"; };
+		78CDCBADE0953FC6A8627476 /* OnboardingWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingWindowController.swift; sourceTree = "<group>"; };
 		7A426B8CB8161BB13D976B2A /* SettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStore.swift; sourceTree = "<group>"; };
 		7EB33561B94B77997B61A5FB /* LiveCaptureSessionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveCaptureSessionTests.swift; sourceTree = "<group>"; };
 		813E7D75A6547579579A7704 /* ModeActivationGateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeActivationGateTests.swift; sourceTree = "<group>"; };
@@ -208,6 +212,8 @@
 				5A52A940C0E0BD00703CB03D /* Mode.swift */,
 				ECD484AD67A8DE0FFAB5BE70 /* ModeActivationGate.swift */,
 				8B4A20C5A9AA497E1717BE97 /* ModeController.swift */,
+				29442E213C8DD2D9B3DF25CF /* OnboardingView.swift */,
+				78CDCBADE0953FC6A8627476 /* OnboardingWindowController.swift */,
 				145FEFBC3C7A6A6BD746201B /* OverlayController.swift */,
 				2A99EAC64E53FCAE0750E23B /* OverlayWindow.swift */,
 				8698B1906602666644D86D7C /* PermissionPromptContent.swift */,
@@ -410,6 +416,8 @@
 				1B039DF84F33E01994A6B778 /* Mode.swift in Sources */,
 				5299E28D89D008D00AFF8AB4 /* ModeActivationGate.swift in Sources */,
 				A5D7FBD17863C5B3303D6936 /* ModeController.swift in Sources */,
+				8FC709DD782E535D86854215 /* OnboardingView.swift in Sources */,
+				454EFCBB6D066555B7D23B5A /* OnboardingWindowController.swift in Sources */,
 				208C4A0293D43EF4ADF48951 /* OverlayController.swift in Sources */,
 				E54EA3CDBDC204A990EA9B60 /* OverlayWindow.swift in Sources */,
 				766DF61BE3B59E8DD815DDA6 /* PermissionPromptContent.swift in Sources */,

@@ -110,6 +110,13 @@ final class SettingsStore {
     set { setEnum(.activeDisplayTarget, newValue) }
   }
 
+  /// Whether the first-run onboarding has been shown (M6.9); false on a fresh
+  /// install, set once the user dismisses the welcome window.
+  var hasCompletedOnboarding: Bool {
+    get { bool(.hasCompletedOnboarding, default: false) }
+    set { defaults.set(newValue, forKey: Key.hasCompletedOnboarding.rawValue) }
+  }
+
   // MARK: Backing helpers
 
   /// The `UserDefaults` keys, exposed so the SwiftUI panes' `@AppStorage`
@@ -129,6 +136,7 @@ final class SettingsStore {
     case textFontSize
     case highlighterOpacity
     case activeDisplayTarget
+    case hasCompletedOnboarding
   }
 
   private func enumValue<T: RawRepresentable>(_ key: Key, default def: T) -> T
