@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		010967C3E20D75FEF3CC8EF3 /* ZoomRendererTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 940196E9F66C3520E925614D /* ZoomRendererTests.swift */; };
+		06B9AC0C67FFF3A9CD31C9CC /* HotkeyConflictTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C888C6D49B519F6AB8EB2074 /* HotkeyConflictTests.swift */; };
 		07CA21936976B7A6CEF1ECB4 /* AnnotationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38C642F36F18B03B343ED8F0 /* AnnotationView.swift */; };
 		09F89ED6ED2BF872BE5AEE20 /* AnnotationExportTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B5E32342319E90FD1EC081A /* AnnotationExportTests.swift */; };
 		0A07291B4429282B95BB64AF /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6F88219B0B587F8350667DC /* SettingsView.swift */; };
@@ -58,6 +59,8 @@
 		E4F79FED67B3F7A9F5399784 /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = D9FCAC2F4D9F6F80CED14158 /* KeyboardShortcuts */; };
 		E54EA3CDBDC204A990EA9B60 /* OverlayWindow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A99EAC64E53FCAE0750E23B /* OverlayWindow.swift */; };
 		E686291D81C56AC0AF62CCB0 /* LiveZoomFollowTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3C252D5309CF1BE60CB767 /* LiveZoomFollowTests.swift */; };
+		E7E4931949151A0178523AE7 /* HotkeysSettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2FCD8F57B736FEA369F5F09 /* HotkeysSettingsView.swift */; };
+		E8203888100491B61789BB2D /* HotkeyConflict.swift in Sources */ = {isa = PBXBuildFile; fileRef = 56AA86C8966704A2AE009000 /* HotkeyConflict.swift */; };
 		EA315814B74BCF56D948A517 /* SettingsStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F21136837ABF1EA6F87FC9BF /* SettingsStoreTests.swift */; };
 		F75C2E131A1217BE3FB1C836 /* CaptureServiceYFlipTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD2B5DDBAFC698E5957E1E37 /* CaptureServiceYFlipTests.swift */; };
 		FD4CF7DE9759E3C12A08091A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AA5FDD7E196925C46DDDFCA /* AppDelegate.swift */; };
@@ -88,6 +91,7 @@
 		3DED5F3AE20552CB547C8681 /* XPlain.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XPlain.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4D09F167839FABAE5225D701 /* XPlainTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = XPlainTests.swift; sourceTree = "<group>"; };
 		53AE3F82BF1E64962D56F17D /* HotkeyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotkeyService.swift; sourceTree = "<group>"; };
+		56AA86C8966704A2AE009000 /* HotkeyConflict.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotkeyConflict.swift; sourceTree = "<group>"; };
 		5A52A940C0E0BD00703CB03D /* Mode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mode.swift; sourceTree = "<group>"; };
 		5ACB92481DB5B32344B15C0C /* HotkeyServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotkeyServiceTests.swift; sourceTree = "<group>"; };
 		5CA8F29DDB742E9A5E38C7A6 /* Recorder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recorder.swift; sourceTree = "<group>"; };
@@ -111,12 +115,14 @@
 		A54A2456A601E6D8C941E205 /* SettingsWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsWindowController.swift; sourceTree = "<group>"; };
 		A6F6272DA51E4149C8A881A7 /* ZoomRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomRenderer.swift; sourceTree = "<group>"; };
 		ABE1AE3ACE6ED61AE8E9B1A8 /* RecordingRegionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordingRegionTests.swift; sourceTree = "<group>"; };
+		B2FCD8F57B736FEA369F5F09 /* HotkeysSettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotkeysSettingsView.swift; sourceTree = "<group>"; };
 		B51F335EB9B843CC490F08C8 /* InputRouterTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InputRouterTests.swift; sourceTree = "<group>"; };
 		B5D77C179EE42E4572642C3D /* ElapsedTime.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ElapsedTime.swift; sourceTree = "<group>"; };
 		B959EFA0208B6641E364A355 /* AnnotationCanvas.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnnotationCanvas.swift; sourceTree = "<group>"; };
 		BE602F1114020BC321D44831 /* LiveZoomFollow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveZoomFollow.swift; sourceTree = "<group>"; };
 		C1F3371A77584726FDC954F4 /* ModeControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModeControllerTests.swift; sourceTree = "<group>"; };
 		C6F88219B0B587F8350667DC /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		C888C6D49B519F6AB8EB2074 /* HotkeyConflictTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotkeyConflictTests.swift; sourceTree = "<group>"; };
 		CE3C252D5309CF1BE60CB767 /* LiveZoomFollowTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveZoomFollowTests.swift; sourceTree = "<group>"; };
 		D3211295A0EC9D89E431A3F6 /* CaptureServiceTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureServiceTests.swift; sourceTree = "<group>"; };
 		D614287D373DBC8212D13D0A /* LiveZoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LiveZoomView.swift; sourceTree = "<group>"; };
@@ -182,7 +188,9 @@
 				E79266B2514B5AB7AAEB47AA /* Drawable.swift */,
 				7883E60FCAA109BCC28572EE /* DrawableRenderer.swift */,
 				B5D77C179EE42E4572642C3D /* ElapsedTime.swift */,
+				56AA86C8966704A2AE009000 /* HotkeyConflict.swift */,
 				53AE3F82BF1E64962D56F17D /* HotkeyService.swift */,
+				B2FCD8F57B736FEA369F5F09 /* HotkeysSettingsView.swift */,
 				A47192C5703C456B51A71270 /* InputRouter.swift */,
 				0BC2ABBEE510E67FE2BE3B81 /* KeyboardShortcuts+Names.swift */,
 				1082E31326A2E0D963216EC4 /* LiveCaptureSession.swift */,
@@ -220,6 +228,7 @@
 				DC3A83500C45B80164C5F8E7 /* DisplayTests.swift */,
 				39FC97B7F0CB94F5B9431130 /* DrawableTests.swift */,
 				8D95FF600E9CB3FAA3175E5F /* ElapsedTimeTests.swift */,
+				C888C6D49B519F6AB8EB2074 /* HotkeyConflictTests.swift */,
 				5ACB92481DB5B32344B15C0C /* HotkeyServiceTests.swift */,
 				B51F335EB9B843CC490F08C8 /* InputRouterTests.swift */,
 				7EB33561B94B77997B61A5FB /* LiveCaptureSessionTests.swift */,
@@ -337,6 +346,7 @@
 				38C7E70A0289D00BFAB9D1E7 /* DisplayTests.swift in Sources */,
 				26679305EAD249E77A138B8D /* DrawableTests.swift in Sources */,
 				63BA96CC645441C50F1DE9EB /* ElapsedTimeTests.swift in Sources */,
+				06B9AC0C67FFF3A9CD31C9CC /* HotkeyConflictTests.swift in Sources */,
 				6F31F42976F6C05F368E76A3 /* HotkeyServiceTests.swift in Sources */,
 				8EB5A95EFD8022479875271A /* InputRouterTests.swift in Sources */,
 				462E8E8B8A9EA53D68EDED7F /* LiveCaptureSessionTests.swift in Sources */,
@@ -367,7 +377,9 @@
 				45ADAFF482C870AA0E25B8EF /* Drawable.swift in Sources */,
 				9B788D0599B00E3589DE4EE1 /* DrawableRenderer.swift in Sources */,
 				81795FDFEE773056FC12B307 /* ElapsedTime.swift in Sources */,
+				E8203888100491B61789BB2D /* HotkeyConflict.swift in Sources */,
 				E1D1708520AE3BDAEE40A8DE /* HotkeyService.swift in Sources */,
+				E7E4931949151A0178523AE7 /* HotkeysSettingsView.swift in Sources */,
 				7C1EF9806C23A167351024CA /* InputRouter.swift in Sources */,
 				0F7EEB4EA53DF2F43ADFBEF6 /* KeyboardShortcuts+Names.swift in Sources */,
 				111704CCD15F1A7F3FD107B1 /* LiveCaptureSession.swift in Sources */,

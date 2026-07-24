@@ -6,7 +6,7 @@ import SwiftUI
 struct SettingsView: View {
   var body: some View {
     TabView {
-      placeholder("Hotkeys", "Rebind each mode's global shortcut. (M6.3)")
+      HotkeysSettingsView()
         .tabItem { Label("Hotkeys", systemImage: "keyboard") }
       placeholder("Zoom", "Initial level, step, and zoom-in animation. (M6.4)")
         .tabItem { Label("Zoom", systemImage: "plus.magnifyingglass") }

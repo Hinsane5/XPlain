@@ -273,9 +273,13 @@ Goal: configurable, signed, notarized, releasable.
   *(menu "Settings…" (⌘,) opens a titled `NSWindow` hosting SwiftUI `SettingsView`
   — a 5-tab shell (Hotkeys/Zoom/Pen/Recording/General), reused across opens.
   Verified live: opens, tabs switch, closes and reopens.)*
-- [ ] **M6.3 — Hotkey recorders + conflict warnings** — `KeyboardShortcuts.Recorder` per
+- [x] **M6.3 — Hotkey recorders + conflict warnings** — `KeyboardShortcuts.Recorder` per
   mode; warn on known-conflict chords. **Done when:** rebinding a mode takes effect with
   no restart. **Depends on:** M6.2, M1.1
+  *(Hotkeys pane has a recorder per mode (rebinds live via the same
+  `KeyboardShortcuts` registration `HotkeyService` uses); `HotkeyConflict` flags
+  known system chords (⌃1–⌃4 Spaces, Spotlight…) unit-tested + shown as an orange
+  warning. Verified live: rebind works no-restart, ⌃1 warns.)*
 - [ ] **M6.4 — Wire the settings panes** — zoom (level/step/animate), pen
   (color/width/opacity/font), recording (folder/scope/audio/quality), general
   (display target). **Done when:** each setting changes the corresponding behavior live.

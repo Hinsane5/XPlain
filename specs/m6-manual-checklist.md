@@ -12,10 +12,10 @@ login item, and Gatekeeper acceptance are verified here.
 - [x] Menu ▸ "Settings…" (⌘,) opens the "XPlain Settings" window with 5 tabs.
 - [x] Tabs switch; window closes and reopens cleanly.
 
-## M6.3 — Hotkey recorders + conflict warnings  *(pending)*
-- [ ] The Hotkeys tab shows a recorder per mode; rebinding takes effect with no
+## M6.3 — Hotkey recorders + conflict warnings  ✅ verified live 2026-07-24
+- [x] The Hotkeys tab shows a recorder per mode; rebinding takes effect with no
       restart (the new chord triggers the mode, the old one doesn't).
-- [ ] A known-conflict chord (e.g. ⌃1–⌃4 Mission Control) shows a warning.
+- [x] A known-conflict chord (⌃1) shows the orange conflict warning.
 
 ## M6.4 — Wire the settings panes  *(pending)*
 - [ ] Zoom (level/step/animate), Pen (color/width/opacity/font), Recording
